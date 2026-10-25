@@ -16,13 +16,14 @@ android {
         applicationId = "com.skullking.score"
         minSdk = 26
         targetSdk = 37
-        // Surchargés par la CI à partir du tag de release (ex. -PversionName=1.2.0 -PversionCode=10200).
-        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(1)
-        versionName = providers.gradleProperty("versionName").getOrElse("1.0.0")
+        // Overridden by the CI from the release tag (e.g. -PversionName=1.1.0 -PversionCode=10100).
+        // versionCode = major * 10000 + minor * 100 + patch.
+        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(10100)
+        versionName = providers.gradleProperty("versionName").getOrElse("1.1.0")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    // La signature de release n'est configurée que si le keystore est fourni (CI ou machine locale).
+    // The release signing config is only set up when the keystore is provided (CI or local machine).
     val keystorePath = providers.environmentVariable("SIGNING_KEYSTORE_FILE").orNull
     signingConfigs {
         if (!keystorePath.isNullOrBlank()) {
@@ -37,7 +38,7 @@ android {
 
     buildTypes {
         debug {
-            // Couverture de code (JaCoCo) des tests unitaires et instrumentés : voir README.
+            // Code coverage (JaCoCo) of the unit and instrumented tests: see the README.
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
         }
@@ -61,7 +62,7 @@ android {
         compose = true
     }
 
-    // L'analyse Kotlin de Lint plante sur les sources de tests instrumentés (Kotlin 2.4) : on ne vérifie que le code de production.
+    // Lint's Kotlin analysis crashes on the instrumented test sources (Kotlin 2.4): only production code is checked.
     lint {
         ignoreTestSources = true
     }
