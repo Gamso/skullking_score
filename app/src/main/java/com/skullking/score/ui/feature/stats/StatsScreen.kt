@@ -1,4 +1,4 @@
-package com.skullking.score.ui.feature.stats
+﻿package com.skullking.score.ui.feature.stats
 
 import android.content.Context
 import android.content.Intent
@@ -248,7 +248,7 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
                 }
             }
             item(span = { GridItemSpan(maxLineSpan) }) {
-                StatsFilters(state, viewModel, query, onQuery = { query = it }, onDuel = onDuel, showSearch = tab == 0)
+                StatsFilters(state, viewModel, query, onQuery = { query = it }, onDuel = onDuel, playersTab = tab == 0)
             }
             if (tab == 1) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
@@ -293,7 +293,7 @@ private fun StatsFilters(
     query: String,
     onQuery: (String) -> Unit,
     onDuel: () -> Unit,
-    showSearch: Boolean,
+    playersTab: Boolean,
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
     val active = (if (state.filter.playerCount != PlayerCountFilter.ALL) 1 else 0) +
@@ -312,7 +312,7 @@ private fun StatsFilters(
                 )
             }
         }
-        if (showSearch) {
+        if (playersTab) {
             OutlinedTextField(
                 value = query,
                 onValueChange = onQuery,
@@ -349,7 +349,8 @@ private fun StatsFilters(
                 pluralStringResourceGames(state.overview.gamesCount),
                 style = MaterialTheme.typography.titleSmall,
             )
-            OutlinedButton(onClick = onDuel) { Text(stringResource(R.string.duel_title)) }
+            // Head-to-head compares two players: it only makes sense on the players tab.
+            if (playersTab) OutlinedButton(onClick = onDuel) { Text(stringResource(R.string.duel_title)) }
         }
         if (open) {
             Text(
