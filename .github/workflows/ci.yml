@@ -9,25 +9,33 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Least privilege by default; the jobs that publish test reports ask for `checks: write` themselves.
 permissions:
   contents: read
 
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false
+  # The Kotlin compiler embedded in Ktlint prints sun.misc.Unsafe deprecation warnings on recent JDKs:
+  # they come from that tool, not from this project, and only clutter the logs.
+  NOISE: '^WARNING: .*(sun\.misc\.Unsafe|org\.jetbrains\.kotlin\.com\.intellij)'
 
+# Actions are pinned to a commit SHA (the tag is kept as a comment, Dependabot updates both).
 jobs:
   ktlint:
     name: Ktlint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
-      - run: sh ./gradlew ktlintCheck
-      - uses: actions/upload-artifact@v7
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+      - name: Ktlint
+        run: |
+          set -o pipefail
+          sh ./gradlew ktlintCheck 2>&1 | grep -v -E "$NOISE"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: failure()
         with:
           name: ktlint-reports
@@ -37,14 +45,17 @@ jobs:
     name: Detekt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
-      - run: sh ./gradlew detekt
-      - uses: actions/upload-artifact@v7
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+      - name: Detekt
+        run: |
+          set -o pipefail
+          sh ./gradlew detekt 2>&1 | grep -v -E "$NOISE"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: detekt-reports
@@ -54,14 +65,14 @@ jobs:
     name: Android Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
       - run: sh ./gradlew :app:lintDebug
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: android-lint-reports
@@ -70,18 +81,32 @@ jobs:
   test:
     name: Unit tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
       - run: sh ./gradlew :core-scoring:test :app:testDebugUnitTest :core-scoring:jacocoTestReport :app:createDebugUnitTestCoverageReport
       - name: Coverage summary
         if: always()
         run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v7
+      # Shows each failing test as a check in the pull request. The token of a Dependabot or fork pull request is
+      # read-only, in which case the report cannot be published: that must not fail the job.
+      - name: Test report
+        uses: dorny/test-reporter@d1b5dff021aa968b288b02285a8bf47471c5928a # v3.2.0
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        with:
+          name: Unit test results
+          path: "core-scoring/build/test-results/test/*.xml,app/build/test-results/testDebugUnitTest/*.xml"
+          reporter: java-junit
+          fail-on-error: false
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: test-reports
@@ -95,14 +120,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ktlint, detekt, android-lint, test]
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
       - run: sh ./gradlew :app:assembleDebug
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: skullking-score-debug-apk
           path: app/build/outputs/apk/debug/*.apk
@@ -113,31 +138,67 @@ jobs:
     runs-on: ubuntu-latest
     # Can be disabled: set the repository variable SKIP_INSTRUMENTED_TESTS to "true".
     if: vars.SKIP_INSTRUMENTED_TESTS != 'true'
+    permissions:
+      contents: read
+      checks: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v6
-      - uses: reactivecircus/android-emulator-runner@v2
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+      # The emulator image and its boot snapshot are cached: creating the AVD is the slowest part of the job.
+      - name: Cache the AVD
+        id: avd-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-api34-x86_64-google_apis
+      - name: Create the AVD and its snapshot
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
           api-level: 34
           arch: x86_64
           target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "AVD snapshot generated for the cache."
+      - name: Instrumented tests
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
           script: sh ./gradlew :app:createDebugAndroidTestCoverageReport
-      - uses: actions/upload-artifact@v7
+      - name: Coverage summary
+        if: always()
+        run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
+      - name: Test report
+        uses: dorny/test-reporter@d1b5dff021aa968b288b02285a8bf47471c5928a # v3.2.0
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        with:
+          name: Instrumented test results
+          path: "app/build/outputs/androidTest-results/connected/**/*.xml"
+          reporter: java-junit
+          fail-on-error: false
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: android-test-reports
           path: |
             app/build/reports/androidTests/**
             app/build/reports/coverage/androidTest/**
-      - name: Coverage summary
-        if: always()
-        run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
