@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skull King Score</string>
+
+    <!-- Général -->
+    <string name="back">Retour</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Valider</string>
+    <string name="close">Fermer</string>
+    <string name="save">Enregistrer</string>
+    <string name="delete">Supprimer</string>
+    <string name="add">Ajouter</string>
+    <string name="remove">Retirer</string>
+    <string name="more">Plus d’options</string>
+    <string name="help">Aide</string>
+    <string name="scoreboard">Tableau des scores</string>
+    <string name="unknown_player">?</string>
+    <string name="move_up">Monter</string>
+    <string name="move_down">Descendre</string>
+
+    <!-- Accueil -->
+    <string name="home_tagline">Le carnet de score de vos parties de Skull King</string>
+    <string name="home_new_game">Nouvelle partie</string>
+    <string name="home_resume">Reprendre la partie</string>
+    <string name="home_resume_detail">%1$d joueurs · %2$d manches jouées</string>
+    <string name="home_history">Historique</string>
+    <string name="home_stats">Statistiques</string>
+    <string name="home_players">Joueurs</string>
+
+    <!-- Profils -->
+    <string name="player_new">Nouveau profil</string>
+    <string name="player_edit">Modifier le profil</string>
+    <string name="player_name">Nom</string>
+    <string name="player_archive">Archiver</string>
+    <string name="player_restore">Restaurer</string>
+    <string name="player_archived">Archivé</string>
+    <string name="players_empty">Aucun profil pour le moment. Créez-en un pour commencer.</string>
+
+    <!-- Modes de calcul -->
+    <string name="mode_classic">Classique</string>
+    <string name="mode_classic_desc">20 points par pli annoncé, −10 par pli d’écart, plus les bonus</string>
+    <string name="mode_rascal">Rascal (« Coup direct »)</string>
+    <string name="mode_rascal_desc">Même potentiel pour tous : 10 × cartes. Écart de 1 : moitié des points</string>
+    <string name="mode_cannonball">Rascal + Boulet de canon</string>
+    <string name="mode_cannonball_desc">Chaque joueur peut miser « tout ou rien » sur son annonce</string>
+
+    <!-- Cartes de l'extension -->
+    <string name="card_sevens">7 (×4, un par couleur)</string>
+    <string name="card_eights">8 (×4)</string>
+    <string name="card_zero_fourteen">0/14 (×4)</string>
+    <string name="card_wild_15">Wild 15 (singe)</string>
+    <string name="card_mary_thorne">Mary Thorne</string>
+    <string name="card_first_mate_con">Le Second (First Mate Con)</string>
+    <string name="card_davy_jones">Casier de Davy Jones</string>
+    <string name="card_plank">Supplice de la planche</string>
+    <string name="card_spotted_ray">Raie tachetée</string>
+    <string name="card_last_salvo">Dernière salve</string>
+
+    <string name="monster_kraken">Kraken</string>
+    <string name="monster_white_whale">Baleine Blanche</string>
+    <string name="monster_spotted_ray">Raie tachetée</string>
+
+    <!-- Bonus -->
+    <string name="bonus_colored_14">14 de couleur</string>
+    <string name="bonus_black_14">14 noir</string>
+    <string name="bonus_mermaid_by_pirate">Sirène (par un pirate)</string>
+    <string name="bonus_pirate_by_skull_king">Pirate (par le Skull King)</string>
+    <string name="bonus_skull_king_by_mermaid">Skull King (par une sirène)</string>
+    <string name="bonus_con_captured">Second (par SK ou sirène)</string>
+    <string name="bonus_loot">Butin</string>
+    <string name="bonus_davy_jones">Monstre détruit (Davy Jones)</string>
+    <string name="bonus_eight">8</string>
+    <string name="bonus_seven">7</string>
+
+    <!-- Configuration -->
+    <string name="setup_title">Nouvelle partie</string>
+    <string name="setup_players_order">Joueurs, dans l’ordre autour de la table (%1$d)</string>
+    <string name="setup_search_players">Rechercher un profil</string>
+    <string name="setup_available_players">Profils disponibles</string>
+    <string name="setup_mode">Mode de calcul</string>
+    <string name="setup_expansion">Extension 2026</string>
+    <string name="setup_expansion_switch">Jouer avec l’extension</string>
+    <string name="setup_expansion_desc">Active les cartes de votre choix, une à une</string>
+    <string name="setup_card_removed_two_players">Retirée à 2 joueurs</string>
+    <string name="setup_dj_requires_success">Casier de Davy Jones : annonce réussie requise</string>
+    <string name="setup_dj_requires_success_desc">La règle ne précise pas ce point ; par défaut le +20 suit la règle des bonus</string>
+    <string name="setup_start">Commencer la partie</string>
+    <string name="setup_hint_min_players">Choisissez au moins 2 joueurs</string>
+    <string name="setup_hint_nine_players">Au-delà de 8 joueurs, l’extension est nécessaire</string>
+    <string name="setup_hint_max_players">9 joueurs au maximum</string>
+
+    <!-- Manche -->
+    <string name="round_title_plain">Manche %1$d</string>
+    <string name="round_title_extra">Manche %1$d (supplémentaire)</string>
+    <string name="round_title_cards">Manche %1$d · cartes : %2$d</string>
+    <string name="prepare_cards_question">Nombre de cartes distribuées</string>
+    <string name="prepare_cards_hint">Proposé : manche précédente + 1. Modifiable d’un toucher.</string>
+    <string name="prepare_start_bids">Commencer les annonces</string>
+
+    <string name="bids_validate">Valider les annonces</string>
+    <string name="bids_total">Total annoncé : %1$d (cartes distribuées : %2$d)</string>
+    <string name="bids_score_so_far">Score actuel : %1$d</string>
+
+    <string name="play_bids_reminder">Annonces</string>
+    <string name="play_bid_chip">Annonce %1$d</string>
+    <string name="play_live_events">Événements en direct</string>
+    <!-- Plis en direct -->
+    <string name="play_tricks_title">Plis</string>
+    <string name="play_trick_progress">Pli %1$d sur %2$d</string>
+    <string name="play_all_tricks_done">Tous les plis sont saisis</string>
+    <string name="play_enter_trick">Saisir le pli %1$d</string>
+    <string name="play_undo_last_trick">Annuler le dernier pli</string>
+    <string name="play_bid_tricks_chip">Annonce %1$d · plis %2$d</string>
+    <string name="trick_dialog_new">Pli %1$d</string>
+    <string name="trick_dialog_edit">Corriger le pli %1$d</string>
+    <string name="trick_who_won">Qui a gagné le pli ?</string>
+    <string name="trick_destroyed">Pli détruit (Kraken)</string>
+    <string name="trick_destroyed_short">détruit</string>
+    <string name="trick_captured">Cartes gagnées</string>
+    <string name="trick_rascal_wager">Pari de Rascal</string>
+    <string name="trick_harry_title">Harry</string>
+    <string name="trick_harry_none">Aucun</string>
+    <string name="trick_won_with">Gagné avec</string>
+    <string name="win_mermaid">Sirène</string>
+    <string name="win_skull_king">Skull King</string>
+    <string name="win_first_mate">Second</string>
+    <string name="win_other">Autre</string>
+    <string name="win_pirate">Pirate</string>
+    <string name="pirate_rosie">Rosie</string>
+    <string name="pirate_rascal">Rascal</string>
+    <string name="pirate_will">Will</string>
+    <string name="pirate_juanita">Juanita</string>
+    <string name="pirate_harry">Harry</string>
+    <string name="pirate_tigress">Tigresse</string>
+    <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="stats_wins_with_title">Plis gagnés avec</string>
+    <string name="trick_validate">Valider le pli</string>
+    <string name="event_trick_prefix">"Pli %1$d · "</string>
+    <string name="event_loot_pending">Butin joué par %1$s (gagnant du pli à saisir)</string>
+    <string name="results_tricks_prefilled">Plis et cartes capturées pré-remplis d’après les plis saisis en direct.</string>
+    <string name="play_validate_round">Valider la manche</string>
+    <string name="play_warnings_title">À vérifier avant de valider</string>
+    <string name="play_validate_anyway">Valider quand même</string>
+    <string name="play_fix">Corriger</string>
+    <string name="play_enter_results">Saisir les résultats</string>
+
+    <string name="event_loot_button">Butin</string>
+    <string name="event_davy_jones_button">Davy Jones</string>
+    <string name="event_log">Journal de la manche</string>
+    <string name="event_log_empty">Aucun événement pour le moment</string>
+    <string name="event_loot_line">Butin joué par %1$s, pli gagné par %2$s</string>
+    <string name="event_davy_jones_line">Casier de %1$s : %2$s</string>
+    <string name="event_cancelled">annulé</string>
+    <string name="cancel_event">Annuler</string>
+    <string name="loot_who_played">Qui a joué le Butin ?</string>
+    <string name="loot_who_won">Qui a gagné le pli ?</string>
+    <string name="chest_who_played">Qui a joué le Casier de Davy Jones ?</string>
+    <string name="chest_which_creatures">Quelles créatures sont détruites ?</string>
+
+    <string name="results_tab_round">Manche</string>
+    <string name="results_title">Résultats · manche %1$d</string>
+    <string name="results_validate">Valider la manche</string>
+    <string name="results_save_correction">Enregistrer la correction</string>
+    <string name="results_editing_hint">Vous corrigez une manche déjà validée : les scores sont recalculés à chaque modification.</string>
+    <string name="results_summary">Annonce %1$d · plis %2$d</string>
+    <string name="results_tricks">Plis remportés</string>
+    <string name="results_final_bid">Annonce finale (Harry le Géant)</string>
+    <string name="results_bonus_title">Cartes gagnées</string>
+    <string name="results_bonus_ignored">Annonce ratée : les bonus saisis ne comptent pas.</string>
+    <string name="results_cannonball">Boulet de canon</string>
+    <string name="results_cannonball_hint">Tout ou rien : 15 × cartes si l’annonce est exacte, sinon 0</string>
+    <string name="results_rascal_wager">Pari de Rascal le Flambeur</string>
+    <string name="results_discarded_title">Plis défaussés</string>
+    <string name="results_discarded_label">Plis détruits ou sans gagnant</string>
+    <string name="results_discarded_hint">Kraken, ou pli de cartes spéciales seules</string>
+
+    <!-- Alertes de cohérence (non bloquantes) -->
+    <string name="warn_tricks_over">Total des plis : %1$d (cartes distribuées : %2$d). Vérifiez la saisie.</string>
+    <string name="warn_tricks_under">Total des plis : %1$d (cartes distribuées : %2$d). S’il y a eu des plis détruits (Kraken, cartes spéciales seules), indiquez-les en plis défaussés.</string>
+    <string name="warn_cards_exceed_deck">%1$d cartes à distribuer pour un paquet de %2$d.</string>
+    <string name="warn_too_many_colored_14">%1$d « 14 de couleur » capturés, il n’en existe que %2$d.</string>
+    <string name="warn_too_many_black_14">%1$d « 14 noir » capturés, il n’en existe que %2$d.</string>
+    <string name="warn_too_many_skull_king">Le Skull King n’existe qu’en %2$d exemplaire (%1$d saisis).</string>
+    <string name="warn_too_many_con">Le Second n’existe qu’en %2$d exemplaire (%1$d saisis).</string>
+    <string name="warn_too_many_sevens">%1$d « 7 » capturés, il n’y en a que %2$d.</string>
+    <string name="warn_too_many_eights">%1$d « 8 » capturés, il n’y en a que %2$d.</string>
+    <string name="warn_too_many_mermaids">%1$d sirènes capturées, il n’y en a que %2$d.</string>
+    <string name="warn_too_many_pirates">%1$d pirates capturés, il n’y en a que %2$d en jeu.</string>
+    <string name="warn_too_many_loot">%1$d Butins saisis, il n’y en a que %2$d dans le paquet.</string>
+    <string name="warn_duplicate_monster">Créature saisie deux fois : %1$s.</string>
+
+    <!-- Tableau des scores -->
+    <string name="table_total">Total</string>
+    <string name="table_cards_short">%1$d c.</string>
+    <string name="scoreboard_next_round">Manche suivante</string>
+    <string name="scoreboard_extra_round">Manche supplémentaire</string>
+    <string name="scoreboard_resume_round">Reprendre la manche %1$d</string>
+    <string name="scoreboard_finish">Terminer la partie</string>
+    <string name="scoreboard_finish_title">Terminer la partie ?</string>
+    <string name="scoreboard_finish_message">Le podium s’affiche et les statistiques sont mises à jour. Les manches ne seront plus modifiables.</string>
+    <string name="scoreboard_reopen_last">Rouvrir la dernière manche</string>
+    <string name="scoreboard_see_podium">Voir le podium</string>
+    <string name="detail_title">%1$s · manche %2$d</string>
+    <string name="detail_bid_tricks">Annonce %1$d (finale %2$d) · plis %3$d</string>
+    <string name="detail_base_success">Annonce réussie</string>
+    <string name="detail_base_failure">Annonce ratée</string>
+    <string name="detail_bonus_lost">Bonus perdus : l’annonce n’est pas réussie.</string>
+    <string name="detail_cannonball">Boulet de canon : tout ou rien</string>
+    <string name="detail_rascal">Pari de Rascal</string>
+    <string name="detail_total">Total de la manche</string>
+    <string name="detail_correct">Corriger la manche</string>
+
+    <!-- Fin de partie -->
+    <string name="end_title">Fin de partie</string>
+    <string name="end_winner">Victoire de %1$s !</string>
+    <string name="end_see_scoreboard">Voir le tableau des scores</string>
+
+    <!-- Historique, export, import -->
+    <string name="history_search">Joueur, date ou mode</string>
+    <string name="history_filter_all">Toutes</string>
+    <string name="history_no_match">Aucune partie ne correspond à la recherche.</string>
+    <string name="history_open">Ouvrir</string>
+    <string name="history_empty">Aucune partie enregistrée pour le moment.</string>
+    <string name="history_status_finished">%1$s · terminée</string>
+    <string name="history_status_in_progress">%1$s · en cours</string>
+    <string name="history_delete_title">Supprimer la partie ?</string>
+    <string name="history_delete_message">La partie et ses statistiques seront définitivement supprimées de cet appareil.</string>
+    <string name="export_action">Exporter</string>
+    <string name="export_title">Exporter l’historique</string>
+    <string name="export_format">Format</string>
+    <string name="export_csv_desc">Une ligne par joueur et par manche, lisible dans un tableur</string>
+    <string name="export_json_desc">Sauvegarde complète, réimportable sur un autre téléphone</string>
+    <string name="export_period">Période</string>
+    <string name="export_player">Joueur</string>
+    <string name="export_all_players">Tous les joueurs</string>
+    <string name="export_nothing">Aucune partie ne correspond à ce filtre.</string>
+    <string name="import_action">Importer</string>
+    <string name="import_title">Importer une sauvegarde</string>
+    <string name="import_preview">%1$d nouvelle(s) partie(s), %2$d déjà présente(s), %3$d nouveau(x) joueur(s). Les parties déjà présentes ne sont pas dupliquées.</string>
+    <string name="import_confirm">Importer</string>
+    <string name="import_done">%1$d partie(s) importée(s), %2$d ignorée(s) car déjà présentes.</string>
+    <string name="import_invalid">Ce fichier n’est pas une sauvegarde Skull King lisible.</string>
+
+    <!-- Statistiques -->
+    <string name="period_month">Ce mois</string>
+    <string name="period_year">Cette année</string>
+    <string name="period_all">Tout</string>
+    <string name="stats_mode_note">Un score Rascal ne se compare pas à un score classique : choisissez un mode.</string>
+    <string name="stats_empty">Pas encore de partie terminée pour ce filtre.</string>
+    <string name="stats_games_wins">Parties : %1$d · Victoires : %2$d (%3$s)</string>
+    <string name="stats_average">Score moyen</string>
+    <string name="stats_best">Record</string>
+    <string name="stats_worst">Pire score</string>
+    <string name="stats_bid_success">Annonces réussies</string>
+    <string name="stats_zero_success">Annonces à 0 réussies</string>
+    <string name="stats_bonus_title">Bonus marqués</string>
+    <string name="stats_monthly_title">Évolution mois par mois</string>
+    <string name="stats_monthly_line">%1$d parties · moy. %2$d · %3$s d’annonces</string>
+    <string name="stats_head_to_head_title">Face-à-face</string>
+    <string name="stats_head_to_head_line">%1$d V · %2$d D sur %3$d parties</string>
+
+    <!-- Réglages -->
+
+    <!-- Aide -->
+    <string name="help_tab_cards">Cartes</string>
+    <string name="help_tab_scoring">Points</string>
+    <string name="help_tab_expansion">Extension</string>
+    <string name="help_tab_faq">FAQ</string>
+    <string name="help_search">Rechercher dans l’aide</string>
+    <string name="help_search_clear">Effacer la recherche</string>
+    <string name="help_no_results">Aucun résultat pour « %1$s ».</string>
+    <string name="help_hierarchy_title">Hiérarchie des cartes</string>
+    <string name="help_hierarchy_body">1. 🏳️ Fuite (drapeau blanc) : perd toujours, sauf si le pli n’est fait que de fuites (la première jouée gagne).\n2. 🟨🟪🟩 Jaune, violet, vert (1 à 14) : la couleur demandée l’emporte sur les autres couleurs.\n3. ⚫ Atout noir (1 à 14) : bat toutes les couleurs.\n4. 🧜‍♀️ Sirènes : battent couleurs et atouts, perdent contre les pirates.\n5. 🏴‍☠️ Pirates : battent les sirènes, perdent contre le Skull King.\n6. 💀 Skull King : bat les pirates, mais perd contre une sirène.\n\nAvec l’extension : Fuite &lt; couleurs &lt; atout noir &lt; sirène &lt; pirates &lt; Second &lt; Skull King &lt; sirène. La sirène bat le Second et le Skull King.</string>
+    <string name="help_special_title">Cartes spéciales du jeu de base</string>
+    <string name="help_special_body">• 🐯 La Tigresse : se joue au choix comme pirate ou comme fuite.\n• 🐙 Kraken : détruit le pli, personne ne le gagne. Le pli suivant est entamé par le joueur qui l’aurait gagné sans le Kraken (FAQ officielle).\n• 🐳 Baleine Blanche : annule les cartes spéciales, la plus haute carte numérotée gagne.\n• 💰 Butins : se jouent comme une fuite et lient deux joueurs pour un bonus.\n\nPouvoirs des pirates :\n• **Rosie la Douce** : choisit qui entame le pli suivant, elle-même comprise.\n• **Rascal le Flambeur** : parie 0, 10 ou 20 points, ajoutés si l’annonce est réussie, retranchés sinon.\n• **Will le Bandit** : pioche 2 cartes dans la pioche, puis défausse 2 cartes de sa main.\n• **Juanita Jade** : regarde les cartes non distribuées pour voir celles qui ne sont pas en jeu.\n• **Harry le Géant** : ajuste son annonce de +1 ou −1, ou la laisse telle quelle.\n\n**Harry le Géant** est le seul pirate dont le pouvoir s’utilise aussi au dernier pli (il doit gagner le pli pour l’activer).</string>
+    <string name="help_points_title">Points (mode classique)</string>
+    <string name="help_points_body">• Annonce ≥ 1 réussie : +20 par pli annoncé.\n• Annonce ≥ 1 ratée : −10 par pli d’écart.\n• Annonce 0 réussie : +10 × nombre de cartes de la manche.\n• Annonce 0 ratée : −10 × nombre de cartes de la manche.\n\nLe Kraken et une Tigresse jouée en fuite ne rapportent rien. Harry le Géant change l’annonce finale : corrigez-la dans l’écran des résultats.</string>
+    <string name="help_bonus_title">Bonus (seulement si l’annonce est réussie)</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 14 de couleur capturé : +10 chacun\n• ⚫ 14 noir capturé : +20\n• 🧜‍♀️ Sirène capturée par un pirate : +20 chacune\n• 🏴‍☠️ Pirate capturé par le Skull King : +30 chacun\n• 💀 Skull King capturé par une sirène : +40\n• 💰 Butin : +20 si le joueur du Butin et le gagnant du pli réussissent tous deux\n• 🎲 Pari de Rascal : +mise si l’annonce est exacte, −mise sinon (0, 10 ou 20) — le seul terme compté même sur une annonce ratée</string>
+    <string name="help_modes_title">Les modes de calcul</string>
+    <string name="help_modes_body">• Classique : voir ci-dessus.\n• Rascal (« Coup direct ») : 10 × N points avec l’annonce exacte plus tous les bonus ; 5 × N avec un écart de 1 plus la moitié des bonus ; 0 au-delà. Le Butin et le pari de Rascal exigent toujours une annonce exacte.\n• 💣 Rascal + Boulet de canon : chaque joueur peut miser « tout ou rien » sur son annonce : 15 × N points plus les bonus si elle est exacte, 0 sinon. Sans mise, le joueur est compté comme en Rascal.\n\nN est le nombre de cartes distribuées dans la manche.</string>
+    <string name="help_expansion_title">Extension 2026</string>
+    <string name="help_expansion_body">• 7 capturé : −5 chacun · 8 capturé : +5 chacun (annonce réussie).\n• 0/14 et 🐵 Wild 15 : aucun bonus.\n• {con} Le Second (First Mate Con) : bat tous les pirates, perd contre les sirènes et le Skull King. Capturé par le Skull King ou une sirène : +30. Il ne rapporte rien pour les pirates capturés.\n• 🏴‍☠️ Mary Thorne : compte comme un pirate (+30 si capturée par le Skull King, +20 par sirène capturée).\n• {davy} Casier de Davy Jones : ne gagne pas, détruit tous les monstres marins du pli (🐙 🐳 {ray}) : +20 par monstre pour son joueur.\n• 🦈 Supplice de la planche : retire un pirate du pli ; il ne rapporte aucun bonus.\n• {ray} Raie tachetée : monstre marin, comme le Kraken et la Baleine Blanche. Elle ne gagne pas le pli : la plus basse carte du pli l’emporte. Elle ne rapporte aucun bonus, et le Casier de Davy Jones peut la détruire (+20).\n• 💥 Dernière salve : ne gagne pas ; son joueur joue une 2e carte puis saute le dernier pli.\n\nÀ 2 joueurs, le Wild 15, le Supplice de la planche et les 0/14 sont retirés.</string>
+    <string name="help_faq_title">FAQ</string>
+    <string name="help_faq_body">• Les plis ne totalisent pas le nombre de cartes ? Un pli peut être détruit (Kraken) ou composé de cartes spéciales seules : indiquez-le en « plis défaussés ». L’application ne vérifie pas qui a gagné chaque pli, elle signale seulement les incohérences, sans jamais vous bloquer.\n• Une erreur sur une manche passée ? Touchez sa case dans le tableau des scores puis « Corriger la manche ».\n• Pas de réseau ? Aucun souci, l’application fonctionne entièrement hors ligne.</string>
+
+    <!-- V2 : jalon 3 et réglages -->
+    <string name="settings_title">Réglages</string>
+    <string name="settings_game">Partie</string>
+    <string name="settings_keep_screen_on">Garder l’écran allumé</string>
+    <string name="settings_keep_screen_on_desc">Pendant une partie en cours.</string>
+    <string name="settings_backup">Sauvegarde</string>
+    <string name="settings_auto_backup">Sauvegarde automatique</string>
+    <string name="settings_auto_backup_desc">Enregistre vos parties dans un dossier de votre choix après chaque partie et une fois par jour.</string>
+    <string name="settings_choose_folder">Choisir le dossier de sauvegarde</string>
+    <string name="settings_change_folder">Changer le dossier de sauvegarde</string>
+    <string name="settings_backup_now">Sauvegarder maintenant</string>
+    <string name="settings_backup_no_folder">Aucun dossier choisi pour le moment.</string>
+    <string name="settings_backup_never">Aucune sauvegarde pour le moment.</string>
+    <string name="settings_backup_last">Dernière sauvegarde : %1$s</string>
+    <string name="settings_backup_failed">La dernière sauvegarde a échoué. Vérifiez que le dossier est toujours disponible.</string>
+    <string name="settings_restore">Restaurer depuis une sauvegarde</string>
+    <string name="settings_about">À propos</string>
+    <string name="settings_about_text">Compteur de points Skull King hors ligne. Aucun compte, aucune donnée collectée. Licence MIT.</string>
+    <string name="undo_bid">annonce de %1$s</string>
+    <string name="undo_cannonball">boulet de canon de %1$s</string>
+    <string name="undo_trick">pli %1$s</string>
+    <string name="undo_trick_deleted">pli %1$s supprimé</string>
+    <string name="undone_prefix">Annulé : %1$s</string>
+    <string name="redone_prefix">Rétabli : %1$s</string>
+    <string name="dealer_label">Donneur : %1$s</string>
+    <string name="setup_draw_dealer">Tirer le donneur</string>
+    <string name="setup_dealer_badge">Donneur</string>
+    <string name="replay">Rejouer</string>
+
+    <!-- V2 : jalon 1, partage -->
+    <string name="share_title">Partager</string>
+    <string name="share_action">Partager</string>
+    <string name="share_save">Enregistrer dans la galerie</string>
+    <string name="share_saved">Image enregistrée dans Pictures/SkullKing.</string>
+    <string name="share_save_failed">Impossible d’enregistrer l’image.</string>
+    <string name="share_preview">Aperçu de l’image à partager</string>
+    <string name="share_nothing">Choisissez ce que l’image doit contenir.</string>
+    <string name="share_podium">Podium</string>
+    <string name="share_table">Tableau des scores</string>
+    <string name="share_stats">Faits marquants</string>
+    <string name="share_round">Manche</string>
+    <string name="share_with_expansion">avec extension</string>
+    <string name="share_without_expansion">sans extension</string>
+    <string name="share_best_round">Meilleure manche : %1$s (%2$d points, manche %3$d)</string>
+    <string name="share_worst_round">Pire manche : %1$s (%2$d points, manche %3$d)</string>
+    <string name="share_exact_bids">%1$s : %2$d annonces exactes sur %3$d</string>
+
+    <!-- V2 : jalon 2, courbes -->
+    <string name="tab_table">Tableau</string>
+    <string name="tab_curve">Courbe</string>
+    <string name="curve_empty">Aucune manche n’a encore été validée.</string>
+    <string name="curve_summary_line">%1$s : %2$d points après %3$d manches</string>
+    <string name="curve_axis_rounds">Score cumulé sur %1$d manches.</string>
+    <string name="curve_round_detail">Manche %1$d (%2$d cartes)</string>
+    <string name="curve_round_line">%1$s (total %2$d)</string>
+    <string name="curve_tap_hint">Touchez le graphique pour détailler une manche. Les pastilles affichent ou masquent les joueurs.</string>
+
+    <!-- V2 : jalon 2, statistiques -->
+    <plurals name="stats_games_count">
+        <item quantity="one">%d partie</item>
+        <item quantity="other">%d parties</item>
+    </plurals>
+    <string name="stats_filter_present">Joueurs présents à la table</string>
+    <string name="filter_all_sizes">Tous les effectifs</string>
+    <string name="filter_players_2_3">2–3 joueurs</string>
+    <string name="filter_players_4_5">4–5 joueurs</string>
+    <string name="filter_players_6_plus">6 et plus</string>
+    <string name="filter_expansion_all">Avec ou sans extension</string>
+    <string name="filter_expansion_with">Avec extension</string>
+    <string name="filter_expansion_without">Sans extension</string>
+    <string name="stats_records_title">Records</string>
+    <string name="stats_record_best_round">Meilleure manche</string>
+    <string name="stats_record_worst_round">Pire manche</string>
+    <string name="stats_record_round">%1$s points, manche %2$d (%3$s)</string>
+    <string name="stats_record_exact_streak">Plus longue série d’annonces exactes</string>
+    <string name="stats_record_win_streak">Plus longue série de victoires</string>
+    <string name="stats_record_zero_streak">Plus longue série d’annonces à 0 réussies</string>
+    <string name="stats_record_bonus">Plus gros bonus en une manche</string>
+    <string name="stats_trend_title">Évolution</string>
+    <string name="stats_trend_not_enough">Il faut au moins %1$d parties terminées pour tracer une tendance.</string>
+    <string name="stats_trend_games">Score de la partie</string>
+    <string name="stats_trend_average">Moyenne</string>
+    <string name="stats_trend_legend">Trait plein : score de chaque partie. Pointillés : moyenne des %1$d dernières parties.</string>
+    <string name="stats_trend_description">%1$s : de %2$d à %3$d points sur %4$d parties</string>
+    <string name="stats_size_title">Réussite des annonces selon la taille de la manche</string>
+    <string name="size_small">1–3 cartes</string>
+    <string name="size_medium">4–6 cartes</string>
+    <string name="size_large">7–10 cartes</string>
+    <string name="size_huge">11 cartes et plus</string>
+    <string name="stats_bias">Tendance d’annonce</string>
+    <string name="stats_bias_under">Sous-annonce (%1$s pli par manche)</string>
+    <string name="stats_bias_over">Sur-annonce (%1$s pli par manche)</string>
+    <string name="stats_tricks_coverage">Plis saisis en direct dans %1$d parties sur %2$d.</string>
+    <string name="stats_rascal_wagers">Paris de Rascal gagnés</string>
+    <string name="stats_harry_adjustments">Ajustements de Harry (manche réussie)</string>
+    <string name="duel_title">Face-à-face</string>
+    <string name="duel_first">Premier joueur</string>
+    <string name="duel_second">Deuxième joueur</string>
+    <string name="duel_choose">Choisissez deux joueurs à comparer.</string>
+    <string name="duel_not_enough">Pas assez de parties jouées ensemble.</string>
+    <string name="duel_common_games">%1$d parties jouées ensemble</string>
+    <string name="duel_versus">contre</string>
+    <string name="duel_ties">%1$d égalités</string>
+    <string name="duel_average_gap">Avance moyenne de %1$s</string>
+    <string name="duel_biggest_gap">Plus gros écart sur une partie</string>
+
+    <!-- V2 : jalon 4, import -->
+    <string name="import_homonyms">Joueurs de même nom</string>
+    <string name="import_merge">%1$s : fusionner avec le profil existant</string>
+    <string name="import_create">%1$s : créer un nouveau profil</string>
+    <string name="import_done_detail">%1$d partie(s) importée(s), %2$d ignorée(s), %3$d profil(s) fusionné(s), %4$d créé(s).</string>
+    <string name="import_too_new">Cette sauvegarde vient d’une version plus récente de l’application. Mettez l’application à jour pour l’importer.</string>
+
+    <!-- V2 : jalon 4, accessibilité -->
+    <string name="a11y_score_cell">%1$s, manche %2$d, %3$s points, total %4$d</string>
+    <string name="a11y_score_cell_pending">%1$s, manche %2$d, pas encore validée</string>
+    <string name="a11y_expanded">Déplié</string>
+    <string name="a11y_collapsed">Replié</string>
+    <string name="stats_more_filters">Plus de filtres</string>
+    <string name="setup_dealer_hint">Listez les joueurs dans l’ordre de la table, puis touchez 🃏 sur celui qui donne en premier.</string>
+    <string name="share_curve">Courbe de score</string>
+    <string name="stats_bias_balanced">Équilibrée</string>
+    <string name="stats_bias_help">Compare les plis gagnés à l’annonce, manche après manche : sous-annoncer, c’est gagner plus de plis que prévu ; sur-annoncer, en gagner moins.</string>
+    <string name="mode_classic_short">Classique</string>
+    <string name="mode_rascal_short">Rascal</string>
+    <string name="mode_cannonball_short">Rascal + Boulet</string>
+    <string name="stats_search">Rechercher un joueur</string>
+    <string name="stats_no_match">Aucun joueur ne correspond à la recherche.</string>
+    <string name="stats_share_player">Partager les statistiques de %1$s</string>
+    <string name="stats_image_legend_games">Score de la partie</string>
+    <string name="stats_image_legend_average">Moyenne des %1$d dernières parties</string>
+</resources>

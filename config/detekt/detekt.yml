@@ -1,0 +1,49 @@
+# Complète la configuration par défaut de Detekt (buildUponDefaultConfig = true).
+# Les écarts ci-dessous tiennent à Compose (fonctions @Composable en PascalCase, écrans longs,
+# callbacks nombreux, constantes de mise en page) et à Room (un DAO regroupe beaucoup de requêtes).
+
+complexity:
+  LongMethod:
+    allowedLines: 150
+  LongParameterList:
+    allowedFunctionParameters: 8
+    allowedConstructorParameters: 10
+    ignoreDefaultParameters: true
+    ignoreDataClasses: true
+  CyclomaticComplexMethod:
+    allowedComplexity: 20
+  NestedBlockDepth:
+    allowedDepth: 6
+  TooManyFunctions:
+    allowedFunctionsPerFile: 25
+    allowedFunctionsPerClass: 25
+    allowedFunctionsPerInterface: 40
+    allowedFunctionsPerObject: 25
+    ignorePrivate: true
+
+naming:
+  FunctionNaming:
+    # Les @Composable s'écrivent en PascalCase.
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
+  MatchingDeclarationName:
+    # Un fichier d'écran regroupe son ViewModel et son état.
+    active: false
+
+style:
+  MagicNumber:
+    excludes: ['**/test/**', '**/ui/**', '**/core/Models.kt']
+  MaxLineLength:
+    maxLineLength: 120
+  ReturnCount:
+    max: 4
+  ThrowsCount:
+    max: 3
+  LoopWithTooManyJumpStatements:
+    maxJumpCount: 2
+
+exceptions:
+  SwallowedException:
+    # L'erreur est traduite en message utilisateur, la cause technique n'a pas d'intérêt pour l'écran.
+    ignoredExceptionTypes:
+      - 'InvalidBackupException'
+      - 'IOException'

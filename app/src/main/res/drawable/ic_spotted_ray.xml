@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Raie tachetée : corps bleu-gris à reflets, ventre clair, taches et longue queue. Teintes moyennes, lisibles en clair et en sombre. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Queue -->
+    <path
+        android:fillColor="#3E5C7A"
+        android:pathData="M11.4,17.2L12.6,17.2L12.3,23.4L11.7,23.4Z" />
+    <!-- Corps et nageoires -->
+    <path
+        android:fillColor="#4F7396"
+        android:pathData="M12,4.2C12.7,6 13.6,6.6 15.6,6.7C18.2,6.8 20.6,6 23,4.6C22.6,10.8 18.6,15.6 13.2,17.4C12.8,17.5 12.4,17.5 12,17.5C11.6,17.5 11.2,17.5 10.8,17.4C5.4,15.6 1.4,10.8 1,4.6C3.4,6 5.8,6.8 8.4,6.7C10.4,6.6 11.3,6 12,4.2Z" />
+    <!-- Reflet des nageoires -->
+    <path
+        android:fillColor="#6F93B5"
+        android:pathData="M12,4.2C12.7,6 13.6,6.6 15.6,6.7C18.2,6.8 20.6,6 23,4.6C22.7,7.6 21.6,10 20,11.9C17.6,11 15.4,8.8 12,4.2Z" />
+    <path
+        android:fillColor="#6F93B5"
+        android:pathData="M12,4.2C10.3,6.5 8.4,9.3 4,11.9C2.4,10 1.3,7.6 1,4.6C3.4,6 5.8,6.8 8.4,6.7C10.4,6.6 11.3,6 12,4.2Z" />
+    <!-- Lobes céphaliques -->
+    <path
+        android:fillColor="#3E5C7A"
+        android:pathData="M10.6,4.4L9.6,2.4L11.3,3.4ZM13.4,4.4L14.4,2.4L12.7,3.4Z" />
+    <!-- Taches -->
+    <path
+        android:fillColor="#DCEBF7"
+        android:pathData="M8.6,10.4m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
+    <path
+        android:fillColor="#DCEBF7"
+        android:pathData="M15.4,10.4m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
+    <path
+        android:fillColor="#DCEBF7"
+        android:pathData="M12,13.2m-0.9,0a0.9,0.9 0,1 1,1.8 0a0.9,0.9 0,1 1,-1.8 0" />
+    <path
+        android:fillColor="#DCEBF7"
+        android:pathData="M5.6,7.6m-0.7,0a0.7,0.7 0,1 1,1.4 0a0.7,0.7 0,1 1,-1.4 0" />
+    <path
+        android:fillColor="#DCEBF7"
+        android:pathData="M18.4,7.6m-0.7,0a0.7,0.7 0,1 1,1.4 0a0.7,0.7 0,1 1,-1.4 0" />
+    <!-- Yeux -->
+    <path
+        android:fillColor="#16263A"
+        android:pathData="M10.4,6.9m-0.55,0a0.55,0.55 0,1 1,1.1 0a0.55,0.55 0,1 1,-1.1 0" />
+    <path
+        android:fillColor="#16263A"
+        android:pathData="M13.6,6.9m-0.55,0a0.55,0.55 0,1 1,1.1 0a0.55,0.55 0,1 1,-1.1 0" />
+</vector>
