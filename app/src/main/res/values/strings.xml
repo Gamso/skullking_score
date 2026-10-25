@@ -415,4 +415,43 @@
     <string name="stats_share_player">Share the statistics of %1$s</string>
     <string name="stats_image_legend_games">Game score</string>
     <string name="stats_image_legend_average">Average of the last %1$d games</string>
+
+    <!-- Card statistics -->
+    <string name="stats_tab_players">Players</string>
+    <string name="stats_tab_cards">Cards</string>
+    <string name="stats_favorite_card">Favorite card</string>
+    <string name="cards_coverage">Tricks entered live in %1$d of %2$d games (%3$d tricks).</string>
+    <string name="cards_no_tricks">No trick has been entered live for these filters. Enter tricks during play to see statistics about the cards.</string>
+    <string name="cards_by_card_title">Tricks won by card</string>
+    <string name="cards_by_card_hint">Share of the tricks won with each card. It reflects how often a card wins, not how strong it is: the cards that were played and lost are not recorded.</string>
+    <string name="cards_pirates_title">Tricks won by pirate</string>
+    <string name="cards_pirates_hint">A pirate that wins more often is not necessarily stronger: this depends on the players and on the game mode.</string>
+    <string name="cards_success_title">Bid success when a card wins</string>
+    <string name="cards_success_hint">Rounds where a player won a trick with the card, and share of those rounds ending with an exact bid for that player.</string>
+    <string name="cards_timing_title">When cards win</string>
+    <string name="cards_timing_line">start %1$s · middle %2$s · end %3$s</string>
+    <string name="cards_timing_hint">Position of the won tricks in the round (first, middle and last third), for rounds of 3 cards or more.</string>
+    <string name="cards_captures_title">Captured bonuses</string>
+    <string name="cards_bonus_share">Player-rounds with a bonus</string>
+    <string name="cards_bonus_average">Bonus points per player-round</string>
+    <string name="cards_settings_title">Pirate settings</string>
+    <string name="cards_rascal_wager">Rascal wager of %1$d</string>
+    <string name="cards_wager_line">%1$d / %2$d made · %3$s</string>
+    <string name="cards_harry_adjustment">Harry adjustment %1$s</string>
+    <string name="cards_settings_hint">Success is measured on the whole round of the player who won the trick.</string>
+    <string name="cards_loots_title">Loots</string>
+    <string name="cards_loots_played">Loots played</string>
+    <string name="cards_loots_valid">Valid (both players made their bid)</string>
+    <string name="cards_davy_title">Davy Jones’ Locker</string>
+    <string name="cards_davy_points">Points scored</string>
+    <string name="cards_kraken_title">Kraken</string>
+    <string name="cards_kraken_destroyed">Tricks destroyed</string>
+    <string name="cards_kraken_per_game">Per game</string>
+    <string name="cards_kraken_success_with">Bid success when a trick is destroyed</string>
+    <string name="cards_kraken_success_without">Bid success otherwise</string>
+    <string name="cards_expansion_title">Expansion</string>
+    <string name="cards_expansion_with">With the expansion</string>
+    <string name="cards_expansion_without">Base game</string>
+    <string name="cards_expansion_points">Points per player and round</string>
+    <string name="cards_expansion_wins">Tricks won by expansion cards</string>
 </resources>

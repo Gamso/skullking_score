@@ -24,8 +24,10 @@ points (bonuses included) for the chosen scoring mode, replacing the paper score
 - Live events (Loot, Davy Jones' Locker) attached to the trick, cancellable log, non-blocking consistency warnings
 - Dealer tracking: the table order is the list order, and the dealer moves on every round
 - Game history with search and filters, expandable cards, "play again" with the same players
-- Statistics per player and scoring mode: records, trend chart, bid success by round size, tricks won by card,
+- Statistics per player and scoring mode: records, trend chart, bid success by round size, favorite card,
   head-to-head between two players, filters by number of players, expansion and players present
+- Card statistics: tricks won by card and pirate, bid success when a card wins, when cards win in a round, captured
+  bonuses, Rascal wagers and Harry adjustments, Loots, Davy Jones' Locker, Kraken, expansion versus base game
 - Sharing as images: podium, scoreboard, score curve, highlights, and per-player statistics
 - Backup: JSON / CSV export, import with merge of same-name profiles, optional automatic backup to a folder
 - English and French (follows the Android language), light / dark theme, tablet and landscape layouts, TalkBack support
@@ -33,6 +35,7 @@ points (bonuses included) for the chosen scoring mode, replacing the paper score
 
 <p align="center">
   <img src="docs/screenshots/history.png" width="24%" alt="History with an expanded game" />
+  <img src="docs/screenshots/card-statistics.png" width="24%" alt="Card statistics" />
   <img src="docs/screenshots/statistics-image.png" width="24%" alt="Shareable statistics image of a player" />
 </p>
 

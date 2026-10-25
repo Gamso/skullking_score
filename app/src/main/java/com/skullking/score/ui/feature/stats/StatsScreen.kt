@@ -32,11 +32,14 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -61,6 +64,9 @@ import com.skullking.score.data.export.FileGateway
 import com.skullking.score.domain.model.Player
 import com.skullking.score.domain.repository.GameRepository
 import com.skullking.score.domain.repository.PlayerRepository
+import com.skullking.score.domain.stats.CardStats
+import com.skullking.score.domain.stats.CardStatsCalculator
+import com.skullking.score.domain.stats.ExpansionComparison
 import com.skullking.score.domain.stats.ExpansionFilter
 import com.skullking.score.domain.stats.PlayerCountFilter
 import com.skullking.score.domain.stats.PlayerStats
@@ -107,6 +113,8 @@ data class StatsUiState(
     val filter: StatsFilter = StatsFilter(),
     val stats: List<PlayerStats> = emptyList(),
     val overview: StatsOverview = StatsOverview(0),
+    val cards: CardStats? = null,
+    val expansion: ExpansionComparison? = null,
     val players: List<Player> = emptyList(),
 )
 
@@ -129,10 +137,14 @@ class StatsViewModel @Inject constructor(
         playerRepository.observePlayers(),
     ) { all, current, players ->
         val scored = StatsCalculator.select(all, current)
+        // The expansion comparison ignores the expansion filter, otherwise one of the two sides would be empty.
+        val allExpansions = StatsCalculator.select(all, current.copy(expansion = ExpansionFilter.ALL))
         StatsUiState(
             filter = current,
             stats = StatsCalculator.computeFrom(scored),
             overview = StatsCalculator.overview(scored),
+            cards = CardStatsCalculator.compute(scored),
+            expansion = CardStatsCalculator.expansionComparison(allExpansions),
             players = players.filter { !it.archived },
         )
     }
@@ -190,6 +202,7 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
     val state by viewModel.state.collectAsStateWithLifecycle()
     var expandedId by remember { mutableStateOf<Long?>(null) }
     var query by rememberSaveable { mutableStateOf("") }
+    var tab by rememberSaveable { mutableIntStateOf(0) }
     val context = LocalContext.current
     val chooserTitle = stringResource(R.string.share_action)
     val visible = remember(state.stats, query) {
@@ -225,7 +238,25 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                StatsFilters(state, viewModel, query, onQuery = { query = it }, onDuel = onDuel)
+                PrimaryTabRow(selectedTabIndex = tab) {
+                    Tab(selected = tab == 0, onClick = {
+                        tab = 0
+                    }, text = { Text(stringResource(R.string.stats_tab_players)) })
+                    Tab(selected = tab == 1, onClick = {
+                        tab = 1
+                    }, text = { Text(stringResource(R.string.stats_tab_cards)) })
+                }
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                StatsFilters(state, viewModel, query, onQuery = { query = it }, onDuel = onDuel, showSearch = tab == 0)
+            }
+            if (tab == 1) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    val cards = state.cards
+                    val expansion = state.expansion
+                    if (cards != null && expansion != null) CardStatsContent(cards, expansion)
+                }
+                return@LazyVerticalGrid
             }
             if (visible.isEmpty()) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
@@ -262,6 +293,7 @@ private fun StatsFilters(
     query: String,
     onQuery: (String) -> Unit,
     onDuel: () -> Unit,
+    showSearch: Boolean,
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
     val active = (if (state.filter.playerCount != PlayerCountFilter.ALL) 1 else 0) +
@@ -280,21 +312,23 @@ private fun StatsFilters(
                 )
             }
         }
-        OutlinedTextField(
-            value = query,
-            onValueChange = onQuery,
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            placeholder = { Text(stringResource(R.string.stats_search)) },
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-            trailingIcon = {
-                if (query.isNotEmpty()) {
-                    IconButton(onClick = { onQuery("") }) {
-                        Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.cancel))
+        if (showSearch) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = onQuery,
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                placeholder = { Text(stringResource(R.string.stats_search)) },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { onQuery("") }) {
+                            Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.cancel))
+                        }
                     }
-                }
-            },
-        )
+                },
+            )
+        }
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -521,6 +555,11 @@ private fun ExpandedStats(stats: PlayerStats, locale: java.util.Locale) {
     }
 
     SectionTitle(stringResource(R.string.stats_wins_with_title))
+    stats.favoriteCard?.let { card ->
+        val pirate = stats.favoritePirate.takeIf { card == WinningCard.PIRATE }
+        val name = stringResource(card.labelRes()) + pirate?.let { " · " + stringResource(it.labelRes()) }.orEmpty()
+        StatLine(R.string.stats_favorite_card, name)
+    }
     Text(
         stringResource(R.string.stats_tricks_coverage, stats.gamesWithTricks, stats.gamesPlayed),
         style = MaterialTheme.typography.bodySmall,
