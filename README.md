@@ -104,36 +104,6 @@ it are described in [`demo/README.md`](demo/README.md).
 
 The instrumented-tests job can be turned off by setting the repository variable `SKIP_INSTRUMENTED_TESTS` to `true`.
 
-## Publishing a release
-
-1. Create a signing keystore (keep it safe, outside the repository). `keytool` ships with any JDK, including Android
-   Studio's (`<Android Studio>/jbr/bin/keytool`):
-
-   ```bash
-   keytool -genkeypair -v -keystore release.jks -alias skullking -keyalg RSA -keysize 4096 -validity 10000
-   ```
-
-   Then encode it in Base64 to get the value of the `SIGNING_KEYSTORE_BASE64` secret:
-
-   ```bash
-   # Linux / macOS / Git Bash
-   base64 -w0 release.jks
-   ```
-
-   ```powershell
-   # Windows PowerShell (`base64 -w0` does not exist there)
-   [Convert]::ToBase64String([IO.File]::ReadAllBytes("release.jks")) | Set-Clipboard
-   ```
-
-2. In *Settings → Secrets and variables → Actions*, add:
-   `SIGNING_KEYSTORE_BASE64`, `SIGNING_KEYSTORE_PASSWORD`, `SIGNING_KEY_ALIAS`, `SIGNING_KEY_PASSWORD`.
-3. Push a tag: `git tag v1.0.0 && git push origin v1.0.0`.
-
-The version (`versionName`) and the `versionCode` (`major × 10000 + minor × 100 + patch`) are derived from the tag.
-Without the signing secrets, the workflow still produces an **unsigned** APK (`-unsigned` suffix).
-To sign locally: export `SIGNING_KEYSTORE_FILE`, `SIGNING_KEYSTORE_PASSWORD`, `SIGNING_KEY_ALIAS` and
-`SIGNING_KEY_PASSWORD`, then run `./gradlew :app:assembleRelease`.
-
 ## License
 
 [MIT](LICENSE)
