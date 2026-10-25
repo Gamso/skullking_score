@@ -106,11 +106,23 @@ The instrumented-tests job can be turned off by setting the repository variable 
 
 ## Publishing a release
 
-1. Create a signing keystore (keep it safe, outside the repository):
+1. Create a signing keystore (keep it safe, outside the repository). `keytool` ships with any JDK, including Android
+   Studio's (`<Android Studio>/jbr/bin/keytool`):
 
    ```bash
    keytool -genkeypair -v -keystore release.jks -alias skullking -keyalg RSA -keysize 4096 -validity 10000
-   base64 -w0 release.jks   # value of the SIGNING_KEYSTORE_BASE64 secret
+   ```
+
+   Then encode it in Base64 to get the value of the `SIGNING_KEYSTORE_BASE64` secret:
+
+   ```bash
+   # Linux / macOS / Git Bash
+   base64 -w0 release.jks
+   ```
+
+   ```powershell
+   # Windows PowerShell (`base64 -w0` does not exist there)
+   [Convert]::ToBase64String([IO.File]::ReadAllBytes("release.jks")) | Set-Clipboard
    ```
 
 2. In *Settings → Secrets and variables → Actions*, add:
