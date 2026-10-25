@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skull King Score</string>
+
+    <!-- General -->
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="more">More options</string>
+    <string name="help">Help</string>
+    <string name="scoreboard">Scoreboard</string>
+    <string name="unknown_player">?</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+
+    <!-- Home -->
+    <string name="home_tagline">The score pad for your Skull King games</string>
+    <string name="home_new_game">New game</string>
+    <string name="home_resume">Resume game</string>
+    <string name="home_resume_detail">%1$d players · %2$d rounds played</string>
+    <string name="home_history">History</string>
+    <string name="home_stats">Statistics</string>
+    <string name="home_players">Players</string>
+
+    <!-- Profiles -->
+    <string name="player_new">New profile</string>
+    <string name="player_edit">Edit profile</string>
+    <string name="player_name">Name</string>
+    <string name="player_archive">Archive</string>
+    <string name="player_restore">Restore</string>
+    <string name="player_archived">Archived</string>
+    <string name="players_empty">No profiles yet. Create one to get started.</string>
+
+    <!-- Scoring modes -->
+    <string name="mode_classic">Classic</string>
+    <string name="mode_classic_desc">20 points per bid trick, −10 per trick off, plus bonuses</string>
+    <string name="mode_rascal">Rascal (“Direct hit”)</string>
+    <string name="mode_rascal_desc">Same potential for everyone: 10 × cards. Off by one: half the points</string>
+    <string name="mode_cannonball">Rascal + Cannonball</string>
+    <string name="mode_cannonball_desc">Each player can go “all or nothing” on their bid</string>
+
+    <!-- Expansion cards -->
+    <string name="card_sevens">7 (×4, one per suit)</string>
+    <string name="card_eights">8 (×4)</string>
+    <string name="card_zero_fourteen">0/14 (×4)</string>
+    <string name="card_wild_15">Wild 15 (monkey)</string>
+    <string name="card_mary_thorne">Mary Thorne</string>
+    <string name="card_first_mate_con">First Mate Con</string>
+    <string name="card_davy_jones">Davy Jones’ Locker</string>
+    <string name="card_plank">Walk the Plank</string>
+    <string name="card_spotted_ray">Spotted Ray</string>
+    <string name="card_last_salvo">Last Salvo</string>
+
+    <string name="monster_kraken">Kraken</string>
+    <string name="monster_white_whale">White Whale</string>
+    <string name="monster_spotted_ray">Spotted Ray</string>
+
+    <!-- Bonuses -->
+    <string name="bonus_colored_14">Suit 14</string>
+    <string name="bonus_black_14">Black 14</string>
+    <string name="bonus_mermaid_by_pirate">Mermaid (by a pirate)</string>
+    <string name="bonus_pirate_by_skull_king">Pirate (by Skull King)</string>
+    <string name="bonus_skull_king_by_mermaid">Skull King (by a mermaid)</string>
+    <string name="bonus_con_captured">First Mate (by SK or mermaid)</string>
+    <string name="bonus_loot">Loot</string>
+    <string name="bonus_davy_jones">Sea monster destroyed (Davy Jones)</string>
+    <string name="bonus_eight">8</string>
+    <string name="bonus_seven">7</string>
+
+    <!-- Setup -->
+    <string name="setup_title">New game</string>
+    <string name="setup_players_order">Players, in seating order (%1$d)</string>
+    <string name="setup_search_players">Search a profile</string>
+    <string name="setup_available_players">Available profiles</string>
+    <string name="setup_mode">Scoring mode</string>
+    <string name="setup_expansion">2026 expansion</string>
+    <string name="setup_expansion_switch">Play with the expansion</string>
+    <string name="setup_expansion_desc">Enable the cards you want, one by one</string>
+    <string name="setup_card_removed_two_players">Removed with 2 players</string>
+    <string name="setup_dj_requires_success">Davy Jones’ Locker: bid must succeed</string>
+    <string name="setup_dj_requires_success_desc">The rules don’t say; by default the +20 follows the bonus rule</string>
+    <string name="setup_start">Start the game</string>
+    <string name="setup_hint_min_players">Pick at least 2 players</string>
+    <string name="setup_hint_nine_players">Beyond 8 players, the expansion is required</string>
+    <string name="setup_hint_max_players">9 players maximum</string>
+
+    <!-- Round -->
+    <string name="round_title_plain">Round %1$d</string>
+    <string name="round_title_extra">Round %1$d (extra)</string>
+    <string name="round_title_cards">Round %1$d · cards: %2$d</string>
+    <string name="prepare_cards_question">Cards dealt</string>
+    <string name="prepare_cards_hint">Suggested: previous round + 1. Change it with a tap.</string>
+    <string name="prepare_start_bids">Start the bids</string>
+
+    <string name="bids_validate">Confirm bids</string>
+    <string name="bids_total">Total bid: %1$d (cards dealt: %2$d)</string>
+    <string name="bids_score_so_far">Current score: %1$d</string>
+
+    <string name="play_bids_reminder">Bids</string>
+    <string name="play_bid_chip">Bid %1$d</string>
+    <string name="play_live_events">Live events</string>
+    <!-- Live tricks -->
+    <string name="play_tricks_title">Tricks</string>
+    <string name="play_trick_progress">Trick %1$d of %2$d</string>
+    <string name="play_all_tricks_done">All tricks entered</string>
+    <string name="play_enter_trick">Enter trick %1$d</string>
+    <string name="play_undo_last_trick">Undo the last trick</string>
+    <string name="play_bid_tricks_chip">Bid %1$d · tricks %2$d</string>
+    <string name="trick_dialog_new">Trick %1$d</string>
+    <string name="trick_dialog_edit">Correct trick %1$d</string>
+    <string name="trick_who_won">Who won the trick?</string>
+    <string name="trick_destroyed">Destroyed trick (Kraken)</string>
+    <string name="trick_destroyed_short">destroyed</string>
+    <string name="trick_captured">Cards won</string>
+    <string name="trick_rascal_wager">Rascal’s wager</string>
+    <string name="trick_harry_title">Harry</string>
+    <string name="trick_harry_none">None</string>
+    <string name="trick_won_with">Won with</string>
+    <string name="win_mermaid">Mermaid</string>
+    <string name="win_skull_king">Skull King</string>
+    <string name="win_first_mate">First Mate</string>
+    <string name="win_other">Other</string>
+    <string name="win_pirate">Pirate</string>
+    <string name="pirate_rosie">Rosie</string>
+    <string name="pirate_rascal">Rascal</string>
+    <string name="pirate_will">Bendt</string>
+    <string name="pirate_juanita">Juanita</string>
+    <string name="pirate_harry">Harry</string>
+    <string name="pirate_tigress">Tigress</string>
+    <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="stats_wins_with_title">Tricks won with</string>
+    <string name="trick_validate">Confirm the trick</string>
+    <string name="event_trick_prefix">"Trick %1$d · "</string>
+    <string name="event_loot_pending">Loot played by %1$s (trick winner to be entered)</string>
+    <string name="results_tricks_prefilled">Tricks and captured cards pre-filled from the tricks entered during play.</string>
+    <string name="play_validate_round">Confirm the round</string>
+    <string name="play_warnings_title">Check before confirming</string>
+    <string name="play_validate_anyway">Confirm anyway</string>
+    <string name="play_fix">Fix</string>
+    <string name="play_enter_results">Enter the results</string>
+
+    <string name="event_loot_button">Loot</string>
+    <string name="event_davy_jones_button">Davy Jones</string>
+    <string name="event_log">Round log</string>
+    <string name="event_log_empty">No events yet</string>
+    <string name="event_loot_line">Loot played by %1$s, trick won by %2$s</string>
+    <string name="event_davy_jones_line">%1$s’s Locker: %2$s</string>
+    <string name="event_cancelled">cancelled</string>
+    <string name="cancel_event">Cancel</string>
+    <string name="loot_who_played">Who played the Loot?</string>
+    <string name="loot_who_won">Who won the trick?</string>
+    <string name="chest_who_played">Who played Davy Jones’ Locker?</string>
+    <string name="chest_which_creatures">Which creatures are destroyed?</string>
+
+    <string name="results_tab_round">Round</string>
+    <string name="results_title">Results · round %1$d</string>
+    <string name="results_validate">Confirm the round</string>
+    <string name="results_save_correction">Save the correction</string>
+    <string name="results_editing_hint">You are correcting a round that was already confirmed: scores are recalculated after every change.</string>
+    <string name="results_summary">Bid %1$d · tricks %2$d</string>
+    <string name="results_tricks">Tricks won</string>
+    <string name="results_final_bid">Final bid (Harry the Giant)</string>
+    <string name="results_bonus_title">Cards won</string>
+    <string name="results_bonus_ignored">Missed bid: the bonuses entered don’t count.</string>
+    <string name="results_cannonball">Cannonball</string>
+    <string name="results_cannonball_hint">All or nothing: 15 × cards if the bid is exact, otherwise 0</string>
+    <string name="results_rascal_wager">Rascal of Roatan’s wager</string>
+    <string name="results_discarded_title">Discarded tricks</string>
+    <string name="results_discarded_label">Destroyed or winnerless tricks</string>
+    <string name="results_discarded_hint">Kraken, or a trick made only of special cards</string>
+
+    <!-- Consistency warnings (never blocking) -->
+    <string name="warn_tricks_over">Total tricks: %1$d (cards dealt: %2$d). Check the entries.</string>
+    <string name="warn_tricks_under">Total tricks: %1$d (cards dealt: %2$d). If some tricks were destroyed (Kraken, special cards only), enter them as discarded tricks.</string>
+    <string name="warn_cards_exceed_deck">%1$d cards to deal from a deck of %2$d.</string>
+    <string name="warn_too_many_colored_14">%1$d suit 14s captured, only %2$d exist.</string>
+    <string name="warn_too_many_black_14">%1$d black 14s captured, only %2$d exists.</string>
+    <string name="warn_too_many_skull_king">There is only %2$d Skull King (%1$d entered).</string>
+    <string name="warn_too_many_con">There is only %2$d First Mate Con (%1$d entered).</string>
+    <string name="warn_too_many_sevens">%1$d 7s captured, there are only %2$d.</string>
+    <string name="warn_too_many_eights">%1$d 8s captured, there are only %2$d.</string>
+    <string name="warn_too_many_mermaids">%1$d mermaids captured, there are only %2$d.</string>
+    <string name="warn_too_many_pirates">%1$d pirates captured, only %2$d are in play.</string>
+    <string name="warn_too_many_loot">%1$d Loot cards entered, the deck only has %2$d.</string>
+    <string name="warn_duplicate_monster">Creature entered twice: %1$s.</string>
+
+    <!-- Scoreboard -->
+    <string name="table_total">Total</string>
+    <string name="table_cards_short">%1$d c.</string>
+    <string name="scoreboard_next_round">Next round</string>
+    <string name="scoreboard_extra_round">Extra round</string>
+    <string name="scoreboard_resume_round">Resume round %1$d</string>
+    <string name="scoreboard_finish">End the game</string>
+    <string name="scoreboard_finish_title">End the game?</string>
+    <string name="scoreboard_finish_message">The podium is shown and statistics are updated. Rounds can no longer be edited.</string>
+    <string name="scoreboard_reopen_last">Reopen the last round</string>
+    <string name="scoreboard_see_podium">See the podium</string>
+    <string name="detail_title">%1$s · round %2$d</string>
+    <string name="detail_bid_tricks">Bid %1$d (final %2$d) · tricks %3$d</string>
+    <string name="detail_base_success">Bid made</string>
+    <string name="detail_base_failure">Bid missed</string>
+    <string name="detail_bonus_lost">Bonuses lost: the bid was not made.</string>
+    <string name="detail_cannonball">Cannonball: all or nothing</string>
+    <string name="detail_rascal">Rascal’s wager</string>
+    <string name="detail_total">Round total</string>
+    <string name="detail_correct">Correct the round</string>
+
+    <!-- End of game -->
+    <string name="end_title">Game over</string>
+    <string name="end_winner">%1$s wins!</string>
+    <string name="end_see_scoreboard">See the scoreboard</string>
+
+    <!-- History, export, import -->
+    <string name="history_search">Player, date or mode</string>
+    <string name="history_filter_all">All</string>
+    <string name="history_no_match">No game matches your search.</string>
+    <string name="history_open">Open</string>
+    <string name="history_empty">No games saved yet.</string>
+    <string name="history_status_finished">%1$s · finished</string>
+    <string name="history_status_in_progress">%1$s · in progress</string>
+    <string name="history_delete_title">Delete the game?</string>
+    <string name="history_delete_message">The game and its statistics will be permanently deleted from this device.</string>
+    <string name="export_action">Export</string>
+    <string name="export_title">Export history</string>
+    <string name="export_format">Format</string>
+    <string name="export_csv_desc">One line per player and round, readable in a spreadsheet</string>
+    <string name="export_json_desc">Full backup, can be re-imported on another phone</string>
+    <string name="export_period">Period</string>
+    <string name="export_player">Player</string>
+    <string name="export_all_players">All players</string>
+    <string name="export_nothing">No game matches this filter.</string>
+    <string name="import_action">Import</string>
+    <string name="import_title">Import a backup</string>
+    <string name="import_preview">%1$d new game(s), %2$d already present, %3$d new player(s). Games already present are not duplicated.</string>
+    <string name="import_confirm">Import</string>
+    <string name="import_done">%1$d game(s) imported, %2$d skipped because already present.</string>
+    <string name="import_invalid">This file is not a readable Skull King backup.</string>
+
+    <!-- Statistics -->
+    <string name="period_month">This month</string>
+    <string name="period_year">This year</string>
+    <string name="period_all">All time</string>
+    <string name="stats_mode_note">A Rascal score can’t be compared to a classic one: pick a mode.</string>
+    <string name="stats_empty">No finished game for this filter yet.</string>
+    <string name="stats_games_wins">Games: %1$d · Wins: %2$d (%3$s)</string>
+    <string name="stats_average">Average score</string>
+    <string name="stats_best">Best score</string>
+    <string name="stats_worst">Worst score</string>
+    <string name="stats_bid_success">Bids made</string>
+    <string name="stats_zero_success">Zero bids made</string>
+    <string name="stats_bonus_title">Bonuses scored</string>
+    <string name="stats_monthly_title">Month by month</string>
+    <string name="stats_monthly_line">%1$d games · avg. %2$d · %3$s bids made</string>
+    <string name="stats_head_to_head_title">Head to head</string>
+    <string name="stats_head_to_head_line">%1$d W · %2$d L in %3$d games</string>
+
+    <!-- Settings -->
+
+    <!-- Help -->
+    <string name="help_tab_cards">Cards</string>
+    <string name="help_tab_scoring">Scoring</string>
+    <string name="help_tab_expansion">Expansion</string>
+    <string name="help_tab_faq">FAQ</string>
+    <string name="help_search">Search the help</string>
+    <string name="help_search_clear">Clear search</string>
+    <string name="help_no_results">No results for “%1$s”.</string>
+    <string name="help_hierarchy_title">Card hierarchy</string>
+    <string name="help_hierarchy_body">1. 🏳️ Escape (white flag): always loses, unless the trick is only escapes (the first one played wins).\n2. 🟨🟪🟩 Yellow, purple, green (1 to 14): the suit led beats the other suits.\n3. ⚫ Black trump (Jolly Roger, 1 to 14): beats all suits.\n4. 🧜‍♀️ Mermaids: beat suits and trumps, lose to pirates.\n5. 🏴‍☠️ Pirates: beat mermaids, lose to the Skull King.\n6. 💀 Skull King: beats pirates, but loses to a mermaid.\n\nWith the expansion: Escape &lt; suits &lt; black trump &lt; mermaid &lt; pirates &lt; First Mate Con &lt; Skull King &lt; mermaid. A mermaid beats both First Mate Con and the Skull King.</string>
+    <string name="help_special_title">Base game special cards</string>
+    <string name="help_special_body">• 🐯 Tigress: played as either a pirate or an escape.\n• 🐙 Kraken: destroys the trick, nobody wins it. The next trick is led by the player who would have won without the Kraken (official FAQ).\n• 🐳 White Whale: cancels special cards, the highest numbered card wins.\n• 💰 Loot: played like an escape, links two players for a bonus.\n\nPirate abilities:\n• **Rosie D’Laney**: picks who leads next, including herself.\n• **Rascal of Roatan**: bids 0, 10 or 20 points, added if the bid is made, subtracted if not.\n• **Bendt the Bandit**: draws 2 cards from the draw pile, then discards 2 from their hand.\n• **Juanita Jade**: views the undealt cards to see what is not in play.\n• **Harry the Giant**: adjusts their bid by +1 or −1, or leaves it alone.\n\n**Harry the Giant** is the only pirate whose ability also works on the final trick (he must win the trick to activate it).</string>
+    <string name="help_points_title">Points (classic mode)</string>
+    <string name="help_points_body">• Bid ≥ 1 made: +20 per bid trick.\n• Bid ≥ 1 missed: −10 per trick off.\n• Zero bid made: +10 × number of cards in the round.\n• Zero bid missed: −10 × number of cards in the round.\n\nThe Kraken and a Tigress played as an escape score nothing. Harry the Giant changes the final bid: fix it on the results screen.</string>
+    <string name="help_bonus_title">Bonuses (only if the bid is made)</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 Suit 14 captured: +10 each\n• ⚫ Black 14 captured: +20\n• 🧜‍♀️ Mermaid captured by a pirate: +20 each\n• 🏴‍☠️ Pirate captured by the Skull King: +30 each\n• 💀 Skull King captured by a mermaid: +40\n• 💰 Loot: +20 if the Loot player and the trick winner both make their bid\n• 🎲 Rascal wager: +wager if the bid is exact, −wager otherwise (0, 10 or 20) — the only term counted even on a missed bid</string>
+    <string name="help_modes_title">Scoring modes</string>
+    <string name="help_modes_body">• Classic: see above.\n• Rascal (“Direct hit”): 10 × N points with an exact bid plus all bonuses; 5 × N when off by one plus half the bonuses; 0 beyond. Loot and Rascal’s wager always require an exact bid.\n• 💣 Rascal + Cannonball: each player can go “all or nothing” on their bid: 15 × N points plus bonuses if it is exact, 0 otherwise. Without the wager, the player is scored as in Rascal.\n\nN is the number of cards dealt in the round.</string>
+    <string name="help_expansion_title">2026 expansion</string>
+    <string name="help_expansion_body">• 7 captured: −5 each · 8 captured: +5 each (bid made).\n• 0/14 and 🐵 Wild 15: no bonus.\n• {con} First Mate Con: beats all pirates, loses to mermaids and the Skull King. Captured by the Skull King or a mermaid: +30. Scores nothing for captured pirates.\n• 🏴‍☠️ Mary Thorne: counts as a pirate (+30 if captured by the Skull King, +20 per mermaid captured).\n• {davy} Davy Jones’ Locker: doesn’t win, destroys all sea monsters in the trick (🐙 🐳 {ray}): +20 per monster for its player.\n• 🦈 Walk the Plank: removes a pirate from the trick; it scores no bonus.\n• {ray} Spotted Ray: a sea monster, like the Kraken and the White Whale. It doesn’t win the trick: the lowest card in the trick wins. It scores no bonus, and Davy Jones’ Locker can destroy it (+20).\n• 💥 Last Salvo: doesn’t win; its player plays a 2nd card then skips the last trick.\n\nWith 2 players, Wild 15, Walk the Plank and the 0/14s are removed.</string>
+    <string name="help_faq_title">FAQ</string>
+    <string name="help_faq_body">• Tricks don’t add up to the number of cards? A trick can be destroyed (Kraken) or made only of special cards: enter it as a “discarded trick”. The app doesn’t check who won each trick, it only flags inconsistencies and never blocks you.\n• A mistake in a past round? Tap its cell in the scoreboard, then “Correct the round”.\n• No network? No problem, the app works entirely offline.</string>
+
+    <!-- V2: game comfort and settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_game">Game</string>
+    <string name="settings_keep_screen_on">Keep the screen on</string>
+    <string name="settings_keep_screen_on_desc">While a game is in progress.</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_auto_backup">Automatic backup</string>
+    <string name="settings_auto_backup_desc">Saves your games to a folder of your choice after each game and once a day.</string>
+    <string name="settings_choose_folder">Choose the backup folder</string>
+    <string name="settings_change_folder">Change the backup folder</string>
+    <string name="settings_backup_now">Back up now</string>
+    <string name="settings_backup_no_folder">No folder chosen yet.</string>
+    <string name="settings_backup_never">No backup made yet.</string>
+    <string name="settings_backup_last">Last backup: %1$s</string>
+    <string name="settings_backup_failed">The last backup failed. Check that the folder is still available.</string>
+    <string name="settings_restore">Restore from a backup</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_text">Offline Skull King score counter. No account, no data collected. MIT licence.</string>
+    <string name="undo_bid">bid of %1$s</string>
+    <string name="undo_cannonball">cannonball of %1$s</string>
+    <string name="undo_trick">trick %1$s</string>
+    <string name="undo_trick_deleted">deleted trick %1$s</string>
+    <string name="undone_prefix">Undone: %1$s</string>
+    <string name="redone_prefix">Redone: %1$s</string>
+    <string name="dealer_label">Dealer: %1$s</string>
+    <string name="setup_draw_dealer">Draw the dealer</string>
+    <string name="setup_dealer_badge">Dealer</string>
+    <string name="replay">Play again</string>
+
+    <!-- V2 : jalon 1, partage -->
+    <string name="share_title">Share</string>
+    <string name="share_action">Share</string>
+    <string name="share_save">Save to gallery</string>
+    <string name="share_saved">Image saved to Pictures/SkullKing.</string>
+    <string name="share_save_failed">Could not save the image.</string>
+    <string name="share_preview">Preview of the image to share</string>
+    <string name="share_nothing">Choose what to include in the image.</string>
+    <string name="share_podium">Podium</string>
+    <string name="share_table">Score table</string>
+    <string name="share_stats">Game highlights</string>
+    <string name="share_round">Round</string>
+    <string name="share_with_expansion">with expansion</string>
+    <string name="share_without_expansion">without expansion</string>
+    <string name="share_best_round">Best round: %1$s (%2$d points, round %3$d)</string>
+    <string name="share_worst_round">Worst round: %1$s (%2$d points, round %3$d)</string>
+    <string name="share_exact_bids">%1$s: %2$d exact bids out of %3$d</string>
+
+    <!-- V2 : jalon 2, courbes -->
+    <string name="tab_table">Table</string>
+    <string name="tab_curve">Curve</string>
+    <string name="curve_empty">No round has been scored yet.</string>
+    <string name="curve_summary_line">%1$s: %2$d points after %3$d rounds</string>
+    <string name="curve_axis_rounds">Cumulative score over %1$d rounds.</string>
+    <string name="curve_round_detail">Round %1$d (%2$d cards)</string>
+    <string name="curve_round_line">%1$s (total %2$d)</string>
+    <string name="curve_tap_hint">Tap the chart to see a round in detail. Use the chips to show or hide players.</string>
+
+    <!-- V2 : jalon 2, statistiques -->
+    <plurals name="stats_games_count">
+        <item quantity="one">%d game</item>
+        <item quantity="other">%d games</item>
+    </plurals>
+    <string name="stats_filter_present">Players at the table</string>
+    <string name="filter_all_sizes">Any number of players</string>
+    <string name="filter_players_2_3">2–3 players</string>
+    <string name="filter_players_4_5">4–5 players</string>
+    <string name="filter_players_6_plus">6 or more</string>
+    <string name="filter_expansion_all">With or without expansion</string>
+    <string name="filter_expansion_with">With expansion</string>
+    <string name="filter_expansion_without">Without expansion</string>
+    <string name="stats_records_title">Records</string>
+    <string name="stats_record_best_round">Best round</string>
+    <string name="stats_record_worst_round">Worst round</string>
+    <string name="stats_record_round">%1$s points, round %2$d (%3$s)</string>
+    <string name="stats_record_exact_streak">Longest streak of exact bids</string>
+    <string name="stats_record_win_streak">Longest winning streak</string>
+    <string name="stats_record_zero_streak">Longest streak of successful zero bids</string>
+    <string name="stats_record_bonus">Biggest bonus in one round</string>
+    <string name="stats_trend_title">Evolution</string>
+    <string name="stats_trend_not_enough">At least %1$d finished games are needed to draw a trend.</string>
+    <string name="stats_trend_games">Game score</string>
+    <string name="stats_trend_average">Average</string>
+    <string name="stats_trend_legend">Solid line: score of each game. Dashed line: average over the last %1$d games.</string>
+    <string name="stats_trend_description">%1$s: from %2$d to %3$d points over %4$d games</string>
+    <string name="stats_size_title">Bid success by round size</string>
+    <string name="size_small">1–3 cards</string>
+    <string name="size_medium">4–6 cards</string>
+    <string name="size_large">7–10 cards</string>
+    <string name="size_huge">11 cards and more</string>
+    <string name="stats_bias">Bid tendency</string>
+    <string name="stats_bias_under">Under-bids (%1$s trick per round)</string>
+    <string name="stats_bias_over">Over-bids (%1$s trick per round)</string>
+    <string name="stats_tricks_coverage">Tricks entered live in %1$d of %2$d games.</string>
+    <string name="stats_rascal_wagers">Rascal wagers won</string>
+    <string name="stats_harry_adjustments">Harry adjustments (round won)</string>
+    <string name="duel_title">Head-to-head</string>
+    <string name="duel_first">First player</string>
+    <string name="duel_second">Second player</string>
+    <string name="duel_choose">Choose two players to compare.</string>
+    <string name="duel_not_enough">Not enough games played together.</string>
+    <string name="duel_common_games">%1$d games played together</string>
+    <string name="duel_versus">vs</string>
+    <string name="duel_ties">%1$d ties</string>
+    <string name="duel_average_gap">Average lead of %1$s</string>
+    <string name="duel_biggest_gap">Biggest gap in one game</string>
+
+    <!-- V2 : jalon 4, import -->
+    <string name="import_homonyms">Players with the same name</string>
+    <string name="import_merge">%1$s: merge with the existing profile</string>
+    <string name="import_create">%1$s: create a new profile</string>
+    <string name="import_done_detail">%1$d game(s) imported, %2$d skipped, %3$d profile(s) merged, %4$d created.</string>
+    <string name="import_too_new">This backup comes from a newer version of the app. Update the app to import it.</string>
+
+    <!-- V2: accessibility -->
+    <string name="a11y_score_cell">%1$s, round %2$d, %3$s points, total %4$d</string>
+    <string name="a11y_score_cell_pending">%1$s, round %2$d, not scored yet</string>
+    <string name="a11y_expanded">Expanded</string>
+    <string name="a11y_collapsed">Collapsed</string>
+    <string name="stats_more_filters">More filters</string>
+    <string name="setup_dealer_hint">List players in table order, then tap 🃏 on whoever deals first.</string>
+    <string name="share_curve">Score curve</string>
+    <string name="stats_bias_balanced">Balanced</string>
+    <string name="stats_bias_help">Compares the tricks won with the bid, round after round: under-bidding means winning more than announced, over-bidding less.</string>
+    <string name="mode_classic_short">Classic</string>
+    <string name="mode_rascal_short">Rascal</string>
+    <string name="mode_cannonball_short">Rascal + Cannonball</string>
+    <string name="stats_search">Find a player</string>
+    <string name="stats_no_match">No player matches your search.</string>
+    <string name="stats_share_player">Share the statistics of %1$s</string>
+    <string name="stats_image_legend_games">Game score</string>
+    <string name="stats_image_legend_average">Average of the last %1$d games</string>
+</resources>

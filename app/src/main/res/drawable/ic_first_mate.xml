@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The First Mate Con: steel brass knuckles, four rings and a grip. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Grip -->
+    <path
+        android:fillColor="#6F7C8B"
+        android:fillType="evenOdd"
+        android:pathData="M7,27L41,27L41,33C41,37.5 37.5,41 33,41L15,41C10.5,41 7,37.5 7,33ZM13,31.5L35,31.5L35,35.5L13,35.5Z"
+        android:strokeColor="#2F3A46"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.4" />
+    <!-- Finger rings -->
+    <path
+        android:fillColor="#9AA7B6"
+        android:fillType="evenOdd"
+        android:pathData="M11,12.5A6.5,6.5 0,1 1,11,25.5A6.5,6.5 0,1 1,11,12.5ZM11,16A3,3 0,1 0,11,22A3,3 0,1 0,11,16Z"
+        android:strokeColor="#2F3A46"
+        android:strokeWidth="1.4" />
+    <path
+        android:fillColor="#9AA7B6"
+        android:fillType="evenOdd"
+        android:pathData="M20,12.5A6.5,6.5 0,1 1,20,25.5A6.5,6.5 0,1 1,20,12.5ZM20,16A3,3 0,1 0,20,22A3,3 0,1 0,20,16Z"
+        android:strokeColor="#2F3A46"
+        android:strokeWidth="1.4" />
+    <path
+        android:fillColor="#9AA7B6"
+        android:fillType="evenOdd"
+        android:pathData="M29,12.5A6.5,6.5 0,1 1,29,25.5A6.5,6.5 0,1 1,29,12.5ZM29,16A3,3 0,1 0,29,22A3,3 0,1 0,29,16Z"
+        android:strokeColor="#2F3A46"
+        android:strokeWidth="1.4" />
+    <path
+        android:fillColor="#9AA7B6"
+        android:fillType="evenOdd"
+        android:pathData="M38,12.5A6.5,6.5 0,1 1,38,25.5A6.5,6.5 0,1 1,38,12.5ZM38,16A3,3 0,1 0,38,22A3,3 0,1 0,38,16Z"
+        android:strokeColor="#2F3A46"
+        android:strokeWidth="1.4" />
+    <!-- Reflets -->
+    <path
+        android:strokeColor="#E3EAF1"
+        android:strokeLineCap="round"
+        android:strokeWidth="1.3"
+        android:pathData="M8,16.5C8.6,14.8 9.8,14 11.2,13.9M17,16.5C17.6,14.8 18.8,14 20.2,13.9M26,16.5C26.6,14.8 27.8,14 29.2,13.9M35,16.5C35.6,14.8 36.8,14 38.2,13.9M10,29.2L38,29.2" />
+</vector>

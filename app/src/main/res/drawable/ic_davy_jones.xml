@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Davy Jones: octopus-headed captain, tricorn hat and tentacle beard. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Tentacles: dark outline, then color -->
+    <path
+        android:strokeColor="#2E5E54"
+        android:strokeLineCap="round"
+        android:strokeWidth="6.4"
+        android:pathData="M14,28C7,33 15,38 9,43.5M19.5,30C15.5,36 22,39.5 17.5,45M24,31C24,37 28.5,40 25.5,45.5M28.5,30C32.5,36 26,39.5 30.5,45M34,28C41,33 33,38 39,43.5" />
+    <path
+        android:strokeColor="#67AE9D"
+        android:strokeLineCap="round"
+        android:strokeWidth="4"
+        android:pathData="M14,28C7,33 15,38 9,43.5M19.5,30C15.5,36 22,39.5 17.5,45M24,31C24,37 28.5,40 25.5,45.5M28.5,30C32.5,36 26,39.5 30.5,45M34,28C41,33 33,38 39,43.5" />
+    <!-- Head -->
+    <path
+        android:fillColor="#67AE9D"
+        android:strokeColor="#2E5E54"
+        android:strokeWidth="1.5"
+        android:pathData="M24,10.5C32,10.5 36.5,16 36.5,22.5C36.5,29 31,33 24,33C17,33 11.5,29 11.5,22.5C11.5,16 16,10.5 24,10.5Z" />
+    <!-- Ventouses -->
+    <path
+        android:fillColor="#9FD3C6"
+        android:pathData="M15.5,29m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0M32.5,29m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0M24,30.2m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
+    <!-- Yeux -->
+    <path
+        android:fillColor="#FFF1B8"
+        android:strokeColor="#1D2B28"
+        android:strokeWidth="1.2"
+        android:pathData="M19,22.5m-3.6,0a3.6,3.6 0,1 1,7.2 0a3.6,3.6 0,1 1,-7.2 0M29,22.5m-3.6,0a3.6,3.6 0,1 1,7.2 0a3.6,3.6 0,1 1,-7.2 0" />
+    <path
+        android:fillColor="#1D2B28"
+        android:pathData="M19.8,22.8m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0M28.2,22.8m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0" />
+    <!-- Sourcils -->
+    <path
+        android:strokeColor="#2E5E54"
+        android:strokeLineCap="round"
+        android:strokeWidth="1.6"
+        android:pathData="M14.5,18.2L21.5,19.6M33.5,18.2L26.5,19.6" />
+    <!-- Tricorne -->
+    <path
+        android:fillColor="#2B3A55"
+        android:strokeColor="#161F30"
+        android:strokeLineJoin="round"
+        android:strokeWidth="1.2"
+        android:pathData="M4,17.5C8,9.5 15,3 24,3C33,3 40,9.5 44,17.5C37,13.8 31,12.6 24,12.6C17,12.6 11,13.8 4,17.5Z" />
+    <path
+        android:strokeColor="#E0B13F"
+        android:strokeLineCap="round"
+        android:strokeWidth="1.6"
+        android:pathData="M8.2,14.6C13,12.3 18,11.6 24,11.6C30,11.6 35,12.3 39.8,14.6" />
+    <!-- Skull on the hat -->
+    <path
+        android:fillColor="#F2E9D0"
+        android:pathData="M24,5.2C21.6,5.2 20,6.8 20,8.8C20,10 20.6,10.8 21.4,11.3L21.4,11.9L26.6,11.9L26.6,11.3C27.4,10.8 28,10 28,8.8C28,6.8 26.4,5.2 24,5.2Z" />
+    <path
+        android:fillColor="#2B3A55"
+        android:pathData="M22.3,8.6m-0.8,0a0.8,0.8 0,1 1,1.6 0a0.8,0.8 0,1 1,-1.6 0M25.7,8.6m-0.8,0a0.8,0.8 0,1 1,1.6 0a0.8,0.8 0,1 1,-1.6 0" />
+</vector>
