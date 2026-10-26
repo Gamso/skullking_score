@@ -55,6 +55,7 @@ private val TABS = listOf(
         listOf(
             HelpSection(R.string.help_hierarchy_title, R.string.help_hierarchy_body),
             HelpSection(R.string.help_special_title, R.string.help_special_body),
+            HelpSection(R.string.help_monsters_title, R.string.help_monsters_body),
         ),
     ),
     HelpTab(
