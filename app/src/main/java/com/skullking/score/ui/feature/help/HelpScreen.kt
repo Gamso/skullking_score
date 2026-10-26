@@ -116,6 +116,9 @@ private val INLINE_ICONS = mapOf(
 private const val REMARK_PREFIX = "!> "
 private const val NOTE_PREFIX = "> "
 
+/** Lines starting with this prefix are sub-bullets, indented under the previous item. */
+private const val SUB_PREFIX = "-- "
+
 /** Bold: **text**; icon: {ray}, {con}, {davy}. */
 private val TOKEN = Regex("""\*\*(.+?)\*\*|\{(ray|con|davy)\}""")
 
@@ -292,6 +295,10 @@ private fun HelpLine(line: String, query: String = "") {
         }
 
         line.startsWith(NOTE_PREFIX) -> Callout(CalloutKind.NOTE) { HelpText(line.removePrefix(NOTE_PREFIX), query) }
+
+        line.startsWith(SUB_PREFIX) -> Box(modifier = Modifier.padding(start = 16.dp)) {
+            HelpText("◦ " + line.removePrefix(SUB_PREFIX), query)
+        }
 
         else -> HelpText(line, query)
     }
