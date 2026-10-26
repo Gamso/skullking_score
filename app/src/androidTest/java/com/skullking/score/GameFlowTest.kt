@@ -128,6 +128,15 @@ class GameFlowTest {
     }
 
     @Test
+    fun theCardStatisticsTabOpensFromTheStatisticsScreen() {
+        click(R.string.home_stats)
+        click(R.string.stats_tab_cards)
+        rule.onNodeWithText(text(R.string.stats_more_filters)).assertExists()
+        click(R.string.stats_tab_players)
+        rule.onNodeWithText(text(R.string.stats_more_filters)).assertExists()
+    }
+
+    @Test
     fun selectedPlayersSurviveARotation() {
         val name = uniqueName("Rot")
         click(R.string.home_new_game)

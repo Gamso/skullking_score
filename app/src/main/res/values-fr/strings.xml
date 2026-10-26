@@ -415,4 +415,43 @@
     <string name="stats_share_player">Partager les statistiques de %1$s</string>
     <string name="stats_image_legend_games">Score de la partie</string>
     <string name="stats_image_legend_average">Moyenne des %1$d dernières parties</string>
+
+    <!-- Statistiques des cartes -->
+    <string name="stats_tab_players">Joueurs</string>
+    <string name="stats_tab_cards">Cartes</string>
+    <string name="stats_favorite_card">Carte favorite</string>
+    <string name="cards_coverage">Plis saisis en direct dans %1$d parties sur %2$d (%3$d plis).</string>
+    <string name="cards_no_tricks">Aucun pli n’a été saisi en direct avec ces filtres. Saisissez les plis pendant la partie pour voir les statistiques des cartes.</string>
+    <string name="cards_by_card_title">Plis gagnés par carte</string>
+    <string name="cards_by_card_hint">Part des plis gagnés avec chaque carte. Cela reflète la fréquence avec laquelle une carte gagne, pas sa force : les cartes jouées et perdues ne sont pas enregistrées.</string>
+    <string name="cards_pirates_title">Plis gagnés par pirate</string>
+    <string name="cards_pirates_hint">Un pirate qui gagne plus souvent n’est pas forcément plus fort : cela dépend des joueurs et du mode de jeu.</string>
+    <string name="cards_success_title">Réussite des annonces quand une carte gagne</string>
+    <string name="cards_success_hint">Manches où un joueur a gagné un pli avec la carte, et part de ces manches terminées avec une annonce exacte pour ce joueur.</string>
+    <string name="cards_timing_title">Moment où les cartes gagnent</string>
+    <string name="cards_timing_line">début %1$s · milieu %2$s · fin %3$s</string>
+    <string name="cards_timing_hint">Position des plis gagnés dans la manche (premier, deuxième et dernier tiers), pour les manches de 3 cartes ou plus.</string>
+    <string name="cards_captures_title">Bonus capturés</string>
+    <string name="cards_bonus_share">Manches de joueur avec un bonus</string>
+    <string name="cards_bonus_average">Points de bonus par manche de joueur</string>
+    <string name="cards_settings_title">Réglages des pirates</string>
+    <string name="cards_rascal_wager">Pari de Rascal de %1$d</string>
+    <string name="cards_wager_line">%1$d / %2$d réussis · %3$s</string>
+    <string name="cards_harry_adjustment">Ajustement de Harry %1$s</string>
+    <string name="cards_settings_hint">La réussite se mesure sur toute la manche du joueur qui a gagné le pli.</string>
+    <string name="cards_loots_title">Butins</string>
+    <string name="cards_loots_played">Butins joués</string>
+    <string name="cards_loots_valid">Valides (les deux joueurs réussissent leur annonce)</string>
+    <string name="cards_davy_title">Casier de Davy Jones</string>
+    <string name="cards_davy_points">Points marqués</string>
+    <string name="cards_kraken_title">Kraken</string>
+    <string name="cards_kraken_destroyed">Plis détruits</string>
+    <string name="cards_kraken_per_game">Par partie</string>
+    <string name="cards_kraken_success_with">Réussite des annonces quand un pli est détruit</string>
+    <string name="cards_kraken_success_without">Réussite des annonces sinon</string>
+    <string name="cards_expansion_title">Extension</string>
+    <string name="cards_expansion_with">Avec l’extension</string>
+    <string name="cards_expansion_without">Jeu de base</string>
+    <string name="cards_expansion_points">Points par joueur et par manche</string>
+    <string name="cards_expansion_wins">Plis gagnés par les cartes de l’extension</string>
 </resources>

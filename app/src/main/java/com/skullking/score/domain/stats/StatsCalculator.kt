@@ -117,6 +117,12 @@ data class PlayerStats(
     /** Game totals, from the oldest to the most recent. */
     val gameTotals: List<Int> = emptyList(),
 ) {
+    /** Card this player wins tricks with most often, when tricks were entered live. */
+    val favoriteCard: WinningCard? get() = winsByCard.maxByOrNull { it.value }?.key
+
+    /** Pirate this player wins tricks with most often. */
+    val favoritePirate: Pirate? get() = winsByPirate.maxByOrNull { it.value }?.key
+
     val winRate: Double get() = if (gamesPlayed == 0) 0.0 else wins.toDouble() / gamesPlayed
     val bidSuccessRate: Double get() = if (roundsPlayed == 0) 0.0 else bidsSucceeded.toDouble() / roundsPlayed
     val zeroBidSuccessRate: Double? get() = if (zeroBids == 0) null else zeroBidsSucceeded.toDouble() / zeroBids
