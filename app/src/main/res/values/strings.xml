@@ -311,7 +311,6 @@
     <string name="dealer_label">Dealer: %1$s</string>
     <string name="setup_draw_dealer">Draw the dealer</string>
     <string name="setup_dealer_badge">Dealer</string>
-    <string name="replay">Play again</string>
 
     <!-- V2 : jalon 1, partage -->
     <string name="share_title">Share</string>

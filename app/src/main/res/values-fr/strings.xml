@@ -311,7 +311,6 @@
     <string name="dealer_label">Donneur : %1$s</string>
     <string name="setup_draw_dealer">Tirer le donneur</string>
     <string name="setup_dealer_badge">Donneur</string>
-    <string name="replay">Rejouer</string>
 
     <!-- V2 : jalon 1, partage -->
     <string name="share_title">Partager</string>

@@ -36,10 +36,6 @@ fun SkullKingNavHost() {
     val navController = rememberNavController()
     val gameArg = navArgument(Routes.ARG_GAME_ID) { type = NavType.LongType }
     val roundArg = navArgument(Routes.ARG_ROUND_ID) { type = NavType.LongType }
-    val fromArg = navArgument(Routes.ARG_FROM) {
-        type = NavType.LongType
-        defaultValue = -1L
-    }
     val importArg = navArgument(Routes.ARG_IMPORT) {
         type = NavType.BoolType
         defaultValue = false
@@ -48,7 +44,7 @@ fun SkullKingNavHost() {
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(Routes.HOME) {
             HomeScreen(
-                onNewGame = { navController.navigate(Routes.setup()) },
+                onNewGame = { navController.navigate(Routes.SETUP) },
                 onResume = { route -> navController.navigate(route) },
                 onHistory = { navController.navigate(Routes.history()) },
                 onStats = { navController.navigate(Routes.STATS) },
@@ -57,7 +53,7 @@ fun SkullKingNavHost() {
                 onSettings = { navController.navigate(Routes.SETTINGS) },
             )
         }
-        composable(Routes.SETUP, arguments = listOf(fromArg)) {
+        composable(Routes.SETUP) {
             SetupScreen(
                 onBack = { navController.popBackStack() },
                 onGameCreated = { gameId -> navController.replaceFlow(Routes.prepare(gameId)) },
@@ -140,7 +136,6 @@ fun SkullKingNavHost() {
             EndGameScreen(
                 onBack = { navController.popBackStack() },
                 onScoreboard = { navController.navigate(Routes.scoreboard(gameId)) },
-                onReplay = { navController.navigate(Routes.setup(gameId)) },
                 onShare = { navController.navigate(Routes.share(gameId)) },
             )
         }

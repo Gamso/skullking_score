@@ -15,7 +15,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +43,6 @@ private fun medalFor(rank: Int): String = when (rank) {
 fun EndGameScreen(
     onBack: () -> Unit,
     onScoreboard: () -> Unit,
-    onReplay: () -> Unit,
     onShare: () -> Unit,
     viewModel: ScoreboardViewModel = hiltViewModel(),
 ) {
@@ -60,15 +58,7 @@ fun EndGameScreen(
             }
         },
         bottomBar = {
-            ActionBar(
-                primaryText = stringResource(R.string.replay),
-                onPrimary = onReplay,
-                secondary = {
-                    OutlinedButton(onClick = onScoreboard, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.end_see_scoreboard))
-                    }
-                },
-            )
+            ActionBar(primaryText = stringResource(R.string.end_see_scoreboard), onPrimary = onScoreboard)
         },
     ) { padding ->
         if (scored == null) return@SkullScaffold

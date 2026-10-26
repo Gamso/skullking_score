@@ -23,7 +23,7 @@ points (bonuses included) for the chosen scoring mode, replacing the paper score
 - Live trick entry (winner, card, captured cards) that pre-fills the results, with undo / redo
 - Live events (Loot, Davy Jones' Locker) attached to the trick, cancellable log, non-blocking consistency warnings
 - Dealer tracking: the table order is the list order, and the dealer moves on every round
-- Game history with search and filters, expandable cards, "play again" with the same players
+- Game history with search and filters, expandable cards
 - Statistics per player and scoring mode: records, trend chart, bid success by round size, favorite card,
   head-to-head between two players, filters by number of players, expansion and players present
 - Card statistics: tricks won by card and pirate, bid success when a card wins, when cards win in a round, captured

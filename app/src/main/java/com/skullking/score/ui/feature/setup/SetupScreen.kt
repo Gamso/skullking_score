@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -61,7 +60,6 @@ import com.skullking.score.ui.components.SectionTitle
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.descriptionRes
 import com.skullking.score.ui.labelRes
-import com.skullking.score.ui.navigation.Routes
 import com.skullking.score.ui.normalizeForSearch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -111,33 +109,10 @@ private data class SetupInput(
 )
 
 @HiltViewModel
-class SetupViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val players: PlayerRepository,
-    private val games: GameRepository,
-) : ViewModel() {
+class SetupViewModel @Inject constructor(private val players: PlayerRepository, private val games: GameRepository) :
+    ViewModel() {
 
     private val input = MutableStateFlow(SetupInput())
-
-    init {
-        // "Play again": settings and players of the original game, same table order.
-        val from = savedStateHandle.get<Long>(Routes.ARG_FROM) ?: -1L
-        if (from > 0) {
-            viewModelScope.launch {
-                val source = games.getGame(from)?.game ?: return@launch
-                val ids = source.players.filter { !it.archived }.map { it.id }
-                // Same table: only the dealer changes, moving on to the next person.
-                input.value = SetupInput(
-                    selectedIds = ids,
-                    firstDealerSeat = if (ids.isEmpty()) 0 else (source.firstDealerSeat + 1) % ids.size,
-                    mode = source.mode,
-                    expansionEnabled = source.expansionCards.isNotEmpty(),
-                    chosenCards = source.expansionCards,
-                    davyJonesRequiresSuccess = source.davyJonesRequiresSuccess,
-                )
-            }
-        }
-    }
 
     val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input) { all, input ->
         val active = all.filter { !it.archived }
