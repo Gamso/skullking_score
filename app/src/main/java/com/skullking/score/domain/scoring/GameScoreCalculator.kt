@@ -28,7 +28,6 @@ object GameScoreCalculator {
             loots = round.activeLoots.mapNotNull { loot ->
                 loot.trickWinnerId?.let { LootPair(loot.lootPlayerId, it) }
             },
-            davyJonesRequiresSuccess = game.davyJonesRequiresSuccess,
         )
 
     fun warnings(game: Game, round: RoundDetails): List<RoundWarning> = RoundValidator.validate(

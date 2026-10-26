@@ -138,23 +138,11 @@ class RoundScorerTest {
     // --- Coffre de Davy Jones ---
 
     @Test
-    fun davyJonesCountsOnlyWithSuccessByDefault() {
+    fun davyJonesCountsOnlyWithSuccess() {
         val ok = RoundScorer.scorePlayer(ScoringMode.CLASSIC, 5, player(1, 1, 1, davyJones = 2), 0)
         assertEquals(20 + 40, ok.total)
         val ko = RoundScorer.scorePlayer(ScoringMode.CLASSIC, 5, player(1, 1, 2, davyJones = 2), 0)
         assertEquals(-10, ko.total)
-    }
-
-    @Test
-    fun davyJonesOptionCountsEvenWhenBidMissed() {
-        val ko = RoundScorer.scorePlayer(
-            ScoringMode.CLASSIC,
-            5,
-            player(1, 1, 2, davyJones = 2),
-            0,
-            davyJonesRequiresSuccess = false,
-        )
-        assertEquals(-10 + 40, ko.total)
     }
 
     // --- Mode Rascal ---

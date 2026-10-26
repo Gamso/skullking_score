@@ -66,7 +66,6 @@ class DataLayerTest {
             playerIds = listOf(ana, bob),
             mode = ScoringMode.CLASSIC,
             expansionCards = setOf(ExpansionCard.SEVENS),
-            davyJonesRequiresSuccess = true,
             firstDealerSeat = 1,
         )
         val roundId = start(gameId, 1)

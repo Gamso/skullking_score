@@ -95,7 +95,7 @@ JaCoCo reports are generated for the unit tests and for the instrumented tests:
 ## Demo data
 
 [`demo/skullking-demo.json`](demo/README.md) contains 12 players and 40 finished games (3 to 8 players, with or
-without the expansion, in the three modes). Import it from **History → Import**; the procedure and how to regenerate
+without the expansion, in the three modes). Import it from **History → Import**. The procedure and how to regenerate
 it are described in [`demo/README.md`](demo/README.md).
 
 ## Continuous integration

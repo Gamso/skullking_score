@@ -79,7 +79,6 @@ data class SetupUiState(
     val mode: ScoringMode = ScoringMode.CLASSIC,
     val expansionEnabled: Boolean = false,
     val chosenCards: Set<ExpansionCard> = emptySet(),
-    val davyJonesRequiresSuccess: Boolean = true,
     /** Seat of the dealer of the first round within [selected]. */
     val firstDealerSeat: Int = 0,
 ) {
@@ -104,7 +103,6 @@ private data class SetupInput(
     val mode: ScoringMode = ScoringMode.CLASSIC,
     val expansionEnabled: Boolean = false,
     val chosenCards: Set<ExpansionCard> = emptySet(),
-    val davyJonesRequiresSuccess: Boolean = true,
     val firstDealerSeat: Int = 0,
 )
 
@@ -124,7 +122,6 @@ class SetupViewModel @Inject constructor(private val players: PlayerRepository, 
             mode = input.mode,
             expansionEnabled = input.expansionEnabled,
             chosenCards = input.chosenCards,
-            davyJonesRequiresSuccess = input.davyJonesRequiresSuccess,
             firstDealerSeat = input.firstDealerSeat.coerceIn(0, maxOf(selected.size - 1, 0)),
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SetupUiState())
@@ -174,8 +171,6 @@ class SetupViewModel @Inject constructor(private val players: PlayerRepository, 
         it.copy(chosenCards = if (enabled) it.chosenCards + card else it.chosenCards - card)
     }
 
-    fun setDavyJonesRequiresSuccess(value: Boolean) = input.update { it.copy(davyJonesRequiresSuccess = value) }
-
     fun start(onCreated: (Long) -> Unit) {
         val current = state.value
         if (!current.canStart) return
@@ -184,7 +179,6 @@ class SetupViewModel @Inject constructor(private val players: PlayerRepository, 
                 playerIds = current.selected.map { it.id },
                 mode = current.mode,
                 expansionCards = current.effectiveCards,
-                davyJonesRequiresSuccess = current.davyJonesRequiresSuccess,
                 firstDealerSeat = current.firstDealerSeat,
             )
             onCreated(id)
@@ -351,31 +345,6 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
                             enabled = available,
                             onCheckedChange = { viewModel.setCard(card, it) },
                         )
-                    }
-                }
-                if (ExpansionCard.DAVY_JONES_CHEST in state.effectiveCards) {
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    stringResource(R.string.setup_dj_requires_success),
-                                    style = MaterialTheme.typography.titleMedium,
-                                )
-                                Text(
-                                    stringResource(R.string.setup_dj_requires_success_desc),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                            Switch(
-                                checked = state.davyJonesRequiresSuccess,
-                                onCheckedChange = viewModel::setDavyJonesRequiresSuccess,
-                            )
-                        }
                     }
                 }
             }

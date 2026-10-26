@@ -37,7 +37,7 @@ class DomainTest {
         status: GameStatus = GameStatus.FINISHED,
         mode: ScoringMode = ScoringMode.CLASSIC,
         startedAt: Long = 1_700_000_000_000,
-    ) = Game(10, "g-10", startedAt, null, mode, emptySet(), status, true, listOf(lea, tom, ines))
+    ) = Game(10, "g-10", startedAt, null, mode, emptySet(), status, listOf(lea, tom, ines))
 
     private fun entry(
         roundId: Long,

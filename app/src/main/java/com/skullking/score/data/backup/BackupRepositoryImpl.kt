@@ -132,7 +132,6 @@ class BackupRepositoryImpl @Inject constructor(
                                 }.toSet(),
                             ),
                             status = GameStatus.valueOf(g.status).name,
-                            davyJonesRequiresSuccess = g.davyJonesRequiresSuccess,
                             firstDealerSeat = g.firstDealerSeat,
                         ),
                     )

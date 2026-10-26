@@ -30,8 +30,6 @@ data class Game(
     val mode: ScoringMode,
     val expansionCards: Set<ExpansionCard>,
     val status: GameStatus,
-    /** Option on the open rule point: the +20 of Davy Jones' Locker requires a successful bid. */
-    val davyJonesRequiresSuccess: Boolean,
     /** Players in table order. */
     val players: List<Player>,
     /** Seat of the dealer of the first round; the dealer advances one seat each round. */

@@ -31,7 +31,6 @@ data class GameDto(
     val mode: String,
     val expansionCards: List<String> = emptyList(),
     val status: String,
-    val davyJonesRequiresSuccess: Boolean = true,
     val firstDealerSeat: Int = 0,
     /** Players in table order. */
     val playerUuids: List<String>,

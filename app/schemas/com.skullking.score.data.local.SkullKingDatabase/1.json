@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3f0a667b0db902f065672bf93f95ef3f",
+    "identityHash": "534add41854bbbdfb7ad5e23c27d021f",
     "entities": [
       {
         "tableName": "players",
@@ -65,7 +65,7 @@
       },
       {
         "tableName": "games",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `endedAt` INTEGER, `mode` TEXT NOT NULL, `expansionCards` TEXT NOT NULL, `status` TEXT NOT NULL, `davyJonesRequiresSuccess` INTEGER NOT NULL, `firstDealerSeat` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `startedAt` INTEGER NOT NULL, `endedAt` INTEGER, `mode` TEXT NOT NULL, `expansionCards` TEXT NOT NULL, `status` TEXT NOT NULL, `firstDealerSeat` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -106,12 +106,6 @@
             "fieldPath": "status",
             "columnName": "status",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "davyJonesRequiresSuccess",
-            "columnName": "davyJonesRequiresSuccess",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -718,7 +712,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f0a667b0db902f065672bf93f95ef3f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '534add41854bbbdfb7ad5e23c27d021f')"
     ]
   }
 }

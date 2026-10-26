@@ -53,7 +53,6 @@ object BackupCodec {
             mode = game.mode.name,
             expansionCards = game.expansionCards.sortedBy { it.ordinal }.map { it.name },
             status = game.status.name,
-            davyJonesRequiresSuccess = game.davyJonesRequiresSuccess,
             firstDealerSeat = game.firstDealerSeat,
             playerUuids = game.players.map { it.uuid },
             rounds = rounds.map { r ->
