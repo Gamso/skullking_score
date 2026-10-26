@@ -80,7 +80,7 @@ class GameFlowTest {
     }
 
     @Test
-    fun finishingAGameShowsThePodiumAndPlayAgainKeepsThePlayers() {
+    fun finishingAGameShowsThePodium() {
         val winner = uniqueName("Cleo")
         val other = uniqueName("Dan")
         click(R.string.home_new_game)
@@ -100,12 +100,6 @@ class GameFlowTest {
         click(R.string.scoreboard_finish)
         // "other" made their bid of 0: they win.
         rule.onNodeWithText(text(R.string.end_winner, other)).assertExists()
-
-        click(R.string.replay)
-        rule.onAllNodesWithText(winner).onLast().assertExists()
-        rule.onAllNodesWithText(other).onLast().assertExists()
-        click(R.string.setup_start)
-        rule.onNodeWithText(text(R.string.prepare_start_bids)).assertExists()
     }
 
     @Test

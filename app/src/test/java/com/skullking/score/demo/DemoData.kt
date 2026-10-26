@@ -163,7 +163,6 @@ object DemoData {
             mode = spec.mode,
             expansionCards = spec.expansion,
             status = GameStatus.FINISHED,
-            davyJonesRequiresSuccess = true,
             players = seated,
             firstDealerSeat = index % seated.size,
         )

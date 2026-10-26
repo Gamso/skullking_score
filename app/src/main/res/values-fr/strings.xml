@@ -50,7 +50,7 @@
     <string name="card_zero_fourteen">0/14 (×4)</string>
     <string name="card_wild_15">Wild 15 (singe)</string>
     <string name="card_mary_thorne">Mary Thorne</string>
-    <string name="card_first_mate_con">Le Second (First Mate Con)</string>
+    <string name="card_first_mate_con">Le Second</string>
     <string name="card_davy_jones">Casier de Davy Jones</string>
     <string name="card_plank">Supplice de la planche</string>
     <string name="card_spotted_ray">Raie tachetée</string>
@@ -82,8 +82,6 @@
     <string name="setup_expansion_switch">Jouer avec l’extension</string>
     <string name="setup_expansion_desc">Active les cartes de votre choix, une à une</string>
     <string name="setup_card_removed_two_players">Retirée à 2 joueurs</string>
-    <string name="setup_dj_requires_success">Casier de Davy Jones : annonce réussie requise</string>
-    <string name="setup_dj_requires_success_desc">La règle ne précise pas ce point ; par défaut le +20 suit la règle des bonus</string>
     <string name="setup_start">Commencer la partie</string>
     <string name="setup_hint_min_players">Choisissez au moins 2 joueurs</string>
     <string name="setup_hint_nine_players">Au-delà de 8 joueurs, l’extension est nécessaire</string>
@@ -114,7 +112,7 @@
     <string name="trick_dialog_new">Pli %1$d</string>
     <string name="trick_dialog_edit">Corriger le pli %1$d</string>
     <string name="trick_who_won">Qui a gagné le pli ?</string>
-    <string name="trick_destroyed">Pli détruit (Kraken)</string>
+    <string name="trick_destroyed">Pli détruit (Kraken, ou Baleine / Raie sans carte numérotée)</string>
     <string name="trick_destroyed_short">détruit</string>
     <string name="trick_captured">Cartes gagnées</string>
     <string name="trick_rascal_wager">Pari de Rascal</string>
@@ -270,19 +268,19 @@
     <string name="help_search_clear">Effacer la recherche</string>
     <string name="help_no_results">Aucun résultat pour « %1$s ».</string>
     <string name="help_hierarchy_title">Hiérarchie des cartes</string>
-    <string name="help_hierarchy_body">1. 🏳️ Fuite (drapeau blanc) : perd toujours, sauf si le pli n’est fait que de fuites (la première jouée gagne).\n2. 🟨🟪🟩 Jaune, violet, vert (1 à 14) : la couleur demandée l’emporte sur les autres couleurs.\n3. ⚫ Atout noir (1 à 14) : bat toutes les couleurs.\n4. 🧜‍♀️ Sirènes : battent couleurs et atouts, perdent contre les pirates.\n5. 🏴‍☠️ Pirates : battent les sirènes, perdent contre le Skull King.\n6. 💀 Skull King : bat les pirates, mais perd contre une sirène.\n\nAvec l’extension : Fuite &lt; couleurs &lt; atout noir &lt; sirène &lt; pirates &lt; Second &lt; Skull King &lt; sirène. La sirène bat le Second et le Skull King.</string>
+    <string name="help_hierarchy_body">1. 🏳️ Fuite (drapeau blanc) : perd toujours, sauf si le pli n’est fait que de fuites, de la Tigresse jouée comme une fuite ou de Butins : la première carte jouée gagne alors.\n2. 🟨🟪🟩 Jaune, violet, vert (1 à 14) : la couleur demandée l’emporte sur les autres couleurs.\n3. ⚫ Atout noir (1 à 14) : bat toutes les couleurs.\n4. 🧜‍♀️ Sirènes : battent couleurs et atouts, perdent contre les pirates.\n5. 🏴‍☠️ Pirates : battent les sirènes, perdent contre le Skull King.\n6. 💀 Skull King : bat les pirates, mais perd contre une sirène.\n\nAvec l’extension : Fuite &lt; couleurs &lt; atout noir &lt; sirène &lt; pirates &lt; Second &lt; Skull King &lt; sirène. La sirène bat le Second et le Skull King.</string>
     <string name="help_special_title">Cartes spéciales du jeu de base</string>
-    <string name="help_special_body">• 🐯 La Tigresse : se joue au choix comme pirate ou comme fuite.\n• 🐙 Kraken : détruit le pli, personne ne le gagne. Le pli suivant est entamé par le joueur qui l’aurait gagné sans le Kraken (FAQ officielle).\n• 🐳 Baleine Blanche : annule les cartes spéciales, la plus haute carte numérotée gagne.\n• 💰 Butins : se jouent comme une fuite et lient deux joueurs pour un bonus.\n\nPouvoirs des pirates :\n• **Rosie la Douce** : choisit qui entame le pli suivant, elle-même comprise.\n• **Rascal le Flambeur** : parie 0, 10 ou 20 points, ajoutés si l’annonce est réussie, retranchés sinon.\n• **Will le Bandit** : pioche 2 cartes dans la pioche, puis défausse 2 cartes de sa main.\n• **Juanita Jade** : regarde les cartes non distribuées pour voir celles qui ne sont pas en jeu.\n• **Harry le Géant** : ajuste son annonce de +1 ou −1, ou la laisse telle quelle.\n\n**Harry le Géant** est le seul pirate dont le pouvoir s’utilise aussi au dernier pli (il doit gagner le pli pour l’activer).</string>
+    <string name="help_special_body">• 🐯 La Tigresse : se joue au choix comme pirate ou comme fuite.\n• 🐙 Kraken : détruit le pli, personne ne le gagne.\n!> Le pli suivant est entamé par le joueur qui l’aurait gagné sans le Kraken (FAQ officielle).\n• 🐳 Baleine Blanche : annule les cartes spéciales, la plus haute carte numérotée gagne.\n• 💰 Butin : se joue comme une fuite. Il lie le joueur qui l’a joué au gagnant du pli : si les deux réussissent leur annonce, chacun marque +20.\n> Deux Butins peuvent lier les deux mêmes joueurs : la même alliance peut être faite deux fois et chacun peut marquer jusqu’à +40.\n!> Si un pli commence par un Butin et que toutes les cartes suivantes sont des fuites, le joueur du Butin gagne le pli : aucune alliance n’est formée et aucun bonus n’est accordé.</string>
     <string name="help_points_title">Points (mode classique)</string>
-    <string name="help_points_body">• Annonce ≥ 1 réussie : +20 par pli annoncé.\n• Annonce ≥ 1 ratée : −10 par pli d’écart.\n• Annonce 0 réussie : +10 × nombre de cartes de la manche.\n• Annonce 0 ratée : −10 × nombre de cartes de la manche.\n\nLe Kraken et une Tigresse jouée en fuite ne rapportent rien. Harry le Géant change l’annonce finale : corrigez-la dans l’écran des résultats.</string>
-    <string name="help_bonus_title">Bonus (seulement si l’annonce est réussie)</string>
-    <string name="help_bonus_body">• 🟨🟪🟩 14 de couleur capturé : +10 chacun\n• ⚫ 14 noir capturé : +20\n• 🧜‍♀️ Sirène capturée par un pirate : +20 chacune\n• 🏴‍☠️ Pirate capturé par le Skull King : +30 chacun\n• 💀 Skull King capturé par une sirène : +40\n• 💰 Butin : +20 si le joueur du Butin et le gagnant du pli réussissent tous deux\n• 🎲 Pari de Rascal : +mise si l’annonce est exacte, −mise sinon (0, 10 ou 20) — le seul terme compté même sur une annonce ratée</string>
+    <string name="help_points_body">• Annonce ≥ 1 réussie : +20 par pli annoncé.\n• Annonce ≥ 1 ratée : −10 par pli d’écart.\n• Annonce 0 réussie : +10 × nombre de cartes de la manche.\n• Annonce 0 ratée : −10 × nombre de cartes de la manche.</string>
+    <string name="help_bonus_title">Bonus</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 14 de couleur capturé : +10 chacun\n• ⚫ 14 noir capturé : +20\n• 🧜‍♀️ Sirène capturée par un pirate : +20 chacune\n• 🏴‍☠️ Pirate capturé par le Skull King : +30 chacun\n• 💀 Skull King capturé par une sirène : +40\n• 💰 Butin : +20 si le joueur du Butin et le gagnant du pli réussissent tous deux\n• 🎲 Pari de Rascal : +mise si l’annonce est exacte, −mise sinon (0, 10 ou 20) — le seul terme compté même sur une annonce ratée\n!> Les points bonus ne sont comptabilisés que si l’annonce est réussie.</string>
     <string name="help_modes_title">Les modes de calcul</string>
-    <string name="help_modes_body">• Classique : voir ci-dessus.\n• Rascal (« Coup direct ») : 10 × N points avec l’annonce exacte plus tous les bonus ; 5 × N avec un écart de 1 plus la moitié des bonus ; 0 au-delà. Le Butin et le pari de Rascal exigent toujours une annonce exacte.\n• 💣 Rascal + Boulet de canon : chaque joueur peut miser « tout ou rien » sur son annonce : 15 × N points plus les bonus si elle est exacte, 0 sinon. Sans mise, le joueur est compté comme en Rascal.\n\nN est le nombre de cartes distribuées dans la manche.</string>
+    <string name="help_modes_body">• Classique : voir ci-dessus.\n• Rascal (« Coup direct ») :\n-- annonce exacte : 10 × N points plus tous les bonus\n-- écart de 1 : 5 × N points plus la moitié des bonus\n-- écart plus grand : 0 point\n• 💣 Rascal + Boulet de canon : chaque joueur peut miser « tout ou rien » sur son annonce :\n-- annonce exacte : 15 × N points plus les bonus\n-- sinon : 0 point\n-- sans mise : le calcul Rascal ci-dessus s’applique\n> N est le nombre de cartes distribuées dans la manche.</string>
     <string name="help_expansion_title">Extension 2026</string>
-    <string name="help_expansion_body">• 7 capturé : −5 chacun · 8 capturé : +5 chacun (annonce réussie).\n• 0/14 et 🐵 Wild 15 : aucun bonus.\n• {con} Le Second (First Mate Con) : bat tous les pirates, perd contre les sirènes et le Skull King. Capturé par le Skull King ou une sirène : +30. Il ne rapporte rien pour les pirates capturés.\n• 🏴‍☠️ Mary Thorne : compte comme un pirate (+30 si capturée par le Skull King, +20 par sirène capturée).\n• {davy} Casier de Davy Jones : ne gagne pas, détruit tous les monstres marins du pli (🐙 🐳 {ray}) : +20 par monstre pour son joueur.\n• 🦈 Supplice de la planche : retire un pirate du pli ; il ne rapporte aucun bonus.\n• {ray} Raie tachetée : monstre marin, comme le Kraken et la Baleine Blanche. Elle ne gagne pas le pli : la plus basse carte du pli l’emporte. Elle ne rapporte aucun bonus, et le Casier de Davy Jones peut la détruire (+20).\n• 💥 Dernière salve : ne gagne pas ; son joueur joue une 2e carte puis saute le dernier pli.\n\nÀ 2 joueurs, le Wild 15, le Supplice de la planche et les 0/14 sont retirés.</string>
+    <string name="help_expansion_body">• 7 capturé : −5 chacun\n• 8 capturé : +5 chacun\n• 0/14 et 🐵 Wild 15 : aucun bonus.\n• {con} Le Second : bat tous les pirates, perd contre les sirènes et le Skull King. Capturé par le Skull King ou une sirène : +30. Il ne rapporte rien pour les pirates capturés.\n• 🏴‍☠️ Mary Thorne : compte comme un pirate (+30 si capturée par le Skull King, +20 par sirène capturée).\n• {davy} Casier de Davy Jones : ne gagne pas, détruit tous les monstres marins du pli (🐙 🐳 {ray}) : +20 par monstre pour son joueur.\n• 🦈 Supplice de la planche : retire un pirate du pli. Il ne rapporte aucun bonus.\n• {ray} Raie tachetée : monstre marin, comme le Kraken et la Baleine Blanche. Elle ne gagne pas le pli : la plus basse carte du pli l’emporte. Elle ne rapporte aucun bonus, et le Casier de Davy Jones peut la détruire (+20).\n• 💥 Dernière salve : ne gagne pas. Son joueur joue une 2e carte puis saute le dernier pli.\n!> Comme les autres bonus, ceux de l’extension ne comptent que si l’annonce est réussie.\n> À 2 joueurs, le Wild 15, le Supplice de la planche et les 0/14 sont retirés.</string>
     <string name="help_faq_title">FAQ</string>
-    <string name="help_faq_body">• Les plis ne totalisent pas le nombre de cartes ? Un pli peut être détruit (Kraken) ou composé de cartes spéciales seules : indiquez-le en « plis défaussés ». L’application ne vérifie pas qui a gagné chaque pli, elle signale seulement les incohérences, sans jamais vous bloquer.\n• Une erreur sur une manche passée ? Touchez sa case dans le tableau des scores puis « Corriger la manche ».\n• Pas de réseau ? Aucun souci, l’application fonctionne entièrement hors ligne.</string>
+    <string name="help_faq_body">• Les plis ne totalisent pas le nombre de cartes ? Un pli peut être détruit (Kraken, ou Baleine / Raie sans carte numérotée) ou composé de cartes spéciales seules : indiquez-le en « plis défaussés ». L’application ne vérifie pas qui a gagné chaque pli, elle signale seulement les incohérences, sans jamais vous bloquer.\n• Une erreur sur une manche passée ? Touchez sa case dans le tableau des scores puis « Corriger la manche ».\n• Pas de réseau ? Aucun souci, l’application fonctionne entièrement hors ligne.</string>
 
     <!-- V2: game comfort and settings -->
     <string name="settings_title">Réglages</string>
@@ -301,7 +299,7 @@
     <string name="settings_backup_failed">La dernière sauvegarde a échoué. Vérifiez que le dossier est toujours disponible.</string>
     <string name="settings_restore">Restaurer depuis une sauvegarde</string>
     <string name="settings_about">À propos</string>
-    <string name="settings_about_text">Compteur de points Skull King hors ligne. Aucun compte, aucune donnée collectée. Licence MIT.</string>
+    <string name="settings_about_text">Compteur de points pour le Skull King. Licence MIT.</string>
     <string name="undo_bid">annonce de %1$s</string>
     <string name="undo_cannonball">boulet de canon de %1$s</string>
     <string name="undo_trick">pli %1$s</string>
@@ -311,7 +309,6 @@
     <string name="dealer_label">Donneur : %1$s</string>
     <string name="setup_draw_dealer">Tirer le donneur</string>
     <string name="setup_dealer_badge">Donneur</string>
-    <string name="replay">Rejouer</string>
 
     <!-- V2 : jalon 1, partage -->
     <string name="share_title">Partager</string>
@@ -406,7 +403,7 @@
     <string name="setup_dealer_hint">Listez les joueurs dans l’ordre de la table, puis touchez 🃏 sur celui qui donne en premier.</string>
     <string name="share_curve">Courbe de score</string>
     <string name="stats_bias_balanced">Équilibrée</string>
-    <string name="stats_bias_help">Compare les plis gagnés à l’annonce, manche après manche : sous-annoncer, c’est gagner plus de plis que prévu ; sur-annoncer, en gagner moins.</string>
+    <string name="stats_bias_help">Compare les plis gagnés à l’annonce, manche après manche : sous-annoncer, c’est gagner plus de plis que prévu. Sur-annoncer, en gagner moins.</string>
     <string name="mode_classic_short">Classique</string>
     <string name="mode_rascal_short">Rascal</string>
     <string name="mode_cannonball_short">Rascal + Boulet</string>
@@ -454,4 +451,24 @@
     <string name="cards_expansion_without">Jeu de base</string>
     <string name="cards_expansion_points">Points par joueur et par manche</string>
     <string name="cards_expansion_wins">Plis gagnés par les cartes de l’extension</string>
+    <string name="help_monsters_title">Monstres marins : comment la manche continue</string>
+    <string name="help_monsters_body">• **En jouer un** : un monstre marin (🐙 Kraken, 🐳 Baleine Blanche, {ray} Raie tachetée) est une carte spéciale : il se joue à tout moment, même si vous pouviez fournir la couleur. Le pli est résolu quand tout le monde a joué.\n!> Jouer un monstre ne change rien pour les autres joueurs : ils doivent toujours fournir la couleur demandée (ou jouer une carte spéciale). Les couleurs ne sont ignorées qu’à la résolution du pli.\n• 🐙 **Kraken** : personne ne gagne le pli, ses cartes sont défaussées et aucun bonus n’est marqué (saisissez-le comme « pli détruit »).\n!> Le joueur qui aurait gagné le pli sans le Kraken entame le pli suivant (FAQ officielle).\n• 🐳 **Baleine Blanche** : toutes les cartes spéciales du pli (Skull King, pirates, sirènes, Kraken…) comptent comme des fuites, et les cartes numérotées perdent leur couleur : couleurs et atout noir ne comptent plus, seules les valeurs comptent. Le plus grand numéro gagne (le premier joué en cas d’égalité), et son joueur entame le pli suivant.\n!> S’il n’y a aucune carte numérotée, le pli est détruit comme avec le Kraken, et le joueur qui a joué la Baleine Blanche entame le pli suivant.\n• {ray} **Raie tachetée** (extension) : elle fonctionne exactement comme la Baleine Blanche, sauf que c’est le plus petit numéro qui gagne au lieu du plus grand.\n• 🐙 🐳 {ray} **Plusieurs monstres dans le même pli** : seul le dernier monstre joué fait effet.\n> Celui qui gagne un pli entame normalement le suivant. Les exceptions sont un pli détruit (personne ne le gagne) et Rosie la Douce, qui choisit qui entame.</string>
+    <string name="help_pirates_title">Pouvoirs des pirates</string>
+    <string name="help_pirates_body">• **Rosie la Douce** : choisit qui entame le pli suivant, elle-même comprise.\n• **Rascal le Flambeur** : parie 0, 10 ou 20 points, ajoutés si l’annonce est réussie, retranchés sinon.\n• **Will le Bandit** : pioche 2 cartes dans la pioche, puis défausse 2 cartes de sa main.\n• **Juanita Jade** : regarde les cartes non distribuées pour voir celles qui ne sont pas en jeu.\n• **Harry le Géant** : ajuste son annonce de +1 ou −1, ou la laisse telle quelle.\n• **Mary Thorne** (extension) : si elle gagne le pli, son joueur tire au hasard, sans la regarder, une carte de la main d’un joueur quelconque (la sienne comprise). Ce joueur doit la jouer au pli suivant, quelle que soit la couleur demandée.\n> Harry le Géant est le seul pirate dont le pouvoir s’utilise aussi au dernier pli (il doit gagner le pli pour l’activer).</string>
+    <string name="help_note">Note</string>
+    <string name="hier_skull_king">Skull King</string>
+    <string name="hier_skull_king_sub">Bat toutes les cartes sauf les sirènes.</string>
+    <string name="hier_con">Le Second (extension)</string>
+    <string name="hier_con_sub">Bat les pirates. Perd contre le Skull King et les sirènes.</string>
+    <string name="hier_pirates">Pirates</string>
+    <string name="hier_pirates_sub">Battent toutes les cartes sauf le Skull King et le Second.</string>
+    <string name="hier_mermaids">Sirènes</string>
+    <string name="hier_mermaids_sub">Battent toutes les cartes numérotées, le Skull King et le Second.</string>
+    <string name="hier_black">Atout noir</string>
+    <string name="hier_black_sub">Bat toutes les couleurs. Le plus grand atout gagne.</string>
+    <string name="hier_suits">Couleurs</string>
+    <string name="hier_suits_sub">Jaune, violet, vert : le plus grand nombre de la couleur demandée gagne.</string>
+    <string name="hier_escape">Fuite</string>
+    <string name="hier_escape_sub">Perd toujours. Si le pli n’est fait que de fuites, de la Tigresse jouée comme une fuite ou de Butins, la première carte jouée gagne.</string>
+    <string name="help_remark">Remarque</string>
 </resources>

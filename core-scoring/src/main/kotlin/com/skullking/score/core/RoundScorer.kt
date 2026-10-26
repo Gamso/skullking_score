@@ -49,9 +49,6 @@ object RoundScorer {
     /**
      * Computes the scores of all players of a round. The result does not depend on the order
      * of the players nor of the Loots.
-     *
-     * @param davyJonesRequiresSuccess open rule point: the +20 of the Locker only counts
-     * if the bid is successful (default), or always if `false`.
      */
     fun scoreRound(
         mode: ScoringMode,
@@ -59,7 +56,6 @@ object RoundScorer {
         inputs: List<PlayerRoundInput>,
         loots: List<LootPair> = emptyList(),
         ruleSet: RuleSet = RuleSet(),
-        davyJonesRequiresSuccess: Boolean = true,
     ): Map<Long, ScoreBreakdown> {
         val byId = inputs.associateBy { it.playerId }
         // A Loot is only valid if both linked players make their bid (exactly).
@@ -70,7 +66,7 @@ object RoundScorer {
             val lootCount = validLoots.count {
                 it.lootPlayerId == input.playerId || it.trickWinnerId == input.playerId
             }
-            input.playerId to scorePlayer(mode, cardsDealt, input, lootCount, ruleSet, davyJonesRequiresSuccess)
+            input.playerId to scorePlayer(mode, cardsDealt, input, lootCount, ruleSet)
         }
     }
 
@@ -80,7 +76,6 @@ object RoundScorer {
         input: PlayerRoundInput,
         lootCount: Int,
         ruleSet: RuleSet = RuleSet(),
-        davyJonesRequiresSuccess: Boolean = true,
     ): ScoreBreakdown {
         val n = cardsDealt
         val bid = input.finalBid
@@ -89,9 +84,6 @@ object RoundScorer {
         val lines = bonusLines(input, lootCount, ruleSet)
         val bonusFull = lines.sumOf { it.points }
         val lootPoints = lines.filter { it.type == BonusType.LOOT }.sumOf { it.points }
-        val davyJonesPoints = lines.filter { it.type == BonusType.DAVY_JONES }.sumOf { it.points }
-        // Option: Davy Jones' Locker pays even on a missed bid.
-        val salvaged = if (davyJonesRequiresSuccess) 0 else davyJonesPoints
 
         fun rascalBase(): Pair<Int, Int> = when (diff) {
             0 -> ruleSet.rascalExactPerCard * n to bonusFull
@@ -101,15 +93,15 @@ object RoundScorer {
                 ruleSet.rascalOffByOnePerCard * n to
                     (bonusFull - lootPoints) * ruleSet.rascalOffByOneBonusPercent / PERCENT
 
-            else -> 0 to salvaged
+            else -> 0 to 0
         }
 
         val (base, applied) = when (mode) {
             ScoringMode.CLASSIC -> when {
                 bid == 0 && diff == 0 -> ruleSet.zeroBidPerCard * n to bonusFull
-                bid == 0 -> -ruleSet.zeroBidPerCard * n to salvaged
+                bid == 0 -> -ruleSet.zeroBidPerCard * n to 0
                 diff == 0 -> ruleSet.exactPerTrick * bid to bonusFull
-                else -> -ruleSet.missPerTrick * diff to salvaged
+                else -> -ruleSet.missPerTrick * diff to 0
             }
 
             ScoringMode.RASCAL -> rascalBase()
@@ -120,7 +112,7 @@ object RoundScorer {
                 } else if (diff == 0) {
                     ruleSet.cannonballPerCard * n to bonusFull
                 } else {
-                    0 to salvaged
+                    0 to 0
                 }
         }
 

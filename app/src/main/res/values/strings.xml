@@ -82,8 +82,6 @@
     <string name="setup_expansion_switch">Play with the expansion</string>
     <string name="setup_expansion_desc">Enable the cards you want, one by one</string>
     <string name="setup_card_removed_two_players">Removed with 2 players</string>
-    <string name="setup_dj_requires_success">Davy Jones’ Locker: bid must succeed</string>
-    <string name="setup_dj_requires_success_desc">The rules don’t say; by default the +20 follows the bonus rule</string>
     <string name="setup_start">Start the game</string>
     <string name="setup_hint_min_players">Pick at least 2 players</string>
     <string name="setup_hint_nine_players">Beyond 8 players, the expansion is required</string>
@@ -114,7 +112,7 @@
     <string name="trick_dialog_new">Trick %1$d</string>
     <string name="trick_dialog_edit">Correct trick %1$d</string>
     <string name="trick_who_won">Who won the trick?</string>
-    <string name="trick_destroyed">Destroyed trick (Kraken)</string>
+    <string name="trick_destroyed">Destroyed trick (Kraken, or White Whale / Spotted Ray with no numbered card)</string>
     <string name="trick_destroyed_short">destroyed</string>
     <string name="trick_captured">Cards won</string>
     <string name="trick_rascal_wager">Rascal’s wager</string>
@@ -270,19 +268,19 @@
     <string name="help_search_clear">Clear search</string>
     <string name="help_no_results">No results for “%1$s”.</string>
     <string name="help_hierarchy_title">Card hierarchy</string>
-    <string name="help_hierarchy_body">1. 🏳️ Escape (white flag): always loses, unless the trick is only escapes (the first one played wins).\n2. 🟨🟪🟩 Yellow, purple, green (1 to 14): the suit led beats the other suits.\n3. ⚫ Black trump (Jolly Roger, 1 to 14): beats all suits.\n4. 🧜‍♀️ Mermaids: beat suits and trumps, lose to pirates.\n5. 🏴‍☠️ Pirates: beat mermaids, lose to the Skull King.\n6. 💀 Skull King: beats pirates, but loses to a mermaid.\n\nWith the expansion: Escape &lt; suits &lt; black trump &lt; mermaid &lt; pirates &lt; First Mate Con &lt; Skull King &lt; mermaid. A mermaid beats both First Mate Con and the Skull King.</string>
+    <string name="help_hierarchy_body">1. 🏳️ Escape (white flag): always loses, unless the trick is only escapes, the Tigress played as an escape or Loots: then the first card played wins.\n2. 🟨🟪🟩 Yellow, purple, green (1 to 14): the suit led beats the other suits.\n3. ⚫ Black trump (Jolly Roger, 1 to 14): beats all suits.\n4. 🧜‍♀️ Mermaids: beat suits and trumps, lose to pirates.\n5. 🏴‍☠️ Pirates: beat mermaids, lose to the Skull King.\n6. 💀 Skull King: beats pirates, but loses to a mermaid.\n\nWith the expansion: Escape &lt; suits &lt; black trump &lt; mermaid &lt; pirates &lt; First Mate Con &lt; Skull King &lt; mermaid. A mermaid beats both First Mate Con and the Skull King.</string>
     <string name="help_special_title">Base game special cards</string>
-    <string name="help_special_body">• 🐯 Tigress: played as either a pirate or an escape.\n• 🐙 Kraken: destroys the trick, nobody wins it. The next trick is led by the player who would have won without the Kraken (official FAQ).\n• 🐳 White Whale: cancels special cards, the highest numbered card wins.\n• 💰 Loot: played like an escape, links two players for a bonus.\n\nPirate abilities:\n• **Rosie D’Laney**: picks who leads next, including herself.\n• **Rascal of Roatan**: bids 0, 10 or 20 points, added if the bid is made, subtracted if not.\n• **Bendt the Bandit**: draws 2 cards from the draw pile, then discards 2 from their hand.\n• **Juanita Jade**: views the undealt cards to see what is not in play.\n• **Harry the Giant**: adjusts their bid by +1 or −1, or leaves it alone.\n\n**Harry the Giant** is the only pirate whose ability also works on the final trick (he must win the trick to activate it).</string>
+    <string name="help_special_body">• 🐯 Tigress: played as either a pirate or an escape.\n• 🐙 Kraken: destroys the trick, nobody wins it.\n!> The next trick is led by the player who would have won it without the Kraken (official FAQ).\n• 🐳 White Whale: cancels special cards, the highest numbered card wins.\n• 💰 Loot: played like an escape. It links the player who played it with the winner of the trick: if both make their bid, each of them scores +20.\n> Two Loots can link the same two players: the same alliance can be made twice and each of them can score up to +40.\n!> If a trick starts with a Loot and all the following cards are escapes, the player of the Loot wins the trick: no alliance is formed and no bonus is scored.</string>
     <string name="help_points_title">Points (classic mode)</string>
-    <string name="help_points_body">• Bid ≥ 1 made: +20 per bid trick.\n• Bid ≥ 1 missed: −10 per trick off.\n• Zero bid made: +10 × number of cards in the round.\n• Zero bid missed: −10 × number of cards in the round.\n\nThe Kraken and a Tigress played as an escape score nothing. Harry the Giant changes the final bid: fix it on the results screen.</string>
-    <string name="help_bonus_title">Bonuses (only if the bid is made)</string>
-    <string name="help_bonus_body">• 🟨🟪🟩 Suit 14 captured: +10 each\n• ⚫ Black 14 captured: +20\n• 🧜‍♀️ Mermaid captured by a pirate: +20 each\n• 🏴‍☠️ Pirate captured by the Skull King: +30 each\n• 💀 Skull King captured by a mermaid: +40\n• 💰 Loot: +20 if the Loot player and the trick winner both make their bid\n• 🎲 Rascal wager: +wager if the bid is exact, −wager otherwise (0, 10 or 20) — the only term counted even on a missed bid</string>
+    <string name="help_points_body">• Bid ≥ 1 made: +20 per bid trick.\n• Bid ≥ 1 missed: −10 per trick off.\n• Zero bid made: +10 × number of cards in the round.\n• Zero bid missed: −10 × number of cards in the round.</string>
+    <string name="help_bonus_title">Bonuses</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 Suit 14 captured: +10 each\n• ⚫ Black 14 captured: +20\n• 🧜‍♀️ Mermaid captured by a pirate: +20 each\n• 🏴‍☠️ Pirate captured by the Skull King: +30 each\n• 💀 Skull King captured by a mermaid: +40\n• 💰 Loot: +20 if the Loot player and the trick winner both make their bid\n• 🎲 Rascal wager: +wager if the bid is exact, −wager otherwise (0, 10 or 20) — the only term counted even on a missed bid\n!> Bonus points only count if the bid is made.</string>
     <string name="help_modes_title">Scoring modes</string>
-    <string name="help_modes_body">• Classic: see above.\n• Rascal (“Direct hit”): 10 × N points with an exact bid plus all bonuses; 5 × N when off by one plus half the bonuses; 0 beyond. Loot and Rascal’s wager always require an exact bid.\n• 💣 Rascal + Cannonball: each player can go “all or nothing” on their bid: 15 × N points plus bonuses if it is exact, 0 otherwise. Without the wager, the player is scored as in Rascal.\n\nN is the number of cards dealt in the round.</string>
+    <string name="help_modes_body">• Classic: see above.\n• Rascal (“Direct hit”):\n-- exact bid: 10 × N points plus all bonuses\n-- off by one: 5 × N points plus half the bonuses\n-- off by more: 0 points\n• 💣 Rascal + Cannonball: each player can go “all or nothing” on their bid:\n-- exact bid: 15 × N points plus bonuses\n-- otherwise: 0 points\n-- no wager: the Rascal scoring above applies\n> N is the number of cards dealt in the round.</string>
     <string name="help_expansion_title">2026 expansion</string>
-    <string name="help_expansion_body">• 7 captured: −5 each · 8 captured: +5 each (bid made).\n• 0/14 and 🐵 Wild 15: no bonus.\n• {con} First Mate Con: beats all pirates, loses to mermaids and the Skull King. Captured by the Skull King or a mermaid: +30. Scores nothing for captured pirates.\n• 🏴‍☠️ Mary Thorne: counts as a pirate (+30 if captured by the Skull King, +20 per mermaid captured).\n• {davy} Davy Jones’ Locker: doesn’t win, destroys all sea monsters in the trick (🐙 🐳 {ray}): +20 per monster for its player.\n• 🦈 Walk the Plank: removes a pirate from the trick; it scores no bonus.\n• {ray} Spotted Ray: a sea monster, like the Kraken and the White Whale. It doesn’t win the trick: the lowest card in the trick wins. It scores no bonus, and Davy Jones’ Locker can destroy it (+20).\n• 💥 Last Salvo: doesn’t win; its player plays a 2nd card then skips the last trick.\n\nWith 2 players, Wild 15, Walk the Plank and the 0/14s are removed.</string>
+    <string name="help_expansion_body">• 7 captured: −5 each\n• 8 captured: +5 each\n• 0/14 and 🐵 Wild 15: no bonus.\n• {con} First Mate Con: beats all pirates, loses to mermaids and the Skull King. Captured by the Skull King or a mermaid: +30. Scores nothing for captured pirates.\n• 🏴‍☠️ Mary Thorne: counts as a pirate (+30 if captured by the Skull King, +20 per mermaid captured).\n• {davy} Davy Jones’ Locker: doesn’t win, destroys all sea monsters in the trick (🐙 🐳 {ray}): +20 per monster for its player.\n• 🦈 Walk the Plank: removes a pirate from the trick. It scores no bonus.\n• {ray} Spotted Ray: a sea monster, like the Kraken and the White Whale. It doesn’t win the trick: the lowest card in the trick wins. It scores no bonus, and Davy Jones’ Locker can destroy it (+20).\n• 💥 Last Salvo: doesn’t win. Its player plays a 2nd card then skips the last trick.\n!> Like the other bonuses, the expansion ones only count if the bid is made.\n> With 2 players, Wild 15, Walk the Plank and the 0/14s are removed.</string>
     <string name="help_faq_title">FAQ</string>
-    <string name="help_faq_body">• Tricks don’t add up to the number of cards? A trick can be destroyed (Kraken) or made only of special cards: enter it as a “discarded trick”. The app doesn’t check who won each trick, it only flags inconsistencies and never blocks you.\n• A mistake in a past round? Tap its cell in the scoreboard, then “Correct the round”.\n• No network? No problem, the app works entirely offline.</string>
+    <string name="help_faq_body">• Tricks don’t add up to the number of cards? A trick can be destroyed (Kraken, or White Whale / Spotted Ray with no numbered card) or made only of special cards: enter it as a “discarded trick”. The app doesn’t check who won each trick, it only flags inconsistencies and never blocks you.\n• A mistake in a past round? Tap its cell in the scoreboard, then “Correct the round”.\n• No network? No problem, the app works entirely offline.</string>
 
     <!-- V2: game comfort and settings -->
     <string name="settings_title">Settings</string>
@@ -301,7 +299,7 @@
     <string name="settings_backup_failed">The last backup failed. Check that the folder is still available.</string>
     <string name="settings_restore">Restore from a backup</string>
     <string name="settings_about">About</string>
-    <string name="settings_about_text">Offline Skull King score counter. No account, no data collected. MIT licence.</string>
+    <string name="settings_about_text">Skull King score counter. MIT licence.</string>
     <string name="undo_bid">bid of %1$s</string>
     <string name="undo_cannonball">cannonball of %1$s</string>
     <string name="undo_trick">trick %1$s</string>
@@ -311,7 +309,6 @@
     <string name="dealer_label">Dealer: %1$s</string>
     <string name="setup_draw_dealer">Draw the dealer</string>
     <string name="setup_dealer_badge">Dealer</string>
-    <string name="replay">Play again</string>
 
     <!-- V2 : jalon 1, partage -->
     <string name="share_title">Share</string>
@@ -454,4 +451,24 @@
     <string name="cards_expansion_without">Base game</string>
     <string name="cards_expansion_points">Points per player and round</string>
     <string name="cards_expansion_wins">Tricks won by expansion cards</string>
+    <string name="help_monsters_title">Sea monsters: how play continues</string>
+    <string name="help_monsters_body">• **Playing one**: a sea monster (🐙 Kraken, 🐳 White Whale, {ray} Spotted Ray) is a special card: it can be played at any time, even if you could follow the suit. The trick is resolved once everyone has played.\n!> Playing a monster changes nothing about what the other players must play: they still have to follow the suit led (or play a special card). The colors are only ignored when the trick is resolved.\n• 🐙 **Kraken**: nobody wins the trick, its cards are discarded and no bonus is scored (enter it as a “destroyed trick”).\n!> The player who would have won the trick without the Kraken leads the next trick (official FAQ).\n• 🐳 **White Whale**: every special card in the trick (Skull King, pirates, mermaids, Kraken…) counts as an escape, and the numbered cards lose their suit: colors and the black trump no longer matter, only the numbers do. The highest number wins (the first one played in case of a tie), and its player leads the next trick.\n!> If there is no numbered card, the trick is destroyed like with the Kraken, and the player who played the White Whale leads the next trick.\n• {ray} **Spotted Ray** (expansion): it works exactly like the White Whale, except that the lowest number wins instead of the highest.\n• 🐙 🐳 {ray} **Several monsters in the same trick**: only the last monster played takes effect.\n> Whoever wins a trick normally leads the next one. The exceptions are a destroyed trick (nobody wins it) and Rosie D’Laney, who chooses who leads.</string>
+    <string name="help_pirates_title">Pirate abilities</string>
+    <string name="help_pirates_body">• **Rosie D’Laney**: picks who leads next, including herself.\n• **Rascal of Roatan**: bids 0, 10 or 20 points, added if the bid is made, subtracted if not.\n• **Bendt the Bandit**: draws 2 cards from the draw pile, then discards 2 from their hand.\n• **Juanita Jade**: views the undealt cards to see what is not in play.\n• **Harry the Giant**: adjusts their bid by +1 or −1, or leaves it alone.\n• **Mary Thorne** (expansion): if she wins the trick, her player randomly picks a card from any player’s hand (their own included) without looking at it. That player must play it in the next trick, whatever the suit led.\n> Harry the Giant is the only pirate whose ability also works on the final trick (he must win the trick to activate it).</string>
+    <string name="help_note">Note</string>
+    <string name="hier_skull_king">Skull King</string>
+    <string name="hier_skull_king_sub">Defeats all cards except the mermaids.</string>
+    <string name="hier_con">First Mate Con (expansion)</string>
+    <string name="hier_con_sub">Defeats the pirates. Loses to the Skull King and to the mermaids.</string>
+    <string name="hier_pirates">Pirates</string>
+    <string name="hier_pirates_sub">Defeat all cards except the Skull King and the First Mate Con.</string>
+    <string name="hier_mermaids">Mermaids</string>
+    <string name="hier_mermaids_sub">Defeat all numbered cards, the Skull King and the First Mate Con.</string>
+    <string name="hier_black">Black trump</string>
+    <string name="hier_black_sub">Defeats all the standard suits. Highest trump wins.</string>
+    <string name="hier_suits">Standard suits</string>
+    <string name="hier_suits_sub">Yellow, purple, green: the highest number of the suit led wins.</string>
+    <string name="hier_escape">Escape</string>
+    <string name="hier_escape_sub">Always loses. If the trick holds only escapes, the Tigress as an escape or Loots, the first card played wins.</string>
+    <string name="help_remark">Remark</string>
 </resources>

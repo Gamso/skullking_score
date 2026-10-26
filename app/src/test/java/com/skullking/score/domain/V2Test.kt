@@ -54,7 +54,7 @@ class V2Test {
         firstDealerSeat: Int = 0,
     ): GameDetails {
         val game = Game(
-            id, "g-$id", startedAt, null, mode, expansion, GameStatus.FINISHED, true, players,
+            id, "g-$id", startedAt, null, mode, expansion, GameStatus.FINISHED, players,
             firstDealerSeat = firstDealerSeat,
         )
         val details = rounds.mapIndexed { index, picks ->

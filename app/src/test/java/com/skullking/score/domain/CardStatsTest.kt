@@ -56,7 +56,13 @@ class CardStatsTest {
         mode: ScoringMode = ScoringMode.CLASSIC,
     ): GameDetails {
         val game = Game(
-            id, "g-$id", 1_000 * id, null, mode, expansion, GameStatus.FINISHED, true,
+            id,
+            "g-$id",
+            1_000 * id,
+            null,
+            mode,
+            expansion,
+            GameStatus.FINISHED,
             listOf(ann, bob, cat),
         )
         val first = RoundDetails(

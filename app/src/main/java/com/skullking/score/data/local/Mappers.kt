@@ -44,7 +44,6 @@ fun GameEntity.toDomain(players: List<Player>) = Game(
     mode = ScoringMode.valueOf(mode),
     expansionCards = decodeExpansion(expansionCards),
     status = GameStatus.valueOf(status),
-    davyJonesRequiresSuccess = davyJonesRequiresSuccess,
     players = players,
     firstDealerSeat = firstDealerSeat,
 )

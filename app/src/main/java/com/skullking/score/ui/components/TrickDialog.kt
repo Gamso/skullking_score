@@ -64,7 +64,8 @@ fun TrickDialog(
     var bonus by remember { mutableStateOf(initial?.bonus ?: Bonus.NONE) }
     var wager by remember { mutableStateOf(initial?.rascalWager ?: 0) }
     var bidAdjustment by remember { mutableStateOf(initial?.bidAdjustment ?: 0) }
-    var card by remember { mutableStateOf(initial?.winningCard) }
+    // "Other" (a numbered card) is the most common case: selected by default once a winner is chosen.
+    var card by remember { mutableStateOf<WinningCard?>(initial?.winningCard ?: WinningCard.OTHER) }
     var pirate by remember { mutableStateOf(initial?.winningPirate) }
 
     var pirateMenu by remember { mutableStateOf(false) }
@@ -97,7 +98,10 @@ fun TrickDialog(
                         FilterChip(
                             selected = choice == player.id,
                             // A second tap deselects: "destroyed trick" can then be chosen.
-                            onClick = { choice = if (choice == player.id) null else player.id },
+                            onClick = {
+                                choice = if (choice == player.id) null else player.id
+                                if (card == null) card = WinningCard.OTHER
+                            },
                             label = { Text(player.name) },
                             leadingIcon = { PlayerAvatar(player, size = 22.dp) },
                         )
@@ -211,7 +215,7 @@ fun TrickDialog(
                             bonus = bonus,
                             rascalWager = wager,
                             bidAdjustment = bidAdjustment,
-                            winningCard = card,
+                            winningCard = card.takeIf { hasWinner },
                             winningPirate = pirate,
                         ),
                     )

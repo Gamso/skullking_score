@@ -28,7 +28,6 @@ data class GameEntity(
     val expansionCards: String,
     /** Name of [com.skullking.score.domain.model.GameStatus]. */
     val status: String,
-    val davyJonesRequiresSuccess: Boolean,
     /** Seat (0 = first player at the table) of the dealer of the first round. */
     val firstDealerSeat: Int = 0,
 )

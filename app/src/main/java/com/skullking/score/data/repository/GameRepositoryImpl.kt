@@ -141,7 +141,6 @@ class GameRepositoryImpl @Inject constructor(
         playerIds: List<Long>,
         mode: ScoringMode,
         expansionCards: Set<ExpansionCard>,
-        davyJonesRequiresSuccess: Boolean,
         firstDealerSeat: Int,
     ): Long = database.withWriteTransaction {
         val gameId = gameDao.insertGame(
@@ -152,7 +151,6 @@ class GameRepositoryImpl @Inject constructor(
                 mode = mode.name,
                 expansionCards = encodeExpansion(expansionCards),
                 status = GameStatus.IN_PROGRESS.name,
-                davyJonesRequiresSuccess = davyJonesRequiresSuccess,
                 firstDealerSeat = firstDealerSeat,
             ),
         )

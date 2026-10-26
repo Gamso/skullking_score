@@ -6,10 +6,9 @@ object Routes {
     const val ARG_GAME_ID = "gameId"
     const val ARG_ROUND_ID = "roundId"
     const val ARG_IMPORT = "import"
-    const val ARG_FROM = "from"
 
     const val HOME = "home"
-    const val SETUP = "setup?$ARG_FROM={$ARG_FROM}"
+    const val SETUP = "setup"
     const val PLAYERS = "players"
     const val HISTORY = "history?$ARG_IMPORT={$ARG_IMPORT}"
     const val STATS = "stats"
@@ -25,7 +24,6 @@ object Routes {
     const val END = "end/{$ARG_GAME_ID}"
     const val SHARE = "share/{$ARG_GAME_ID}"
 
-    fun setup(from: Long? = null) = if (from == null) "setup" else "setup?$ARG_FROM=$from"
     fun history(import: Boolean = false) = if (import) "history?$ARG_IMPORT=true" else "history"
     fun prepare(gameId: Long) = "prepare/$gameId"
     fun bids(gameId: Long, roundId: Long) = "bids/$gameId/$roundId"

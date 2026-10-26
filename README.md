@@ -23,7 +23,7 @@ points (bonuses included) for the chosen scoring mode, replacing the paper score
 - Live trick entry (winner, card, captured cards) that pre-fills the results, with undo / redo
 - Live events (Loot, Davy Jones' Locker) attached to the trick, cancellable log, non-blocking consistency warnings
 - Dealer tracking: the table order is the list order, and the dealer moves on every round
-- Game history with search and filters, expandable cards, "play again" with the same players
+- Game history with search and filters, expandable cards
 - Statistics per player and scoring mode: records, trend chart, bid success by round size, favorite card,
   head-to-head between two players, filters by number of players, expansion and players present
 - Card statistics: tricks won by card and pirate, bid success when a card wins, when cards win in a round, captured
@@ -95,7 +95,7 @@ JaCoCo reports are generated for the unit tests and for the instrumented tests:
 ## Demo data
 
 [`demo/skullking-demo.json`](demo/README.md) contains 12 players and 40 finished games (3 to 8 players, with or
-without the expansion, in the three modes). Import it from **History → Import**; the procedure and how to regenerate
+without the expansion, in the three modes). Import it from **History → Import**. The procedure and how to regenerate
 it are described in [`demo/README.md`](demo/README.md).
 
 ## Continuous integration

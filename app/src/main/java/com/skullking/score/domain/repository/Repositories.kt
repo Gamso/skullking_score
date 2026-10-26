@@ -43,7 +43,6 @@ interface GameRepository {
         playerIds: List<Long>,
         mode: ScoringMode,
         expansionCards: Set<ExpansionCard>,
-        davyJonesRequiresSuccess: Boolean,
         firstDealerSeat: Int = 0,
     ): Long
 

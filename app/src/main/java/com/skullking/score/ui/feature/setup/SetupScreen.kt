@@ -42,7 +42,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -61,7 +60,6 @@ import com.skullking.score.ui.components.SectionTitle
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.descriptionRes
 import com.skullking.score.ui.labelRes
-import com.skullking.score.ui.navigation.Routes
 import com.skullking.score.ui.normalizeForSearch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -81,7 +79,6 @@ data class SetupUiState(
     val mode: ScoringMode = ScoringMode.CLASSIC,
     val expansionEnabled: Boolean = false,
     val chosenCards: Set<ExpansionCard> = emptySet(),
-    val davyJonesRequiresSuccess: Boolean = true,
     /** Seat of the dealer of the first round within [selected]. */
     val firstDealerSeat: Int = 0,
 ) {
@@ -106,38 +103,14 @@ private data class SetupInput(
     val mode: ScoringMode = ScoringMode.CLASSIC,
     val expansionEnabled: Boolean = false,
     val chosenCards: Set<ExpansionCard> = emptySet(),
-    val davyJonesRequiresSuccess: Boolean = true,
     val firstDealerSeat: Int = 0,
 )
 
 @HiltViewModel
-class SetupViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    private val players: PlayerRepository,
-    private val games: GameRepository,
-) : ViewModel() {
+class SetupViewModel @Inject constructor(private val players: PlayerRepository, private val games: GameRepository) :
+    ViewModel() {
 
     private val input = MutableStateFlow(SetupInput())
-
-    init {
-        // "Play again": settings and players of the original game, same table order.
-        val from = savedStateHandle.get<Long>(Routes.ARG_FROM) ?: -1L
-        if (from > 0) {
-            viewModelScope.launch {
-                val source = games.getGame(from)?.game ?: return@launch
-                val ids = source.players.filter { !it.archived }.map { it.id }
-                // Same table: only the dealer changes, moving on to the next person.
-                input.value = SetupInput(
-                    selectedIds = ids,
-                    firstDealerSeat = if (ids.isEmpty()) 0 else (source.firstDealerSeat + 1) % ids.size,
-                    mode = source.mode,
-                    expansionEnabled = source.expansionCards.isNotEmpty(),
-                    chosenCards = source.expansionCards,
-                    davyJonesRequiresSuccess = source.davyJonesRequiresSuccess,
-                )
-            }
-        }
-    }
 
     val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input) { all, input ->
         val active = all.filter { !it.archived }
@@ -149,7 +122,6 @@ class SetupViewModel @Inject constructor(
             mode = input.mode,
             expansionEnabled = input.expansionEnabled,
             chosenCards = input.chosenCards,
-            davyJonesRequiresSuccess = input.davyJonesRequiresSuccess,
             firstDealerSeat = input.firstDealerSeat.coerceIn(0, maxOf(selected.size - 1, 0)),
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SetupUiState())
@@ -199,8 +171,6 @@ class SetupViewModel @Inject constructor(
         it.copy(chosenCards = if (enabled) it.chosenCards + card else it.chosenCards - card)
     }
 
-    fun setDavyJonesRequiresSuccess(value: Boolean) = input.update { it.copy(davyJonesRequiresSuccess = value) }
-
     fun start(onCreated: (Long) -> Unit) {
         val current = state.value
         if (!current.canStart) return
@@ -209,7 +179,6 @@ class SetupViewModel @Inject constructor(
                 playerIds = current.selected.map { it.id },
                 mode = current.mode,
                 expansionCards = current.effectiveCards,
-                davyJonesRequiresSuccess = current.davyJonesRequiresSuccess,
                 firstDealerSeat = current.firstDealerSeat,
             )
             onCreated(id)
@@ -376,31 +345,6 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
                             enabled = available,
                             onCheckedChange = { viewModel.setCard(card, it) },
                         )
-                    }
-                }
-                if (ExpansionCard.DAVY_JONES_CHEST in state.effectiveCards) {
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    stringResource(R.string.setup_dj_requires_success),
-                                    style = MaterialTheme.typography.titleMedium,
-                                )
-                                Text(
-                                    stringResource(R.string.setup_dj_requires_success_desc),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                            Switch(
-                                checked = state.davyJonesRequiresSuccess,
-                                onCheckedChange = viewModel::setDavyJonesRequiresSuccess,
-                            )
-                        }
                     }
                 }
             }
