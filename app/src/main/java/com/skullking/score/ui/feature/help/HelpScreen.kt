@@ -372,7 +372,7 @@ private const val MERMAID_ROW = 3
 private fun HierarchyChart() {
     val centers = remember { mutableStateMapOf<Int, Float>() }
     val arrow = MaterialTheme.colorScheme.primary
-    val band = MaterialTheme.colorScheme.surfaceVariant
+    val band = MaterialTheme.colorScheme.surfaceContainerLowest
     val tokenSpecial = MaterialTheme.colorScheme.secondaryContainer
     val tokenPlain = MaterialTheme.colorScheme.surface
     Column(

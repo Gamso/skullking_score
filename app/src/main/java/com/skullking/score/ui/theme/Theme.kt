@@ -13,11 +13,16 @@ private val Gold = Color(0xFFC9A24A)
 private val Crimson = Color(0xFF9E2A2B)
 private val Parchment = Color(0xFFFBF6EC)
 
+// Light theme: parchment surfaces, teal and gold accents. Every role is set (no Material baseline lavender).
 private val LightColors = lightColorScheme(
     primary = Teal,
     onPrimary = Color.White,
+    primaryContainer = Color(0xFFCFE8EA),
+    onPrimaryContainer = Color(0xFF00363B),
     secondary = Gold,
     onSecondary = Navy,
+    secondaryContainer = Color(0xFFF1E2B8),
+    onSecondaryContainer = Color(0xFF3A2A00),
     tertiary = Crimson,
     onTertiary = Color.White,
     tertiaryContainer = Color(0xFFF6E2A8),
@@ -28,7 +33,23 @@ private val LightColors = lightColorScheme(
     onSurface = Navy,
     surfaceVariant = Color(0xFFEFE6D2),
     onSurfaceVariant = Color(0xFF4A4A3F),
+    surfaceTint = Teal,
+    inverseSurface = Navy,
+    inverseOnSurface = Parchment,
+    inversePrimary = Color(0xFF6FD0D8),
+    surfaceDim = Color(0xFFE6DDC9),
+    surfaceBright = Parchment,
+    surfaceContainerLowest = Color(0xFFFFFCF5),
+    surfaceContainerLow = Color(0xFFF7F0E0),
+    surfaceContainer = Color(0xFFF2EAD7),
+    surfaceContainerHigh = Color(0xFFEDE4CF),
+    surfaceContainerHighest = Color(0xFFE7DDC7),
+    outline = Color(0xFF7A7461),
+    outlineVariant = Color(0xFFD3C9B1),
     error = Crimson,
+    onError = Color.White,
+    errorContainer = Color(0xFFFADAD6),
+    onErrorContainer = Color(0xFF5C1A1A),
 )
 
 // Dark theme: deep navy, layered surfaces to tell cards from backgrounds, turquoise and gold accents.
