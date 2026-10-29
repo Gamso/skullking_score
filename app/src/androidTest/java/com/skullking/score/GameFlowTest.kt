@@ -73,7 +73,8 @@ class GameFlowTest {
         click(R.string.trick_validate)
         click(R.string.play_validate_round)
 
-        // Both bids were 0: "other" succeeds (+10), "winner" misses (-10).
+        // Both bids were 0: "other" succeeds (+10), "winner" misses (-10). The scoreboard opens on the ranking.
+        click(R.string.tab_table)
         rule.onNodeWithContentDescription(text(R.string.a11y_score_cell, other, 1, "+10", 10)).assertExists()
         rule.onNodeWithContentDescription(text(R.string.a11y_score_cell, winner, 1, "-10", -10)).assertExists()
         rule.onNodeWithText(text(R.string.tab_curve)).assertExists()

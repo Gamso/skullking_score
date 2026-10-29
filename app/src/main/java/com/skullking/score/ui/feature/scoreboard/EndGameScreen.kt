@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,9 +83,10 @@ fun EndGameScreen(
     }
 }
 
+/** @param dense thin line for the scoreboard, where the whole ranking must fit without scrolling */
 @Composable
-private fun RankRow(entry: RankedPlayer) {
-    val podium = entry.rank <= 3
+internal fun RankRow(entry: RankedPlayer, subtitle: String? = null, dense: Boolean = false) {
+    val podium = entry.rank <= 3 && !dense
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -107,7 +109,14 @@ private fun RankRow(entry: RankedPlayer) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = if (podium) 16.dp else 10.dp),
+                .padding(
+                    horizontal = if (dense) 12.dp else 16.dp,
+                    vertical = when {
+                        podium -> 16.dp
+                        dense -> 6.dp
+                        else -> 10.dp
+                    },
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -115,14 +124,32 @@ private fun RankRow(entry: RankedPlayer) {
                 style = if (podium) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(end = 12.dp),
             )
-            PlayerAvatar(entry.player, size = if (podium) 48.dp else 36.dp)
-            Text(
-                entry.player.name,
+            PlayerAvatar(
+                entry.player,
+                size = when {
+                    podium -> 48.dp
+                    dense -> 28.dp
+                    else -> 36.dp
+                },
+            )
+            Column(
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 12.dp),
-                style = if (podium) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium,
-            )
+            ) {
+                Text(
+                    entry.player.name,
+                    style = if (podium) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium,
+                )
+                if (subtitle != null) {
+                    Text(
+                        subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
             Text(
                 entry.total.toString(),
                 style = if (podium) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleLarge,
