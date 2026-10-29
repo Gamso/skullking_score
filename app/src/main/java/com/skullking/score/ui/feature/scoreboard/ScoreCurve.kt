@@ -66,7 +66,7 @@ fun ScoreCurve(scored: ScoredGame, modifier: Modifier = Modifier) {
     }
     val resources = LocalResources.current
     val summary = scored.ranking.joinToString(". ") { entry ->
-        resources.getString(R.string.curve_summary_line, entry.player.name, entry.total, rounds.size)
+        resources.getString(R.string.curve_summary_line, entry.player.name, formatScore(entry.total), rounds.size)
     }
 
     Column(

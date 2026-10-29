@@ -336,7 +336,7 @@
     <string name="tab_table">Tableau</string>
     <string name="tab_curve">Courbe</string>
     <string name="curve_empty">Aucune manche n’a encore été validée.</string>
-    <string name="curve_summary_line">%1$s : %2$d points après %3$d manches</string>
+    <string name="curve_summary_line">%1$s : %2$s points après %3$d manches</string>
     <string name="curve_axis_rounds">Score cumulé sur %1$d manches.</string>
     <string name="curve_round_detail">Manche %1$d (%2$d cartes)</string>
     <string name="curve_round_line">%1$s (total %2$s)</string>
