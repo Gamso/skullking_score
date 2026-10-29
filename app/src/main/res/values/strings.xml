@@ -141,7 +141,6 @@
     <string name="trick_validate">Confirm the trick</string>
     <string name="event_trick_prefix">"Trick %1$d · "</string>
     <string name="event_loot_pending">Loot played by %1$s (trick winner to be entered)</string>
-    <string name="results_tricks_prefilled">Tricks and captured cards pre-filled from the tricks entered during play.</string>
     <string name="play_validate_round">Confirm the round</string>
     <string name="play_warnings_title">Check before confirming</string>
     <string name="play_validate_anyway">Confirm anyway</string>
@@ -165,7 +164,6 @@
     <string name="results_validate">Confirm the round</string>
     <string name="results_save_correction">Save the correction</string>
     <string name="results_editing_hint">You are correcting a round that was already confirmed: scores are recalculated after every change.</string>
-    <string name="results_summary">Bid %1$d · tricks %2$d</string>
     <string name="results_tricks">Tricks won</string>
     <string name="results_final_bid">Bid</string>
     <string name="results_bonus_title">Cards won</string>

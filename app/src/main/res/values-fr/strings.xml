@@ -141,7 +141,6 @@
     <string name="trick_validate">Valider le pli</string>
     <string name="event_trick_prefix">"Pli %1$d · "</string>
     <string name="event_loot_pending">Butin joué par %1$s (gagnant du pli à saisir)</string>
-    <string name="results_tricks_prefilled">Plis et cartes capturées pré-remplis d’après les plis saisis en direct.</string>
     <string name="play_validate_round">Valider la manche</string>
     <string name="play_warnings_title">À vérifier avant de valider</string>
     <string name="play_validate_anyway">Valider quand même</string>
@@ -165,7 +164,6 @@
     <string name="results_validate">Valider la manche</string>
     <string name="results_save_correction">Enregistrer la correction</string>
     <string name="results_editing_hint">Vous corrigez une manche déjà validée : les scores sont recalculés à chaque modification.</string>
-    <string name="results_summary">Annonce %1$d · plis %2$d</string>
     <string name="results_tricks">Plis remportés</string>
     <string name="results_final_bid">Annonce</string>
     <string name="results_bonus_title">Cartes gagnées</string>

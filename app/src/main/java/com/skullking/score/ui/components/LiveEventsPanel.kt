@@ -91,26 +91,18 @@ fun LiveEventsPanel(
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (showButtons) {
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
-                Button(
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                CompactChip(
+                    text = "💰 " + stringResource(R.string.event_loot_button),
+                    selected = false,
                     onClick = { dialog = EventDialog.LootWho },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                ) { Text(stringResource(R.string.event_loot_button), style = MaterialTheme.typography.titleMedium) }
+                )
                 if (hasChest) {
-                    Button(
+                    CompactChip(
+                        text = stringResource(R.string.event_davy_jones_button),
+                        selected = false,
                         onClick = { dialog = EventDialog.ChestWho },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(56.dp),
-                    ) {
-                        Text(
-                            stringResource(R.string.event_davy_jones_button),
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                    }
+                    )
                 }
             }
         }
