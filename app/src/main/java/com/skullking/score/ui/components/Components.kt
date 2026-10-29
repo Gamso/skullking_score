@@ -1,5 +1,6 @@
 package com.skullking.score.ui.components
 
+import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -65,6 +66,7 @@ import com.skullking.score.domain.model.Player
 import com.skullking.score.domain.undo.UndoAction
 import com.skullking.score.domain.undo.UndoKind
 import com.skullking.score.domain.undo.UndoState
+import java.util.WeakHashMap
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -305,14 +307,30 @@ fun formatPoints(value: Int): String = if (value > 0) "+$value" else value.toStr
 /** "Keep the screen on" setting; provided at the application root. */
 val LocalKeepScreenOnSetting = compositionLocalOf { true }
 
+/**
+ * Screens asking to keep the screen on, per view. During a navigation transition the incoming screen
+ * starts before the outgoing one is disposed: a plain on / off flag would be switched off by the
+ * outgoing screen right after the incoming one switched it on.
+ */
+private val keepScreenOnRequests = WeakHashMap<View, Int>()
+
 /** Keeps the screen on while this screen is displayed (if the setting is enabled). */
 @Composable
 fun KeepScreenOn() {
     val enabled = LocalKeepScreenOnSetting.current
     val view = LocalView.current
     DisposableEffect(enabled, view) {
-        view.keepScreenOn = enabled
-        onDispose { view.keepScreenOn = false }
+        if (enabled) {
+            keepScreenOnRequests[view] = (keepScreenOnRequests[view] ?: 0) + 1
+            view.keepScreenOn = true
+        }
+        onDispose {
+            if (enabled) {
+                val remaining = (keepScreenOnRequests[view] ?: 1) - 1
+                if (remaining > 0) keepScreenOnRequests[view] = remaining else keepScreenOnRequests.remove(view)
+                view.keepScreenOn = remaining > 0
+            }
+        }
     }
 }
 
