@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skull King Score</string>
+
+    <!-- General -->
+    <string name="back">Voltar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="close">Fechar</string>
+    <string name="save">Salvar</string>
+    <string name="delete">Excluir</string>
+    <string name="add">Adicionar</string>
+    <string name="remove">Remover</string>
+    <string name="more">Mais opções</string>
+    <string name="help">Ajuda</string>
+    <string name="scoreboard">Placar</string>
+    <string name="unknown_player">?</string>
+    <string name="move_up">Subir</string>
+    <string name="move_down">Descer</string>
+
+    <!-- Home -->
+    <string name="home_tagline">O bloco de pontuação das suas partidas de Skull King</string>
+    <string name="home_new_game">Nova partida</string>
+    <string name="home_resume">Continuar a partida</string>
+    <string name="home_resume_detail">%1$d jogadores · %2$d rodadas jogadas</string>
+    <string name="home_history">Histórico</string>
+    <string name="home_stats">Estatísticas</string>
+    <string name="home_players">Jogadores</string>
+
+    <!-- Profiles -->
+    <string name="player_new">Novo perfil</string>
+    <string name="player_edit">Editar o perfil</string>
+    <string name="player_name">Nome</string>
+    <string name="player_archive">Arquivar</string>
+    <string name="player_restore">Restaurar</string>
+    <string name="player_archived">Arquivado</string>
+    <string name="players_empty">Nenhum perfil ainda. Crie um para começar.</string>
+
+    <!-- Scoring modes -->
+    <string name="mode_classic">Clássico</string>
+    <string name="mode_classic_desc">20 pontos por vaza apostada, −10 por vaza de diferença, mais os bônus</string>
+    <string name="mode_rascal">Rascal (“Tiro certeiro”)</string>
+    <string name="mode_rascal_desc">Mesmo potencial para todos: 10 × cartas. Errou por uma: metade dos pontos e dos bônus</string>
+    <string name="mode_cannonball">Rascal + Bala de canhão</string>
+    <string name="mode_cannonball_desc">Cada jogador escolhe Metralha (Rascal) ou Bala de canhão (tudo ou nada)</string>
+
+    <!-- Expansion cards -->
+    <string name="card_sevens">7 (×4, um por naipe)</string>
+    <string name="card_eights">8 (×4)</string>
+    <string name="card_zero_fourteen">0/14 (×4)</string>
+    <string name="card_wild_15">15 curinga (macaco)</string>
+    <string name="card_mary_thorne">Mary Thorne</string>
+    <string name="card_first_mate_con">Imediato Con</string>
+    <string name="card_davy_jones">Baú de Davy Jones</string>
+    <string name="card_plank">Caminhar na prancha</string>
+    <string name="card_spotted_ray">Raia-pintada</string>
+    <string name="card_last_salvo">Última salva</string>
+
+    <string name="monster_kraken">Kraken</string>
+    <string name="monster_white_whale">Baleia Branca</string>
+    <string name="monster_spotted_ray">Raia-pintada</string>
+
+    <!-- Bonuses -->
+    <string name="bonus_colored_14">14 de naipe</string>
+    <string name="bonus_black_14">14 preto</string>
+    <string name="bonus_mermaid_by_pirate">Sereia (por um pirata)</string>
+    <string name="bonus_pirate_by_skull_king">Pirata (pelo Skull King)</string>
+    <string name="bonus_skull_king_by_mermaid">Skull King (por uma sereia)</string>
+    <string name="bonus_con_captured">Imediato (pelo SK ou por uma sereia)</string>
+    <string name="bonus_loot">Saque</string>
+    <string name="bonus_davy_jones">Monstro marinho destruído (Davy Jones)</string>
+    <string name="bonus_eight">8</string>
+    <string name="bonus_seven">7</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Nova partida</string>
+    <string name="setup_players_order">Jogadores, na ordem da mesa (%1$d)</string>
+    <string name="setup_search_players">Procurar um perfil</string>
+    <string name="setup_available_players">Perfis disponíveis</string>
+    <string name="setup_mode">Modo de pontuação</string>
+    <string name="setup_expansion">Expansão 2026</string>
+    <string name="setup_expansion_switch">Jogar com a expansão</string>
+    <string name="setup_expansion_desc">Ative as cartas que quiser, uma a uma</string>
+    <string name="setup_card_removed_two_players">Retirada com 2 jogadores</string>
+    <string name="setup_start">Começar a partida</string>
+    <string name="setup_hint_min_players">Escolha pelo menos 2 jogadores</string>
+    <string name="setup_hint_nine_players">Acima de 8 jogadores, a expansão é obrigatória</string>
+    <string name="setup_hint_max_players">9 jogadores no máximo</string>
+
+    <!-- Round -->
+    <string name="round_title_plain">Rodada %1$d</string>
+    <string name="round_title_extra">Rodada %1$d (extra)</string>
+    <string name="round_title_cards">Rodada %1$d · cartas: %2$d</string>
+    <string name="prepare_cards_question">Cartas distribuídas</string>
+    <string name="prepare_cards_hint">Sugestão: rodada anterior + 1. Altere com um toque.</string>
+    <string name="prepare_start_bids">Começar os lances</string>
+
+    <string name="bids_validate">Confirmar os lances</string>
+    <string name="bids_total">Total dos lances: %1$d (cartas distribuídas: %2$d)</string>
+
+    <string name="play_bids_reminder">Lances</string>
+    <string name="play_bid_chip">Lance %1$d</string>
+    <string name="play_live_events">Eventos ao vivo</string>
+    <!-- Live tricks -->
+    <string name="play_tricks_title">Vazas</string>
+    <string name="play_trick_progress">Vaza %1$d de %2$d</string>
+    <string name="play_all_tricks_done">Todas as vazas registradas</string>
+    <string name="play_enter_trick">Registrar a vaza %1$d</string>
+    <string name="play_undo_last_trick">Desfazer a última vaza</string>
+    <string name="play_bid_tricks_chip">Lance %1$d · vazas %2$d</string>
+    <string name="trick_dialog_new">Vaza %1$d</string>
+    <string name="trick_dialog_edit">Corrigir a vaza %1$d</string>
+    <string name="trick_who_won">Quem ganhou a vaza?</string>
+    <string name="trick_destroyed">Vaza destruída (Kraken, ou Baleia Branca / Raia-pintada sem carta numerada)</string>
+    <string name="trick_destroyed_short">destruída</string>
+    <string name="trick_captured">Cartas ganhas</string>
+    <string name="trick_rascal_wager">Aposta do Rascal</string>
+    <string name="trick_harry_title">Harry</string>
+    <string name="trick_harry_none">Nenhum</string>
+    <string name="trick_won_with">Ganha com</string>
+    <string name="win_mermaid">Sereia</string>
+    <string name="win_skull_king">Skull King</string>
+    <string name="win_first_mate">Imediato</string>
+    <string name="win_other">Outra</string>
+    <string name="win_pirate">Pirata</string>
+    <string name="pirate_rosie">Rosie</string>
+    <string name="pirate_rascal">Patife</string>
+    <string name="pirate_will">Bendt</string>
+    <string name="pirate_juanita">Juanita</string>
+    <string name="pirate_harry">Harry</string>
+    <string name="pirate_tigress">Tigresa</string>
+    <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie D’Laney</string>
+    <string name="pirate_rascal_full">O Patife de Roatan</string>
+    <string name="pirate_will_full">Bendt, o Bandido</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry, o Gigante</string>
+    <string name="pirate_tigress_full">Tigresa</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
+    <string name="stats_wins_with_title">Vazas ganhas com</string>
+    <string name="trick_validate">Confirmar a vaza</string>
+    <string name="event_trick_prefix">"Vaza %1$d · "</string>
+    <string name="event_loot_pending">Saque jogado por %1$s (falta registrar quem ganhou a vaza)</string>
+    <string name="play_validate_round">Confirmar a rodada</string>
+    <string name="play_warnings_title">Confira antes de confirmar</string>
+    <string name="play_validate_anyway">Confirmar mesmo assim</string>
+    <string name="play_fix">Corrigir</string>
+
+    <string name="event_loot_button">Saque</string>
+    <string name="event_davy_jones_button">Davy Jones</string>
+    <string name="event_log">Diário da rodada</string>
+    <string name="event_log_empty">Nenhum evento por enquanto</string>
+    <string name="event_loot_line">Saque jogado por %1$s, vaza ganha por %2$s</string>
+    <string name="event_davy_jones_line">Baú de %1$s: %2$s</string>
+    <string name="event_cancelled">cancelado</string>
+    <string name="cancel_event">Cancelar</string>
+    <string name="loot_who_played">Quem jogou o Saque?</string>
+    <string name="loot_who_won">Quem ganhou a vaza?</string>
+    <string name="chest_who_played">Quem jogou o Baú de Davy Jones?</string>
+    <string name="chest_which_creatures">Quais criaturas são destruídas?</string>
+
+    <string name="results_tab_round">Rodada</string>
+    <string name="results_title">Resultados · rodada %1$d</string>
+    <string name="results_validate">Confirmar a rodada</string>
+    <string name="results_save_correction">Salvar a correção</string>
+    <string name="results_editing_hint">Você está corrigindo uma rodada já confirmada: as pontuações são recalculadas a cada alteração.</string>
+    <string name="results_tricks">Vazas ganhas</string>
+    <string name="results_final_bid">Lance</string>
+    <string name="results_bonus_title">Cartas ganhas</string>
+    <string name="results_bonus_ignored">Lance errado: os bônus registrados não contam.</string>
+    <string name="results_cannonball">Bala de canhão</string>
+    <string name="results_cannonball_hint">Tudo ou nada: 15 × cartas se o lance for exato, senão 0</string>
+    <string name="results_rascal_wager">Aposta do Patife de Roatan</string>
+    <string name="results_discarded_title">Vazas descartadas</string>
+    <string name="results_discarded_label">Vazas destruídas ou sem vencedor</string>
+    <string name="results_discarded_hint">Kraken, ou uma vaza só com cartas especiais</string>
+
+    <!-- Consistency warnings (never blocking) -->
+    <string name="warn_tricks_over">Total de vazas: %1$d (cartas distribuídas: %2$d). Confira os registros.</string>
+    <string name="warn_tricks_under">Total de vazas: %1$d (cartas distribuídas: %2$d). Se alguma vaza foi destruída (Kraken, só cartas especiais), registre-a como vaza descartada.</string>
+    <string name="warn_cards_exceed_deck">%1$d cartas a distribuir de um baralho de %2$d.</string>
+    <string name="warn_too_many_colored_14">%1$d 14 de naipe capturados, só existem %2$d.</string>
+    <string name="warn_too_many_black_14">%1$d 14 pretos capturados, só existe %2$d.</string>
+    <string name="warn_too_many_skull_king">Só existe %2$d Skull King (%1$d registrados).</string>
+    <string name="warn_too_many_con">Só existe %2$d Imediato Con (%1$d registrados).</string>
+    <string name="warn_too_many_sevens">%1$d 7 capturados, só existem %2$d.</string>
+    <string name="warn_too_many_eights">%1$d 8 capturados, só existem %2$d.</string>
+    <string name="warn_too_many_mermaids">%1$d sereias capturadas, só existem %2$d.</string>
+    <string name="warn_too_many_pirates">%1$d piratas capturados, só %2$d estão em jogo.</string>
+    <string name="warn_too_many_loot">%1$d cartas de Saque registradas, o baralho só tem %2$d.</string>
+    <string name="warn_duplicate_monster">Criatura registrada duas vezes: %1$s.</string>
+
+    <!-- Scoreboard -->
+    <string name="table_total">Total</string>
+    <string name="table_cards_short">%1$d c.</string>
+    <string name="scoreboard_next_round">Próxima rodada</string>
+    <string name="scoreboard_extra_round">Rodada extra</string>
+    <string name="scoreboard_resume_round">Continuar a rodada %1$d</string>
+    <string name="scoreboard_finish">Encerrar a partida</string>
+    <string name="scoreboard_finish_title">Encerrar a partida?</string>
+    <string name="scoreboard_finish_message">O pódio é exibido e as estatísticas são atualizadas. As rodadas não poderão mais ser editadas.</string>
+    <string name="scoreboard_reopen_last">Reabrir a última rodada</string>
+    <string name="scoreboard_see_podium">Ver o pódio</string>
+    <string name="detail_title">%1$s · rodada %2$d</string>
+    <string name="detail_bid_tricks">Lance %1$d (final %2$d) · vazas %3$d</string>
+    <string name="detail_base_success">Lance cumprido</string>
+    <string name="detail_base_failure">Lance errado</string>
+    <string name="detail_bonus_lost">Bônus perdidos: o lance não foi cumprido.</string>
+    <string name="detail_cannonball">Bala de canhão: tudo ou nada</string>
+    <string name="detail_rascal">Aposta do Rascal</string>
+    <string name="detail_total">Total da rodada</string>
+    <string name="detail_correct">Corrigir a rodada</string>
+
+    <!-- End of game -->
+    <string name="end_title">Fim de jogo</string>
+    <string name="end_winner">%1$s vence!</string>
+    <string name="end_see_scoreboard">Ver o placar</string>
+
+    <!-- History, export, import -->
+    <string name="history_search">Jogador, data ou modo</string>
+    <string name="history_filter_all">Todas</string>
+    <string name="history_no_match">Nenhuma partida corresponde à sua busca.</string>
+    <string name="history_open">Abrir</string>
+    <string name="history_empty">Nenhuma partida salva ainda.</string>
+    <string name="history_status_finished">%1$s · encerrada</string>
+    <string name="history_status_in_progress">%1$s · em andamento</string>
+    <string name="history_delete_title">Excluir a partida?</string>
+    <string name="history_delete_message">A partida e as suas estatísticas serão excluídas definitivamente deste aparelho.</string>
+    <string name="export_action">Exportar</string>
+    <string name="export_title">Exportar o histórico</string>
+    <string name="export_format">Formato</string>
+    <string name="export_csv_desc">Uma linha por jogador e rodada, legível numa planilha</string>
+    <string name="export_json_desc">Backup completo, pode ser importado de novo em outro celular</string>
+    <string name="export_period">Período</string>
+    <string name="export_player">Jogador</string>
+    <string name="export_all_players">Todos os jogadores</string>
+    <string name="export_nothing">Nenhuma partida corresponde a este filtro.</string>
+    <string name="import_action">Importar</string>
+    <string name="import_title">Importar um backup</string>
+    <string name="import_preview">%1$d partida(s) nova(s), %2$d já presente(s), %3$d jogador(es) novo(s). As partidas já presentes não são duplicadas.</string>
+    <string name="import_confirm">Importar</string>
+    <string name="import_done">%1$d partida(s) importada(s), %2$d ignorada(s) por já existirem.</string>
+    <string name="import_invalid">Este arquivo não é um backup legível do Skull King.</string>
+
+    <!-- Statistics -->
+    <string name="period_month">Este mês</string>
+    <string name="period_year">Este ano</string>
+    <string name="period_all">Sempre</string>
+    <string name="stats_mode_note">Uma pontuação Rascal não pode ser comparada com uma clássica: escolha um modo.</string>
+    <string name="stats_empty">Nenhuma partida encerrada para este filtro ainda.</string>
+    <string name="stats_games_wins">Partidas: %1$d · Vitórias: %2$d (%3$s)</string>
+    <string name="stats_average">Pontuação média</string>
+    <string name="stats_best">Melhor pontuação</string>
+    <string name="stats_worst">Pior pontuação</string>
+    <string name="stats_bid_success">Lances cumpridos</string>
+    <string name="stats_zero_success">Lances zero cumpridos</string>
+    <string name="stats_bonus_title">Bônus marcados</string>
+    <string name="stats_monthly_title">Mês a mês</string>
+    <string name="stats_monthly_line">%1$d partidas · média %2$d · %3$s lances cumpridos</string>
+    <string name="stats_head_to_head_title">Frente a frente</string>
+    <string name="stats_head_to_head_line">%1$d V · %2$d D em %3$d partidas</string>
+
+    <!-- Settings -->
+
+    <!-- Help -->
+    <string name="help_tab_cards">Cartas</string>
+    <string name="help_tab_scoring">Pontos</string>
+    <string name="help_tab_expansion">Expansão</string>
+    <string name="help_tab_faq">FAQ</string>
+    <string name="help_search">Buscar na ajuda</string>
+    <string name="help_search_clear">Limpar a busca</string>
+    <string name="help_no_results">Nenhum resultado para “%1$s”.</string>
+    <string name="help_hierarchy_title">Hierarquia das cartas</string>
+    <string name="help_hierarchy_body">1. 🏳️ Fuga (bandeira branca): sempre perde, a não ser que a vaza só tenha fugas, a Tigresa jogada como fuga ou Saques: nesse caso, a primeira carta jogada ganha.\n2. 🟨🟪🟩 Amarelo, roxo, verde (1 a 14): o naipe da abertura vence os outros naipes.\n3. ⚫ Trunfo preto (bandeira pirata, 1 a 14): vence todos os naipes.\n4. 🧜‍♀️ Sereias: vencem naipes e trunfos, perdem para os piratas.\n5. 🏴‍☠️ Piratas: vencem as sereias, perdem para o Skull King.\n6. 💀 Skull King: vence os piratas, mas perde para uma sereia.\n\nCom a expansão: Fuga &lt; naipes &lt; trunfo preto &lt; sereia &lt; piratas &lt; Imediato Con &lt; Skull King &lt; sereia. A sereia vence o Imediato Con e o Skull King.\n!> Se um pirata, o Skull King e uma sereia forem jogados na mesma vaza, a sereia ganha, qualquer que seja a ordem de jogo. O único bônus é o da sereia. O Skull King não ganha a vaza, então não marca nada pelo pirata.</string>
+    <string name="help_special_title">Cartas especiais do jogo base</string>
+    <string name="help_special_body">• 🐯 Tigresa: jogada como pirata ou como fuga, à escolha.\n• 🐙 Kraken: destrói a vaza, ninguém a ganha.\n!> A vaza seguinte é aberta pelo jogador que a teria ganho sem o Kraken (FAQ oficial).\n• 🐳 Baleia Branca: anula as cartas especiais, a carta numerada mais alta ganha.\n• 💰 Saque: jogado como uma fuga. Liga o jogador que o jogou ao vencedor da vaza: se os dois cumprirem o lance, cada um marca +20.\n> Dois Saques podem ligar os mesmos dois jogadores: a mesma aliança pode ser feita duas vezes e cada um pode marcar até +40.\n!> Se uma vaza começa com um Saque e todas as cartas seguintes são fugas, o jogador do Saque ganha a vaza: nenhuma aliança é formada e nenhum bônus é marcado.</string>
+    <string name="help_points_title">Pontos (modo clássico)</string>
+    <string name="help_points_body">• Lance ≥ 1 cumprido: +20 por vaza apostada.\n• Lance ≥ 1 errado: −10 por vaza de diferença.\n• Lance zero cumprido: +10 × número de cartas da rodada.\n• Lance zero errado: −10 × número de cartas da rodada.</string>
+    <string name="help_bonus_title">Bônus</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 14 de naipe capturado: +10 cada\n• ⚫ 14 preto capturado: +20\n• 🧜‍♀️ Sereia capturada por um pirata: +20 cada\n• 🏴‍☠️ Pirata capturado pelo Skull King: +30 cada\n• 💀 Skull King capturado por uma sereia: +40\n• 💰 Saque: +20 se o jogador do Saque e o vencedor da vaza cumprirem exatamente o lance\n• 🎲 Aposta do Rascal: +aposta se o lance for exato, −aposta caso contrário (0, 10 ou 20), o único termo contado mesmo com o lance errado\n!> Pontuação clássica: os pontos de bônus só contam se o lance for cumprido. Na pontuação Rascal, um tiro de raspão (errou por um) mantém metade dos bônus: veja “Modos de pontuação”.</string>
+    <string name="help_modes_title">Modos de pontuação</string>
+    <string name="help_modes_body">• **Clássico**: veja acima.\n• **Rascal**: a cada rodada, todos os jogadores têm o mesmo potencial, qualquer que seja o lance: 10 × N. A precisão decide:\n-- **Tiro certeiro** (lance exato): todos os pontos em jogo e todos os bônus\n-- **Tiro de raspão** (errou por um): metade dos pontos em jogo (5 × N) e metade dos bônus\n-- **Erro total** (errou por dois ou mais): nenhum ponto, nenhum bônus\n> Exemplo: 4 cartas distribuídas, 40 pontos em jogo. Tiro certeiro: +40, tiro de raspão: +20, erro total: 0.\n!> A metade dos bônus não é arredondada: com os 7 e 8 da expansão, uma pontuação pode ter meio ponto (15 → 7,5). O Saque exige um lance exato: nunca conta num tiro de raspão.\n• 💣 **Rascal + Bala de canhão** (regra opcional): depois dos lances, todos revelam a escolha ao mesmo tempo:\n-- **Metralha** (mão aberta): a pontuação Rascal acima\n-- **Bala de canhão** (punho fechado): lance exato = 15 × N pontos mais os bônus, senão 0 ponto e nenhum bônus\n> Exemplo: 6 cartas, lance 3. Metralha: 60 pontos se exato, 30 se errou por um. Bala de canhão: 90 se exato, 0 se errou por um.\n> N é o número de cartas distribuídas na rodada. A aposta do Rascal é somada ou subtraída em todos os modos.</string>
+    <string name="help_expansion_title">Expansão 2026</string>
+    <string name="help_expansion_body">• 7 capturado: −5 cada\n• 8 capturado: +5 cada\n• 0/14: o jogador declara 0 ou 14 ao jogá-la. Sem bônus.\n• 🐵 15 curinga: assume o naipe da abertura com valor 15, ou o naipe escolhido pelo jogador se ainda não houver (nunca o preto). Perde para o trunfo. Sem bônus.\n• {con} Imediato Con: vence todos os piratas, perde para as sereias e para o Skull King. Capturado pelo Skull King ou por uma sereia: +30. Não rende nada pelos piratas capturados. Quando ele ganha uma vaza, o seu jogador pode usar os poderes dos piratas capturados.\n• 🏴‍☠️ Mary Thorne: conta como pirata (+30 se capturada pelo Skull King, +20 por sereia capturada).\n• {davy} Baú de Davy Jones: não ganha, destrói todos os monstros marinhos da vaza (🐙 🐳 {ray}): +20 por monstro para o seu jogador.\n• 🦈 Caminhar na prancha: retira um pirata da vaza. Não rende bônus.\n• {ray} Raia-pintada: monstro marinho, como o Kraken e a Baleia Branca. Não ganha a vaza: a carta mais baixa da vaza vence. Não rende bônus, e o Baú de Davy Jones pode destruí-la (+20).\n• 💥 Última salva: não ganha. O seu jogador joga uma 2ª carta e pula a última vaza.\n!> Os bônus da expansão seguem a mesma regra dos outros: todos com um lance cumprido, metade num tiro de raspão na pontuação Rascal, nenhum nos demais casos.\n> O Baú de Davy Jones, a Última salva, a Raia-pintada e Caminhar na prancha não são fugas. Se as outras cartas jogadas forem todas fugas, a primeira fuga jogada ganha a vaza.\n> Quando o Baú de Davy Jones, a Última salva ou Caminhar na prancha abre uma vaza, o jogador seguinte escolhe o naipe. Se uma vaza só tiver cartas especiais que não ganham, ela é descartada e quem a abriu abre a próxima.\n> Com 2 jogadores, o 15 curinga, Caminhar na prancha e os 0/14 são retirados.</string>
+    <string name="help_faq_title">FAQ</string>
+    <string name="help_official_link">Regras e FAQ oficiais (grandpabecksgames.com)</string>
+    <string name="help_faq_body">• As vazas não somam o número de cartas? Uma vaza pode ser destruída (Kraken, ou Baleia Branca / Raia-pintada sem carta numerada) ou ter só cartas especiais: registre-a como “vaza descartada”. O aplicativo não confere quem ganhou cada vaza, só aponta inconsistências e nunca bloqueia você.\n• Erro numa rodada passada? Toque na célula dela no placar e depois em “Corrigir a rodada”.\n• Jogando em 2? Distribua 3 montes: o 3º fica virado para baixo e é jogado pelo fantasma do Barba Cinzenta. Ele joga sempre em segundo, não precisa seguir o naipe, e a sua Tigresa conta como fuga. Você e o seu parceiro abrem cada rodada alternadamente, e se o Barba Cinzenta ganha uma vaza, ele abre a seguinte. Os Saques não são jogados com 2. O aplicativo só acompanha os dois jogadores.\n• Sem rede? Sem problema, o aplicativo funciona totalmente offline.</string>
+
+    <!-- V2: game comfort and settings -->
+    <string name="settings_title">Configurações</string>
+    <string name="settings_game">Jogo</string>
+    <string name="settings_keep_screen_on">Manter a tela ligada</string>
+    <string name="settings_keep_screen_on_desc">Enquanto uma partida estiver em andamento.</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_auto_backup">Backup automático</string>
+    <string name="settings_auto_backup_desc">Salva as suas partidas numa pasta à sua escolha depois de cada partida e uma vez por dia.</string>
+    <string name="settings_choose_folder">Escolher a pasta de backup</string>
+    <string name="settings_change_folder">Mudar a pasta de backup</string>
+    <string name="settings_backup_now">Fazer backup agora</string>
+    <string name="settings_backup_no_folder">Nenhuma pasta escolhida ainda.</string>
+    <string name="settings_backup_never">Nenhum backup feito ainda.</string>
+    <string name="settings_backup_last">Último backup: %1$s</string>
+    <string name="settings_backup_failed">O último backup falhou. Verifique se a pasta ainda está disponível.</string>
+    <string name="settings_restore">Restaurar a partir de um backup</string>
+    <string name="settings_about">Sobre</string>
+    <string name="settings_about_text">Contador de pontos de Skull King. Licença MIT.</string>
+    <string name="undo_bid">lance de %1$s</string>
+    <string name="undo_cannonball">bala de canhão de %1$s</string>
+    <string name="undo_trick">vaza %1$s</string>
+    <string name="undo_trick_deleted">vaza %1$s excluída</string>
+    <string name="undone_prefix">Desfeito: %1$s</string>
+    <string name="redone_prefix">Refeito: %1$s</string>
+    <string name="dealer_label">Carteador: %1$s</string>
+    <string name="setup_draw_dealer">Sortear o carteador</string>
+    <string name="setup_dealer_badge">Carteador</string>
+
+    <!-- V2 : jalon 1, partage -->
+    <string name="share_title">Compartilhar</string>
+    <string name="share_action">Compartilhar</string>
+    <string name="share_save">Salvar na galeria</string>
+    <string name="share_saved">Imagem salva em Pictures/SkullKing.</string>
+    <string name="share_save_failed">Não foi possível salvar a imagem.</string>
+    <string name="share_preview">Prévia da imagem a compartilhar</string>
+    <string name="share_nothing">Escolha o que incluir na imagem.</string>
+    <string name="share_podium">Pódio</string>
+    <string name="share_table">Tabela de pontos</string>
+    <string name="share_stats">Destaques da partida</string>
+    <string name="share_round">Rodada</string>
+    <string name="share_with_expansion">com expansão</string>
+    <string name="share_without_expansion">sem expansão</string>
+    <string name="share_best_round">Melhor rodada: %1$s (%2$s pontos, rodada %3$d)</string>
+    <string name="share_worst_round">Pior rodada: %1$s (%2$s pontos, rodada %3$d)</string>
+    <string name="share_exact_bids">%1$s: %2$d lances exatos em %3$d</string>
+
+    <!-- V2 : jalon 2, courbes -->
+    <string name="tab_table">Tabela</string>
+    <string name="tab_curve">Curva</string>
+    <string name="curve_empty">Nenhuma rodada pontuada ainda.</string>
+    <string name="curve_summary_line">%1$s: %2$d pontos após %3$d rodadas</string>
+    <string name="curve_axis_rounds">Pontuação acumulada em %1$d rodadas.</string>
+    <string name="curve_round_detail">Rodada %1$d (%2$d cartas)</string>
+    <string name="curve_round_line">%1$s (total %2$s)</string>
+    <string name="curve_tap_hint">Toque no gráfico para ver uma rodada em detalhe. Use os chips para mostrar ou ocultar jogadores.</string>
+
+    <!-- V2 : jalon 2, statistiques -->
+    <plurals name="stats_games_count">
+        <item quantity="one">%d partida</item>
+        <item quantity="many">%d partidas</item>
+        <item quantity="other">%d partidas</item>
+    </plurals>
+    <string name="stats_filter_present">Jogadores à mesa</string>
+    <string name="filter_all_sizes">Qualquer número de jogadores</string>
+    <string name="filter_players_2_3">2–3 jogadores</string>
+    <string name="filter_players_4_5">4–5 jogadores</string>
+    <string name="filter_players_6_plus">6 ou mais</string>
+    <string name="filter_expansion_all">Com ou sem expansão</string>
+    <string name="filter_expansion_with">Com expansão</string>
+    <string name="filter_expansion_without">Sem expansão</string>
+    <string name="stats_records_title">Recordes</string>
+    <string name="stats_record_best_round">Melhor rodada</string>
+    <string name="stats_record_worst_round">Pior rodada</string>
+    <string name="stats_record_round">%1$s pontos, rodada %2$d (%3$s)</string>
+    <string name="stats_record_exact_streak">Maior sequência de lances exatos</string>
+    <string name="stats_record_win_streak">Maior sequência de vitórias</string>
+    <string name="stats_record_zero_streak">Maior sequência de lances zero cumpridos</string>
+    <string name="stats_record_bonus">Maior bônus numa rodada</string>
+    <string name="stats_trend_title">Evolução</string>
+    <string name="stats_trend_not_enough">São necessárias pelo menos %1$d partidas encerradas para traçar uma tendência.</string>
+    <string name="stats_trend_games">Pontuação da partida</string>
+    <string name="stats_trend_average">Média</string>
+    <string name="stats_trend_legend">Linha contínua: pontuação de cada partida. Linha tracejada: média das últimas %1$d partidas.</string>
+    <string name="stats_trend_description">%1$s: de %2$s a %3$s pontos em %4$d partidas</string>
+    <string name="stats_size_title">Lances cumpridos por tamanho de rodada</string>
+    <string name="size_small">1–3 cartas</string>
+    <string name="size_medium">4–6 cartas</string>
+    <string name="size_large">7–10 cartas</string>
+    <string name="size_huge">11 cartas ou mais</string>
+    <string name="stats_bias">Tendência dos lances</string>
+    <string name="stats_bias_under">Lances baixos (%1$s vaza por rodada)</string>
+    <string name="stats_bias_over">Lances altos (%1$s vaza por rodada)</string>
+    <string name="stats_tricks_coverage">Vazas registradas ao vivo em %1$d de %2$d partidas.</string>
+    <string name="stats_rascal_wagers">Apostas do Rascal ganhas</string>
+    <string name="stats_harry_adjustments">Ajustes do Harry (rodada ganha)</string>
+    <string name="duel_title">Frente a frente</string>
+    <string name="duel_first">Primeiro jogador</string>
+    <string name="duel_second">Segundo jogador</string>
+    <string name="duel_choose">Escolha dois jogadores para comparar.</string>
+    <string name="duel_not_enough">Poucas partidas jogadas juntos.</string>
+    <string name="duel_common_games">%1$d partidas jogadas juntos</string>
+    <string name="duel_versus">contra</string>
+    <string name="duel_ties">%1$d empates</string>
+    <string name="duel_average_gap">Vantagem média de %1$s</string>
+    <string name="duel_biggest_gap">Maior diferença numa partida</string>
+
+    <!-- V2 : jalon 4, import -->
+    <string name="import_homonyms">Jogadores com o mesmo nome</string>
+    <string name="import_merge">%1$s: unir ao perfil existente</string>
+    <string name="import_create">%1$s: criar um novo perfil</string>
+    <string name="import_done_detail">%1$d partida(s) importada(s), %2$d ignorada(s), %3$d perfil(is) unido(s), %4$d criado(s).</string>
+    <string name="import_too_new">Este backup vem de uma versão mais recente do aplicativo. Atualize o aplicativo para importá-lo.</string>
+
+    <!-- V2: accessibility -->
+    <string name="a11y_score_cell">%1$s, rodada %2$d, %3$s pontos, total %4$s</string>
+    <string name="a11y_score_cell_pending">%1$s, rodada %2$d, ainda sem pontuação</string>
+    <string name="a11y_expanded">Expandido</string>
+    <string name="a11y_collapsed">Recolhido</string>
+    <string name="stats_more_filters">Mais filtros</string>
+    <string name="setup_dealer_hint">Liste os jogadores na ordem da mesa (arraste ≡ para movê-los), depois sorteie ou escolha quem carteia primeiro 🃏.</string>
+    <string name="share_curve">Curva de pontuação</string>
+    <string name="stats_bias_balanced">Equilibrado</string>
+    <string name="stats_bias_help">Compara as vazas ganhas com o lance, rodada após rodada: lance baixo é ganhar mais do que anunciou, lance alto é ganhar menos.</string>
+    <string name="mode_classic_short">Clássico</string>
+    <string name="mode_rascal_short">Rascal</string>
+    <string name="mode_cannonball_short">Rascal + Bala de canhão</string>
+    <string name="stats_search">Encontrar um jogador</string>
+    <string name="stats_no_match">Nenhum jogador corresponde à sua busca.</string>
+    <string name="stats_share_player">Compartilhar as estatísticas de %1$s</string>
+    <string name="stats_image_legend_games">Pontuação da partida</string>
+    <string name="stats_image_legend_average">Média das últimas %1$d partidas</string>
+
+    <!-- Card statistics -->
+    <string name="stats_tab_players">Jogadores</string>
+    <string name="stats_tab_cards">Cartas</string>
+    <string name="stats_favorite_card">Carta favorita</string>
+    <string name="cards_coverage">Vazas registradas ao vivo em %1$d de %2$d partidas (%3$d vazas).</string>
+    <string name="cards_no_tricks">Nenhuma vaza foi registrada ao vivo com estes filtros. Registre as vazas durante o jogo para ver estatísticas sobre as cartas.</string>
+    <string name="cards_by_card_title">Vazas ganhas por carta</string>
+    <string name="cards_by_card_hint">Parcela das vazas ganhas com cada carta. Mostra com que frequência uma carta ganha, não a sua força: as cartas jogadas e perdidas não são registradas.</string>
+    <string name="cards_pirates_title">Vazas ganhas por pirata</string>
+    <string name="cards_pirates_hint">Um pirata que ganha mais vezes não é necessariamente mais forte: isso depende dos jogadores e do modo de jogo.</string>
+    <string name="cards_success_title">Lances cumpridos quando uma carta ganha</string>
+    <string name="cards_success_hint">Rodadas em que um jogador ganhou uma vaza com a carta e parcela dessas rodadas que terminaram com um lance exato para esse jogador.</string>
+    <string name="cards_timing_title">Quando as cartas ganham</string>
+    <string name="cards_timing_line">início %1$s · meio %2$s · fim %3$s</string>
+    <string name="cards_timing_hint">Posição das vazas ganhas na rodada (primeiro, segundo e último terço), para rodadas de 3 cartas ou mais.</string>
+    <string name="cards_captures_title">Bônus capturados</string>
+    <string name="cards_bonus_share">Jogador-rodadas com bônus</string>
+    <string name="cards_bonus_average">Pontos de bônus por jogador-rodada</string>
+    <string name="cards_settings_title">Poderes dos piratas</string>
+    <string name="cards_rascal_wager">Aposta do Rascal de %1$d</string>
+    <string name="cards_wager_line">%1$d / %2$d cumpridas · %3$s</string>
+    <string name="cards_harry_adjustment">Ajuste do Harry %1$s</string>
+    <string name="cards_settings_hint">O sucesso é medido na rodada inteira do jogador que ganhou a vaza.</string>
+    <string name="cards_loots_title">Saques</string>
+    <string name="cards_loots_played">Saques jogados</string>
+    <string name="cards_loots_valid">Válidos (os dois jogadores cumpriram o lance)</string>
+    <string name="cards_davy_title">Baú de Davy Jones</string>
+    <string name="cards_davy_points">Pontos marcados</string>
+    <string name="cards_kraken_title">Kraken</string>
+    <string name="cards_kraken_destroyed">Vazas destruídas</string>
+    <string name="cards_kraken_per_game">Por partida</string>
+    <string name="cards_kraken_success_with">Lances cumpridos quando uma vaza é destruída</string>
+    <string name="cards_kraken_success_without">Lances cumpridos nos demais casos</string>
+    <string name="cards_expansion_title">Expansão</string>
+    <string name="cards_expansion_with">Com a expansão</string>
+    <string name="cards_expansion_without">Jogo base</string>
+    <string name="cards_expansion_points">Pontos por jogador e rodada</string>
+    <string name="cards_expansion_wins">Vazas ganhas por cartas da expansão</string>
+    <string name="help_monsters_title">Monstros marinhos: como o jogo continua</string>
+    <string name="help_monsters_body">• **Jogar um**: um monstro marinho (🐙 Kraken, 🐳 Baleia Branca, {ray} Raia-pintada) é uma carta especial: pode ser jogado a qualquer momento, mesmo que você pudesse seguir o naipe. A vaza é resolvida quando todos jogaram.\n!> Se um monstro abre a vaza, nenhum naipe é definido: os jogadores seguintes jogam a carta que quiserem. Se ele é jogado depois de um naipe aberto, os jogadores seguintes ainda precisam seguir esse naipe se puderem, ou jogar uma carta especial. O naipe da abertura continua sendo o naipe da abertura: o monstro só aplica o seu efeito quando a vaza é resolvida (FAQ oficial).\n• 🐙 **Kraken**: ninguém ganha a vaza, as cartas são descartadas e nenhum bônus é marcado (registre-a como “vaza destruída”).\n!> O jogador que teria ganhado a vaza sem o Kraken abre a vaza seguinte (FAQ oficial).\n• 🐳 **Baleia Branca**: todas as cartas especiais da vaza (Skull King, piratas, sereias, Kraken…) contam como fugas, e as cartas numeradas perdem o naipe: cores e trunfo preto não importam mais, só os números. O maior número ganha (o primeiro jogado em caso de empate), e o seu jogador abre a vaza seguinte.\n!> Se não houver carta numerada, a vaza é destruída como com o Kraken, e o jogador que a teria ganhado sem o monstro abre a vaza seguinte (livro de regras oficial). O mesmo vale para a Raia-pintada.\n• {ray} **Raia-pintada** (expansão): funciona exatamente como a Baleia Branca, só que o menor número ganha, em vez do maior.\n• 🐙 🐳 {ray} **Vários monstros na mesma vaza**: só o último monstro jogado tem efeito.\n> Quem ganha uma vaza normalmente abre a seguinte. As exceções são uma vaza destruída (ninguém a ganha) e Rosie D’Laney, que escolhe quem abre.</string>
+    <string name="help_pirates_title">Poderes dos piratas</string>
+    <string name="help_pirates_body">• **Rosie D’Laney**: escolhe quem abre a seguinte, inclusive ela mesma.\n• **O Patife de Roatan**: aposta 0, 10 ou 20 pontos, somados se o lance for cumprido, subtraídos se não.\n• **Bendt, o Bandido**: compra 2 cartas do monte, depois descarta 2 da mão.\n• **Juanita Jade**: olha as cartas não distribuídas para ver o que não está em jogo.\n• **Harry, o Gigante**: ajusta o seu lance em +1 ou −1, ou o deixa como está.\n• **Mary Thorne** (expansão, poder opcional): se ela ganha a vaza, o seu jogador escolhe ao acaso uma carta da mão de qualquer jogador (inclusive a própria) sem olhar. Esse jogador deve jogá-la na vaza seguinte, qualquer que seja o naipe da abertura.\n> Harry, o Gigante, é o único pirata cujo poder também funciona na última vaza (ele precisa ganhar a vaza para ativá-lo).</string>
+    <string name="help_note">Nota</string>
+    <string name="hier_skull_king">Skull King</string>
+    <string name="hier_skull_king_sub">Vence todas as cartas, exceto as sereias.</string>
+    <string name="hier_con">Imediato Con (expansão)</string>
+    <string name="hier_con_sub">Vence os piratas. Perde para o Skull King e para as sereias.</string>
+    <string name="hier_pirates">Piratas</string>
+    <string name="hier_pirates_sub">Vencem todas as cartas, exceto o Skull King e o Imediato Con.</string>
+    <string name="hier_mermaids">Sereias</string>
+    <string name="hier_mermaids_sub">Vencem todas as cartas numeradas, o Skull King e o Imediato Con.</string>
+    <string name="hier_black">Trunfo preto</string>
+    <string name="hier_black_sub">Vence todos os naipes normais. O maior trunfo ganha.</string>
+    <string name="hier_suits">Naipes normais</string>
+    <string name="hier_suits_sub">Amarelo, roxo, verde: o maior número do naipe da abertura ganha.</string>
+    <string name="hier_escape">Fuga</string>
+    <string name="hier_escape_sub">Sempre perde. Se a vaza só tem fugas, a Tigresa como fuga ou Saques, a primeira carta jogada ganha.</string>
+    <string name="help_remark">Atenção</string>
+    <string name="play_bids_summary">Lance total %1$d para %2$d vazas</string>
+    <string name="play_bids_over">%1$d a mais</string>
+    <string name="play_bids_under">%1$d a menos</string>
+    <string name="collapse">Recolher</string>
+    <string name="expand">Expandir</string>
+    <string name="trick_destroyed_button">Vaza destruída</string>
+    <string name="trick_loot_by">💰 Saque jogado por %1$s</string>
+    <string name="results_initial_bid">Lance inicial: %1$d (alterado pelo Harry)</string>
+    <string name="results_bid_made">Lance cumprido</string>
+    <string name="results_bid_missed_over">Lance errado: %1$d vaza(s) a mais</string>
+    <string name="results_bid_missed_under">Lance errado: %1$d vaza(s) a menos</string>
+    <string name="detail_bonus_halved">Bônus mantidos (errou por um: metade)</string>
+    <string name="tab_ranking">Classificação</string>
+    <string name="ranking_gap">%1$s atrás</string>
+    <string name="ranking_last_round">última rodada %1$s</string>
+    <string name="setup_drag_handle">Arraste para reordenar</string>
+    <string name="trick_events">Eventos da vaza</string>
+    <string name="settings_remember_setup">Lembrar a configuração da partida</string>
+    <string name="settings_remember_setup_desc">Uma nova partida começa com o modo de pontuação e a expansão da anterior.</string>
+    <string name="setup_choose_dealer">Escolher o carteador</string>
+    <string name="results_tap_trick">Toque numa vaza para corrigi-la: vencedor, cartas ganhas, Saque, Davy Jones…</string>
+    <string name="trick_choose_winner">Escolha o vencedor</string>
+</resources>

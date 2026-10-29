@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skull King Score</string>
+
+    <!-- General -->
+    <string name="back">Indietro</string>
+    <string name="cancel">Annulla</string>
+    <string name="confirm">Conferma</string>
+    <string name="close">Chiudi</string>
+    <string name="save">Salva</string>
+    <string name="delete">Elimina</string>
+    <string name="add">Aggiungi</string>
+    <string name="remove">Rimuovi</string>
+    <string name="more">Altre opzioni</string>
+    <string name="help">Aiuto</string>
+    <string name="scoreboard">Tabellone</string>
+    <string name="unknown_player">?</string>
+    <string name="move_up">Sposta su</string>
+    <string name="move_down">Sposta giù</string>
+
+    <!-- Home -->
+    <string name="home_tagline">Il segnapunti delle tue partite a Skull King</string>
+    <string name="home_new_game">Nuova partita</string>
+    <string name="home_resume">Riprendi la partita</string>
+    <string name="home_resume_detail">%1$d giocatori · %2$d giri giocati</string>
+    <string name="home_history">Cronologia</string>
+    <string name="home_stats">Statistiche</string>
+    <string name="home_players">Giocatori</string>
+
+    <!-- Profiles -->
+    <string name="player_new">Nuovo profilo</string>
+    <string name="player_edit">Modifica il profilo</string>
+    <string name="player_name">Nome</string>
+    <string name="player_archive">Archivia</string>
+    <string name="player_restore">Ripristina</string>
+    <string name="player_archived">Archiviato</string>
+    <string name="players_empty">Ancora nessun profilo. Creane uno per iniziare.</string>
+
+    <!-- Scoring modes -->
+    <string name="mode_classic">Classico</string>
+    <string name="mode_classic_desc">20 punti per presa prevista, −10 per presa di scarto, più i bonus</string>
+    <string name="mode_rascal">Rascal (“Colpo diretto”)</string>
+    <string name="mode_rascal_desc">Stesso potenziale per tutti: 10 × carte. Sbaglio di uno: metà dei punti e dei bonus</string>
+    <string name="mode_cannonball">Rascal + Palla di cannone</string>
+    <string name="mode_cannonball_desc">Ogni giocatore sceglie Mitraglia (Rascal) o Palla di cannone (tutto o niente)</string>
+
+    <!-- Expansion cards -->
+    <string name="card_sevens">7 (×4, uno per seme)</string>
+    <string name="card_eights">8 (×4)</string>
+    <string name="card_zero_fourteen">0/14 (×4)</string>
+    <string name="card_wild_15">15 jolly (scimmia)</string>
+    <string name="card_mary_thorne">Mary Thorne</string>
+    <string name="card_first_mate_con">Primo Ufficiale Con</string>
+    <string name="card_davy_jones">Forziere di Davy Jones</string>
+    <string name="card_plank">Cammina sulla tavola</string>
+    <string name="card_spotted_ray">Razza maculata</string>
+    <string name="card_last_salvo">Ultima salva</string>
+
+    <string name="monster_kraken">Kraken</string>
+    <string name="monster_white_whale">Balena bianca</string>
+    <string name="monster_spotted_ray">Razza maculata</string>
+
+    <!-- Bonuses -->
+    <string name="bonus_colored_14">14 di seme</string>
+    <string name="bonus_black_14">14 nero</string>
+    <string name="bonus_mermaid_by_pirate">Sirena (da un Pirata)</string>
+    <string name="bonus_pirate_by_skull_king">Pirata (dallo Skull King)</string>
+    <string name="bonus_skull_king_by_mermaid">Skull King (da una Sirena)</string>
+    <string name="bonus_con_captured">Primo Ufficiale (da SK o Sirena)</string>
+    <string name="bonus_loot">Bottino</string>
+    <string name="bonus_davy_jones">Mostro marino distrutto (Davy Jones)</string>
+    <string name="bonus_eight">8</string>
+    <string name="bonus_seven">7</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Nuova partita</string>
+    <string name="setup_players_order">Giocatori, in ordine di posto al tavolo (%1$d)</string>
+    <string name="setup_search_players">Cerca un profilo</string>
+    <string name="setup_available_players">Profili disponibili</string>
+    <string name="setup_mode">Modalità di punteggio</string>
+    <string name="setup_expansion">Espansione 2026</string>
+    <string name="setup_expansion_switch">Gioca con l’espansione</string>
+    <string name="setup_expansion_desc">Attiva le carte che vuoi, una per una</string>
+    <string name="setup_card_removed_two_players">Rimossa in 2 giocatori</string>
+    <string name="setup_start">Inizia la partita</string>
+    <string name="setup_hint_min_players">Scegli almeno 2 giocatori</string>
+    <string name="setup_hint_nine_players">Oltre 8 giocatori, l’espansione è obbligatoria</string>
+    <string name="setup_hint_max_players">9 giocatori al massimo</string>
+
+    <!-- Round -->
+    <string name="round_title_plain">Giro %1$d</string>
+    <string name="round_title_extra">Giro %1$d (extra)</string>
+    <string name="round_title_cards">Giro %1$d · carte: %2$d</string>
+    <string name="prepare_cards_question">Carte distribuite</string>
+    <string name="prepare_cards_hint">Suggerimento: giro precedente + 1. Cambialo con un tocco.</string>
+    <string name="prepare_start_bids">Inizia le previsioni</string>
+
+    <string name="bids_validate">Conferma le previsioni</string>
+    <string name="bids_total">Totale delle previsioni: %1$d (carte distribuite: %2$d)</string>
+
+    <string name="play_bids_reminder">Previsioni</string>
+    <string name="play_bid_chip">Previsione %1$d</string>
+    <string name="play_live_events">Eventi in diretta</string>
+    <!-- Live tricks -->
+    <string name="play_tricks_title">Prese</string>
+    <string name="play_trick_progress">Presa %1$d di %2$d</string>
+    <string name="play_all_tricks_done">Tutte le prese inserite</string>
+    <string name="play_enter_trick">Inserisci la presa %1$d</string>
+    <string name="play_undo_last_trick">Annulla l’ultima presa</string>
+    <string name="play_bid_tricks_chip">Previsione %1$d · prese %2$d</string>
+    <string name="trick_dialog_new">Presa %1$d</string>
+    <string name="trick_dialog_edit">Correggi la presa %1$d</string>
+    <string name="trick_who_won">Chi ha vinto la presa?</string>
+    <string name="trick_destroyed">Presa distrutta (Kraken, o Balena bianca / Razza maculata senza carte numerate)</string>
+    <string name="trick_destroyed_short">distrutta</string>
+    <string name="trick_captured">Carte vinte</string>
+    <string name="trick_rascal_wager">Puntata di Rascal</string>
+    <string name="trick_harry_title">Harry</string>
+    <string name="trick_harry_none">Nessuno</string>
+    <string name="trick_won_with">Vinta con</string>
+    <string name="win_mermaid">Sirena</string>
+    <string name="win_skull_king">Skull King</string>
+    <string name="win_first_mate">Primo Ufficiale</string>
+    <string name="win_other">Altra</string>
+    <string name="win_pirate">Pirata</string>
+    <string name="pirate_rosie">Rosie</string>
+    <string name="pirate_rascal">Farrell</string>
+    <string name="pirate_will">Ben</string>
+    <string name="pirate_juanita">Juanita</string>
+    <string name="pirate_harry">Harry</string>
+    <string name="pirate_tigress">Tigre Rossa</string>
+    <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie Bonbon</string>
+    <string name="pirate_rascal_full">Farrell il Farabutto</string>
+    <string name="pirate_will_full">Ben il Bandito</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry il Gigante</string>
+    <string name="pirate_tigress_full">Tigre Rossa</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
+    <string name="stats_wins_with_title">Prese vinte con</string>
+    <string name="trick_validate">Conferma la presa</string>
+    <string name="event_trick_prefix">"Presa %1$d · "</string>
+    <string name="event_loot_pending">Bottino giocato da %1$s (resta da inserire chi ha vinto la presa)</string>
+    <string name="play_validate_round">Conferma il giro</string>
+    <string name="play_warnings_title">Controlla prima di confermare</string>
+    <string name="play_validate_anyway">Conferma comunque</string>
+    <string name="play_fix">Correggi</string>
+
+    <string name="event_loot_button">Bottino</string>
+    <string name="event_davy_jones_button">Davy Jones</string>
+    <string name="event_log">Diario del giro</string>
+    <string name="event_log_empty">Ancora nessun evento</string>
+    <string name="event_loot_line">Bottino giocato da %1$s, presa vinta da %2$s</string>
+    <string name="event_davy_jones_line">Forziere di %1$s: %2$s</string>
+    <string name="event_cancelled">annullato</string>
+    <string name="cancel_event">Annulla</string>
+    <string name="loot_who_played">Chi ha giocato il Bottino?</string>
+    <string name="loot_who_won">Chi ha vinto la presa?</string>
+    <string name="chest_who_played">Chi ha giocato il Forziere di Davy Jones?</string>
+    <string name="chest_which_creatures">Quali creature vengono distrutte?</string>
+
+    <string name="results_tab_round">Giro</string>
+    <string name="results_title">Risultati · giro %1$d</string>
+    <string name="results_validate">Conferma il giro</string>
+    <string name="results_save_correction">Salva la correzione</string>
+    <string name="results_editing_hint">Stai correggendo un giro già confermato: i punteggi vengono ricalcolati a ogni modifica.</string>
+    <string name="results_tricks">Prese vinte</string>
+    <string name="results_final_bid">Previsione</string>
+    <string name="results_bonus_title">Carte vinte</string>
+    <string name="results_bonus_ignored">Previsione sbagliata: i bonus inseriti non contano.</string>
+    <string name="results_cannonball">Palla di cannone</string>
+    <string name="results_cannonball_hint">Tutto o niente: 15 × carte se la previsione è esatta, altrimenti 0</string>
+    <string name="results_rascal_wager">Puntata di Farrell il Farabutto</string>
+    <string name="results_discarded_title">Prese scartate</string>
+    <string name="results_discarded_label">Prese distrutte o senza vincitore</string>
+    <string name="results_discarded_hint">Kraken, o una presa fatta solo di carte Speciali</string>
+
+    <!-- Consistency warnings (never blocking) -->
+    <string name="warn_tricks_over">Totale prese: %1$d (carte distribuite: %2$d). Controlla gli inserimenti.</string>
+    <string name="warn_tricks_under">Totale prese: %1$d (carte distribuite: %2$d). Se alcune prese sono state distrutte (Kraken, sole carte Speciali), inseriscile come prese scartate.</string>
+    <string name="warn_cards_exceed_deck">%1$d carte da distribuire con un mazzo di %2$d.</string>
+    <string name="warn_too_many_colored_14">%1$d 14 di seme catturati, ne esistono solo %2$d.</string>
+    <string name="warn_too_many_black_14">%1$d 14 neri catturati, ne esiste solo %2$d.</string>
+    <string name="warn_too_many_skull_king">C’è solo %2$d Skull King (%1$d inseriti).</string>
+    <string name="warn_too_many_con">C’è solo %2$d Primo Ufficiale Con (%1$d inseriti).</string>
+    <string name="warn_too_many_sevens">%1$d 7 catturati, ce ne sono solo %2$d.</string>
+    <string name="warn_too_many_eights">%1$d 8 catturati, ce ne sono solo %2$d.</string>
+    <string name="warn_too_many_mermaids">%1$d Sirene catturate, ce ne sono solo %2$d.</string>
+    <string name="warn_too_many_pirates">%1$d Pirati catturati, solo %2$d sono in gioco.</string>
+    <string name="warn_too_many_loot">%1$d carte Bottino inserite, il mazzo ne ha solo %2$d.</string>
+    <string name="warn_duplicate_monster">Creatura inserita due volte: %1$s.</string>
+
+    <!-- Scoreboard -->
+    <string name="table_total">Totale</string>
+    <string name="table_cards_short">%1$d c.</string>
+    <string name="scoreboard_next_round">Giro successivo</string>
+    <string name="scoreboard_extra_round">Giro extra</string>
+    <string name="scoreboard_resume_round">Riprendi il giro %1$d</string>
+    <string name="scoreboard_finish">Termina la partita</string>
+    <string name="scoreboard_finish_title">Terminare la partita?</string>
+    <string name="scoreboard_finish_message">Viene mostrato il podio e le statistiche si aggiornano. I giri non potranno più essere modificati.</string>
+    <string name="scoreboard_reopen_last">Riapri l’ultimo giro</string>
+    <string name="scoreboard_see_podium">Vedi il podio</string>
+    <string name="detail_title">%1$s · giro %2$d</string>
+    <string name="detail_bid_tricks">Previsione %1$d (finale %2$d) · prese %3$d</string>
+    <string name="detail_base_success">Previsione azzeccata</string>
+    <string name="detail_base_failure">Previsione sbagliata</string>
+    <string name="detail_bonus_lost">Bonus persi: la previsione non è stata azzeccata.</string>
+    <string name="detail_cannonball">Palla di cannone: tutto o niente</string>
+    <string name="detail_rascal">Puntata di Rascal</string>
+    <string name="detail_total">Totale del giro</string>
+    <string name="detail_correct">Correggi il giro</string>
+
+    <!-- End of game -->
+    <string name="end_title">Partita finita</string>
+    <string name="end_winner">%1$s vince!</string>
+    <string name="end_see_scoreboard">Vedi il tabellone</string>
+
+    <!-- History, export, import -->
+    <string name="history_search">Giocatore, data o modalità</string>
+    <string name="history_filter_all">Tutte</string>
+    <string name="history_no_match">Nessuna partita corrisponde alla ricerca.</string>
+    <string name="history_open">Apri</string>
+    <string name="history_empty">Ancora nessuna partita salvata.</string>
+    <string name="history_status_finished">%1$s · terminata</string>
+    <string name="history_status_in_progress">%1$s · in corso</string>
+    <string name="history_delete_title">Eliminare la partita?</string>
+    <string name="history_delete_message">La partita e le sue statistiche saranno eliminate definitivamente da questo dispositivo.</string>
+    <string name="export_action">Esporta</string>
+    <string name="export_title">Esporta la cronologia</string>
+    <string name="export_format">Formato</string>
+    <string name="export_csv_desc">Una riga per giocatore e giro, leggibile in un foglio di calcolo</string>
+    <string name="export_json_desc">Backup completo, si può reimportare su un altro telefono</string>
+    <string name="export_period">Periodo</string>
+    <string name="export_player">Giocatore</string>
+    <string name="export_all_players">Tutti i giocatori</string>
+    <string name="export_nothing">Nessuna partita corrisponde a questo filtro.</string>
+    <string name="import_action">Importa</string>
+    <string name="import_title">Importa un backup</string>
+    <string name="import_preview">%1$d partita/e nuova/e, %2$d già presente/i, %3$d giocatore/i nuovo/i. Le partite già presenti non vengono duplicate.</string>
+    <string name="import_confirm">Importa</string>
+    <string name="import_done">%1$d partita/e importata/e, %2$d ignorata/e perché già presente/i.</string>
+    <string name="import_invalid">Questo file non è un backup di Skull King leggibile.</string>
+
+    <!-- Statistics -->
+    <string name="period_month">Questo mese</string>
+    <string name="period_year">Quest’anno</string>
+    <string name="period_all">Sempre</string>
+    <string name="stats_mode_note">Un punteggio Rascal non si può confrontare con uno classico: scegli una modalità.</string>
+    <string name="stats_empty">Ancora nessuna partita terminata per questo filtro.</string>
+    <string name="stats_games_wins">Partite: %1$d · Vittorie: %2$d (%3$s)</string>
+    <string name="stats_average">Punteggio medio</string>
+    <string name="stats_best">Miglior punteggio</string>
+    <string name="stats_worst">Peggior punteggio</string>
+    <string name="stats_bid_success">Previsioni azzeccate</string>
+    <string name="stats_zero_success">Previsioni zero azzeccate</string>
+    <string name="stats_bonus_title">Bonus segnati</string>
+    <string name="stats_monthly_title">Mese per mese</string>
+    <string name="stats_monthly_line">%1$d partite · media %2$d · %3$s previsioni azzeccate</string>
+    <string name="stats_head_to_head_title">Testa a testa</string>
+    <string name="stats_head_to_head_line">%1$d V · %2$d S in %3$d partite</string>
+
+    <!-- Settings -->
+
+    <!-- Help -->
+    <string name="help_tab_cards">Carte</string>
+    <string name="help_tab_scoring">Punti</string>
+    <string name="help_tab_expansion">Espansione</string>
+    <string name="help_tab_faq">FAQ</string>
+    <string name="help_search">Cerca nell’aiuto</string>
+    <string name="help_search_clear">Cancella la ricerca</string>
+    <string name="help_no_results">Nessun risultato per “%1$s”.</string>
+    <string name="help_hierarchy_title">Gerarchia delle carte</string>
+    <string name="help_hierarchy_body">1. 🏳️ Fuga (bandiera bianca): perde sempre, a meno che la presa non contenga solo Fughe, la Tigre Rossa giocata come Fuga o Bottini: in quel caso vince la prima carta giocata.\n2. 🟨🟪🟩 Giallo, viola, verde (da 1 a 14): il seme di apertura batte gli altri semi.\n3. ⚫ Briscola nera (Bandiere, da 1 a 14): batte tutti i semi.\n4. 🧜‍♀️ Sirene: battono semi e briscole, perdono contro i Pirati.\n5. 🏴‍☠️ Pirati: battono le Sirene, perdono contro lo Skull King.\n6. 💀 Skull King: batte i Pirati, ma perde contro una Sirena.\n\nCon l’espansione: Fuga &lt; semi &lt; briscola nera &lt; Sirena &lt; Pirati &lt; Primo Ufficiale Con &lt; Skull King &lt; Sirena. La Sirena batte il Primo Ufficiale Con e lo Skull King.\n!> Se un Pirata, lo Skull King e una Sirena vengono giocati nella stessa presa, vince la Sirena, a prescindere dall’ordine di gioco. L’unico bonus è quello della Sirena. Lo Skull King non vince la presa, quindi non segna nulla per il Pirata.</string>
+    <string name="help_special_title">Carte Speciali del gioco base</string>
+    <string name="help_special_body">• 🐯 Tigre Rossa: si gioca a scelta come Pirata o come Fuga.\n• 🐙 Kraken: distrugge la presa, nessuno la vince.\n!> La presa successiva viene aperta dal giocatore che l’avrebbe vinta senza il Kraken (FAQ ufficiale).\n• 🐳 Balena bianca: annulla le carte Speciali, vince la carta numerata più alta.\n• 💰 Bottino: si gioca come una Fuga. Lega chi l’ha giocato a chi vince la presa: se entrambi azzeccano la previsione, ciascuno segna +20.\n> Due Bottini possono legare gli stessi due giocatori: la stessa alleanza può essere fatta due volte e ciascuno può segnare fino a +40.\n!> Se una presa inizia con un Bottino e tutte le carte seguenti sono Fughe, il giocatore del Bottino vince la presa: nessuna alleanza viene stipulata e nessun bonus viene assegnato.</string>
+    <string name="help_points_title">Punti (modalità classica)</string>
+    <string name="help_points_body">• Previsione ≥ 1 azzeccata: +20 per presa prevista.\n• Previsione ≥ 1 sbagliata: −10 per presa di scarto.\n• Previsione zero azzeccata: +10 × numero di carte del giro.\n• Previsione zero sbagliata: −10 × numero di carte del giro.</string>
+    <string name="help_bonus_title">Bonus</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 14 di seme catturato: +10 ciascuno\n• ⚫ 14 nero catturato: +20\n• 🧜‍♀️ Sirena catturata da un Pirata: +20 ciascuna\n• 🏴‍☠️ Pirata catturato dallo Skull King: +30 ciascuno\n• 💀 Skull King catturato da una Sirena: +40\n• 💰 Bottino: +20 se il giocatore del Bottino e il vincitore della presa azzeccano entrambi esattamente la previsione\n• 🎲 Puntata di Rascal: +puntata se la previsione è esatta, −puntata altrimenti (0, 10 o 20), l’unico termine contato anche con una previsione sbagliata\n!> Punteggio classico: i punti bonus contano solo se la previsione è azzeccata. Nel punteggio Rascal, un colpo di striscio (sbaglio di uno) mantiene metà dei bonus: vedi “Modalità di punteggio”.</string>
+    <string name="help_modes_title">Modalità di punteggio</string>
+    <string name="help_modes_body">• **Classico**: vedi sopra.\n• **Rascal**: a ogni giro, tutti i giocatori hanno lo stesso potenziale, qualunque sia la previsione: 10 × N. A decidere è la precisione:\n-- **Colpo diretto** (previsione esatta): tutti i punti in palio e tutti i bonus\n-- **Colpo di striscio** (sbaglio di uno): metà dei punti in palio (5 × N) e metà dei bonus\n-- **Mancato** (sbaglio di due o più): nessun punto, nessun bonus\n> Esempio: 4 carte distribuite, 40 punti in palio. Colpo diretto: +40, colpo di striscio: +20, mancato: 0.\n!> La metà dei bonus non viene arrotondata: con i 7 e gli 8 dell’espansione, un punteggio può avere mezzo punto (15 → 7,5). Il Bottino richiede una previsione esatta: non conta mai con un colpo di striscio.\n• 💣 **Rascal + Palla di cannone** (regola opzionale): dopo le previsioni, tutti rivelano la scelta nello stesso momento:\n-- **Mitraglia** (mano aperta): il punteggio Rascal qui sopra\n-- **Palla di cannone** (pugno chiuso): previsione esatta = 15 × N punti più i bonus, altrimenti 0 punti e nessun bonus\n> Esempio: 6 carte, previsione 3. Mitraglia: 60 punti se esatta, 30 se sbagliata di uno. Palla di cannone: 90 se esatta, 0 se sbagliata di uno.\n> N è il numero di carte distribuite nel giro. La puntata di Rascal si somma o si sottrae in ogni modalità.</string>
+    <string name="help_expansion_title">Espansione 2026</string>
+    <string name="help_expansion_body">• 7 catturato: −5 ciascuno\n• 8 catturato: +5 ciascuno\n• 0/14: il giocatore dichiara 0 o 14 quando la gioca. Nessun bonus.\n• 🐵 15 jolly: prende il seme di apertura con valore 15, o il seme scelto dal suo giocatore se non ce n’è uno (mai il nero). Perde contro la briscola. Nessun bonus.\n• {con} Primo Ufficiale Con: batte tutti i Pirati, perde contro le Sirene e lo Skull King. Catturato dallo Skull King o da una Sirena: +30. Non rende nulla per i Pirati catturati. Quando vince una presa, il suo giocatore può usare i poteri dei Pirati catturati.\n• 🏴‍☠️ Mary Thorne: conta come Pirata (+30 se catturata dallo Skull King, +20 per Sirena catturata).\n• {davy} Forziere di Davy Jones: non vince, distrugge tutti i mostri marini della presa (🐙 🐳 {ray}): +20 per mostro per il suo giocatore.\n• 🦈 Cammina sulla tavola: toglie un Pirata dalla presa. Non rende bonus.\n• {ray} Razza maculata: mostro marino, come il Kraken e la Balena bianca. Non vince la presa: vince la carta più bassa della presa. Non rende bonus, e il Forziere di Davy Jones può distruggerla (+20).\n• 💥 Ultima salva: non vince. Il suo giocatore gioca una 2ª carta e salta l’ultima presa.\n!> I bonus dell’espansione seguono la stessa regola degli altri: tutti con una previsione azzeccata, metà con un colpo di striscio nel punteggio Rascal, nessuno altrimenti.\n> Il Forziere di Davy Jones, l’Ultima salva, la Razza maculata e Cammina sulla tavola non sono Fughe. Se le altre carte giocate sono tutte Fughe, vince la presa la prima Fuga giocata.\n> Quando il Forziere di Davy Jones, l’Ultima salva o Cammina sulla tavola aprono una presa, è il giocatore successivo a scegliere il seme. Se una presa contiene solo carte Speciali che non vincono, viene scartata e chi l’ha aperta apre la successiva.\n> In 2 giocatori, il 15 jolly, Cammina sulla tavola e gli 0/14 vengono rimossi.</string>
+    <string name="help_faq_title">FAQ</string>
+    <string name="help_official_link">Regole e FAQ ufficiali (grandpabecksgames.com)</string>
+    <string name="help_faq_body">• Le prese non sommano il numero di carte? Una presa può essere distrutta (Kraken, o Balena bianca / Razza maculata senza carte numerate) o fatta solo di carte Speciali: inseriscila come “presa scartata”. L’app non controlla chi ha vinto ogni presa, segnala solo le incoerenze e non ti blocca mai.\n• Un errore in un giro passato? Tocca la sua cella nel tabellone, poi “Correggi il giro”.\n• In 2 giocatori? Distribuisci 3 mazzetti: il 3º resta coperto e viene giocato dal fantasma di Barba Grigia. Gioca sempre in seconda posizione, non deve rispondere al seme, e la sua Tigre Rossa conta come Fuga. Tu e il tuo compagno aprite ogni giro a turno, e se Barba Grigia vince una presa apre la successiva. I Bottini non si giocano in 2. L’app segue solo i due giocatori.\n• Niente rete? Nessun problema, l’app funziona interamente offline.</string>
+
+    <!-- V2: game comfort and settings -->
+    <string name="settings_title">Impostazioni</string>
+    <string name="settings_game">Gioco</string>
+    <string name="settings_keep_screen_on">Tieni lo schermo acceso</string>
+    <string name="settings_keep_screen_on_desc">Mentre una partita è in corso.</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_auto_backup">Backup automatico</string>
+    <string name="settings_auto_backup_desc">Salva le tue partite in una cartella a tua scelta dopo ogni partita e una volta al giorno.</string>
+    <string name="settings_choose_folder">Scegli la cartella di backup</string>
+    <string name="settings_change_folder">Cambia la cartella di backup</string>
+    <string name="settings_backup_now">Esegui il backup ora</string>
+    <string name="settings_backup_no_folder">Ancora nessuna cartella scelta.</string>
+    <string name="settings_backup_never">Ancora nessun backup eseguito.</string>
+    <string name="settings_backup_last">Ultimo backup: %1$s</string>
+    <string name="settings_backup_failed">L’ultimo backup non è riuscito. Controlla che la cartella sia ancora disponibile.</string>
+    <string name="settings_restore">Ripristina da un backup</string>
+    <string name="settings_about">Informazioni</string>
+    <string name="settings_about_text">Segnapunti per Skull King. Licenza MIT.</string>
+    <string name="undo_bid">previsione di %1$s</string>
+    <string name="undo_cannonball">palla di cannone di %1$s</string>
+    <string name="undo_trick">presa %1$s</string>
+    <string name="undo_trick_deleted">presa %1$s eliminata</string>
+    <string name="undone_prefix">Annullato: %1$s</string>
+    <string name="redone_prefix">Ripristinato: %1$s</string>
+    <string name="dealer_label">Mazziere: %1$s</string>
+    <string name="setup_draw_dealer">Sorteggia il mazziere</string>
+    <string name="setup_dealer_badge">Mazziere</string>
+
+    <!-- V2 : jalon 1, partage -->
+    <string name="share_title">Condividi</string>
+    <string name="share_action">Condividi</string>
+    <string name="share_save">Salva nella galleria</string>
+    <string name="share_saved">Immagine salvata in Pictures/SkullKing.</string>
+    <string name="share_save_failed">Impossibile salvare l’immagine.</string>
+    <string name="share_preview">Anteprima dell’immagine da condividere</string>
+    <string name="share_nothing">Scegli cosa includere nell’immagine.</string>
+    <string name="share_podium">Podio</string>
+    <string name="share_table">Tabella dei punti</string>
+    <string name="share_stats">Momenti salienti della partita</string>
+    <string name="share_round">Giro</string>
+    <string name="share_with_expansion">con espansione</string>
+    <string name="share_without_expansion">senza espansione</string>
+    <string name="share_best_round">Miglior giro: %1$s (%2$s punti, giro %3$d)</string>
+    <string name="share_worst_round">Peggior giro: %1$s (%2$s punti, giro %3$d)</string>
+    <string name="share_exact_bids">%1$s: %2$d previsioni esatte su %3$d</string>
+
+    <!-- V2 : jalon 2, courbes -->
+    <string name="tab_table">Tabella</string>
+    <string name="tab_curve">Curva</string>
+    <string name="curve_empty">Nessun giro ancora conteggiato.</string>
+    <string name="curve_summary_line">%1$s: %2$d punti dopo %3$d giri</string>
+    <string name="curve_axis_rounds">Punteggio cumulato su %1$d giri.</string>
+    <string name="curve_round_detail">Giro %1$d (%2$d carte)</string>
+    <string name="curve_round_line">%1$s (totale %2$s)</string>
+    <string name="curve_tap_hint">Tocca il grafico per vedere un giro nel dettaglio. Usa i chip per mostrare o nascondere i giocatori.</string>
+
+    <!-- V2 : jalon 2, statistiques -->
+    <plurals name="stats_games_count">
+        <item quantity="one">%d partita</item>
+        <item quantity="many">%d partite</item>
+        <item quantity="other">%d partite</item>
+    </plurals>
+    <string name="stats_filter_present">Giocatori al tavolo</string>
+    <string name="filter_all_sizes">Qualsiasi numero di giocatori</string>
+    <string name="filter_players_2_3">2–3 giocatori</string>
+    <string name="filter_players_4_5">4–5 giocatori</string>
+    <string name="filter_players_6_plus">6 o più</string>
+    <string name="filter_expansion_all">Con o senza espansione</string>
+    <string name="filter_expansion_with">Con espansione</string>
+    <string name="filter_expansion_without">Senza espansione</string>
+    <string name="stats_records_title">Record</string>
+    <string name="stats_record_best_round">Miglior giro</string>
+    <string name="stats_record_worst_round">Peggior giro</string>
+    <string name="stats_record_round">%1$s punti, giro %2$d (%3$s)</string>
+    <string name="stats_record_exact_streak">Serie più lunga di previsioni esatte</string>
+    <string name="stats_record_win_streak">Serie più lunga di vittorie</string>
+    <string name="stats_record_zero_streak">Serie più lunga di previsioni zero azzeccate</string>
+    <string name="stats_record_bonus">Bonus più alto in un giro</string>
+    <string name="stats_trend_title">Evoluzione</string>
+    <string name="stats_trend_not_enough">Servono almeno %1$d partite terminate per tracciare una tendenza.</string>
+    <string name="stats_trend_games">Punteggio della partita</string>
+    <string name="stats_trend_average">Media</string>
+    <string name="stats_trend_legend">Linea continua: punteggio di ogni partita. Linea tratteggiata: media delle ultime %1$d partite.</string>
+    <string name="stats_trend_description">%1$s: da %2$s a %3$s punti in %4$d partite</string>
+    <string name="stats_size_title">Previsioni azzeccate per dimensione del giro</string>
+    <string name="size_small">1–3 carte</string>
+    <string name="size_medium">4–6 carte</string>
+    <string name="size_large">7–10 carte</string>
+    <string name="size_huge">11 carte e più</string>
+    <string name="stats_bias">Tendenza delle previsioni</string>
+    <string name="stats_bias_under">Previsioni basse (%1$s presa per giro)</string>
+    <string name="stats_bias_over">Previsioni alte (%1$s presa per giro)</string>
+    <string name="stats_tricks_coverage">Prese inserite in diretta in %1$d partite su %2$d.</string>
+    <string name="stats_rascal_wagers">Puntate di Rascal vinte</string>
+    <string name="stats_harry_adjustments">Aggiustamenti di Harry (giro vinto)</string>
+    <string name="duel_title">Testa a testa</string>
+    <string name="duel_first">Primo giocatore</string>
+    <string name="duel_second">Secondo giocatore</string>
+    <string name="duel_choose">Scegli due giocatori da confrontare.</string>
+    <string name="duel_not_enough">Poche partite giocate insieme.</string>
+    <string name="duel_common_games">%1$d partite giocate insieme</string>
+    <string name="duel_versus">contro</string>
+    <string name="duel_ties">%1$d pareggi</string>
+    <string name="duel_average_gap">Vantaggio medio di %1$s</string>
+    <string name="duel_biggest_gap">Scarto più grande in una partita</string>
+
+    <!-- V2 : jalon 4, import -->
+    <string name="import_homonyms">Giocatori con lo stesso nome</string>
+    <string name="import_merge">%1$s: unisci al profilo esistente</string>
+    <string name="import_create">%1$s: crea un nuovo profilo</string>
+    <string name="import_done_detail">%1$d partita/e importata/e, %2$d ignorata/e, %3$d profilo/i unito/i, %4$d creato/i.</string>
+    <string name="import_too_new">Questo backup proviene da una versione più recente dell’app. Aggiorna l’app per importarlo.</string>
+
+    <!-- V2: accessibility -->
+    <string name="a11y_score_cell">%1$s, giro %2$d, %3$s punti, totale %4$s</string>
+    <string name="a11y_score_cell_pending">%1$s, giro %2$d, non ancora conteggiato</string>
+    <string name="a11y_expanded">Espanso</string>
+    <string name="a11y_collapsed">Compresso</string>
+    <string name="stats_more_filters">Altri filtri</string>
+    <string name="setup_dealer_hint">Elenca i giocatori in ordine di posto al tavolo (trascina ≡ per spostarli), poi sorteggia o scegli chi mescola per primo 🃏.</string>
+    <string name="share_curve">Curva del punteggio</string>
+    <string name="stats_bias_balanced">Equilibrato</string>
+    <string name="stats_bias_help">Confronta le prese vinte con la previsione, giro dopo giro: sottostimare significa vincere più di quanto annunciato, sovrastimare vincere meno.</string>
+    <string name="mode_classic_short">Classico</string>
+    <string name="mode_rascal_short">Rascal</string>
+    <string name="mode_cannonball_short">Rascal + Palla di cannone</string>
+    <string name="stats_search">Trova un giocatore</string>
+    <string name="stats_no_match">Nessun giocatore corrisponde alla ricerca.</string>
+    <string name="stats_share_player">Condividi le statistiche di %1$s</string>
+    <string name="stats_image_legend_games">Punteggio della partita</string>
+    <string name="stats_image_legend_average">Media delle ultime %1$d partite</string>
+
+    <!-- Card statistics -->
+    <string name="stats_tab_players">Giocatori</string>
+    <string name="stats_tab_cards">Carte</string>
+    <string name="stats_favorite_card">Carta preferita</string>
+    <string name="cards_coverage">Prese inserite in diretta in %1$d partite su %2$d (%3$d prese).</string>
+    <string name="cards_no_tricks">Nessuna presa è stata inserita in diretta con questi filtri. Inserisci le prese durante il gioco per vedere le statistiche sulle carte.</string>
+    <string name="cards_by_card_title">Prese vinte per carta</string>
+    <string name="cards_by_card_hint">Quota delle prese vinte con ogni carta. Indica quanto spesso una carta vince, non quanto è forte: le carte giocate e perse non vengono registrate.</string>
+    <string name="cards_pirates_title">Prese vinte per Pirata</string>
+    <string name="cards_pirates_hint">Un Pirata che vince più spesso non è necessariamente più forte: dipende dai giocatori e dalla modalità di gioco.</string>
+    <string name="cards_success_title">Previsioni azzeccate quando vince una carta</string>
+    <string name="cards_success_hint">Giri in cui un giocatore ha vinto una presa con la carta, e quota di quei giri conclusi con una previsione esatta per quel giocatore.</string>
+    <string name="cards_timing_title">Quando vincono le carte</string>
+    <string name="cards_timing_line">inizio %1$s · metà %2$s · fine %3$s</string>
+    <string name="cards_timing_hint">Posizione delle prese vinte nel giro (primo, secondo e ultimo terzo), per giri da 3 carte in su.</string>
+    <string name="cards_captures_title">Bonus catturati</string>
+    <string name="cards_bonus_share">Giocatori-giro con un bonus</string>
+    <string name="cards_bonus_average">Punti bonus per giocatore-giro</string>
+    <string name="cards_settings_title">Poteri dei Pirati</string>
+    <string name="cards_rascal_wager">Puntata di Rascal di %1$d</string>
+    <string name="cards_wager_line">%1$d / %2$d azzeccate · %3$s</string>
+    <string name="cards_harry_adjustment">Aggiustamento di Harry %1$s</string>
+    <string name="cards_settings_hint">Il successo è misurato sull’intero giro del giocatore che ha vinto la presa.</string>
+    <string name="cards_loots_title">Bottini</string>
+    <string name="cards_loots_played">Bottini giocati</string>
+    <string name="cards_loots_valid">Validi (entrambi i giocatori hanno azzeccato la previsione)</string>
+    <string name="cards_davy_title">Forziere di Davy Jones</string>
+    <string name="cards_davy_points">Punti segnati</string>
+    <string name="cards_kraken_title">Kraken</string>
+    <string name="cards_kraken_destroyed">Prese distrutte</string>
+    <string name="cards_kraken_per_game">Per partita</string>
+    <string name="cards_kraken_success_with">Previsioni azzeccate quando una presa è distrutta</string>
+    <string name="cards_kraken_success_without">Previsioni azzeccate negli altri casi</string>
+    <string name="cards_expansion_title">Espansione</string>
+    <string name="cards_expansion_with">Con l’espansione</string>
+    <string name="cards_expansion_without">Gioco base</string>
+    <string name="cards_expansion_points">Punti per giocatore e giro</string>
+    <string name="cards_expansion_wins">Prese vinte con carte dell’espansione</string>
+    <string name="help_monsters_title">Mostri marini: come prosegue il gioco</string>
+    <string name="help_monsters_body">• **Giocarne uno**: un mostro marino (🐙 Kraken, 🐳 Balena bianca, {ray} Razza maculata) è una carta Speciale: si può giocare in qualsiasi momento, anche se potresti rispondere al seme. La presa si risolve quando tutti hanno giocato.\n!> Se un mostro apre la presa, non viene stabilito alcun seme: i giocatori successivi giocano la carta che vogliono. Se viene giocato dopo che un seme è stato aperto, i giocatori successivi devono comunque rispondere a quel seme se possono, o giocare una carta Speciale. Il seme di apertura resta il seme di apertura: il mostro applica il suo effetto solo quando la presa viene risolta (FAQ ufficiale).\n• 🐙 **Kraken**: nessuno vince la presa, le sue carte vengono scartate e nessun bonus viene assegnato (inseriscila come “presa distrutta”).\n!> Il giocatore che avrebbe vinto la presa senza il Kraken apre la presa successiva (FAQ ufficiale).\n• 🐳 **Balena bianca**: tutte le carte Speciali della presa (Skull King, Pirati, Sirene, Kraken…) contano come Fughe, e le carte numerate perdono il seme: colori e briscola nera non contano più, solo i numeri. Vince il numero più alto (il primo giocato in caso di parità), e il suo giocatore apre la presa successiva.\n!> Se non c’è alcuna carta numerata, la presa viene distrutta come con il Kraken, e il giocatore che l’avrebbe vinta senza il mostro apre la presa successiva (regolamento ufficiale). Lo stesso vale per la Razza maculata.\n• {ray} **Razza maculata** (espansione): funziona esattamente come la Balena bianca, tranne che vince il numero più basso invece del più alto.\n• 🐙 🐳 {ray} **Più mostri nella stessa presa**: ha effetto solo l’ultimo mostro giocato.\n> Chi vince una presa di norma apre la successiva. Le eccezioni sono una presa distrutta (nessuno la vince) e Rosie Bonbon, che sceglie chi apre.</string>
+    <string name="help_pirates_title">Poteri dei Pirati</string>
+    <string name="help_pirates_body">• **Rosie Bonbon**: sceglie chi apre la presa successiva, anche se stessa.\n• **Farrell il Farabutto**: punta 0, 10 o 20 punti, che si sommano se la previsione è azzeccata e si sottraggono altrimenti.\n• **Ben il Bandito**: pesca 2 carte dal mazzo, poi scarta 2 carte dalla mano.\n• **Juanita Jade**: guarda le carte non distribuite per vedere quali non sono in gioco.\n• **Harry il Gigante**: aggiusta la sua previsione di +1 o −1, oppure la lascia com’è.\n• **Mary Thorne** (espansione, potere opzionale): se vince la presa, il suo giocatore sceglie a caso una carta dalla mano di un giocatore qualsiasi (anche la propria) senza guardarla. Quel giocatore deve giocarla nella presa successiva, qualunque sia il seme di apertura.\n> Harry il Gigante è l’unico Pirata il cui potere funziona anche nell’ultima presa (deve vincere la presa per attivarlo).</string>
+    <string name="help_note">Nota</string>
+    <string name="hier_skull_king">Skull King</string>
+    <string name="hier_skull_king_sub">Batte tutte le carte tranne le Sirene.</string>
+    <string name="hier_con">Primo Ufficiale Con (espansione)</string>
+    <string name="hier_con_sub">Batte i Pirati. Perde contro lo Skull King e le Sirene.</string>
+    <string name="hier_pirates">Pirati</string>
+    <string name="hier_pirates_sub">Battono tutte le carte tranne lo Skull King e il Primo Ufficiale Con.</string>
+    <string name="hier_mermaids">Sirene</string>
+    <string name="hier_mermaids_sub">Battono tutte le carte numerate, lo Skull King e il Primo Ufficiale Con.</string>
+    <string name="hier_black">Briscola nera</string>
+    <string name="hier_black_sub">Batte tutti i semi normali. Vince la briscola più alta.</string>
+    <string name="hier_suits">Semi normali</string>
+    <string name="hier_suits_sub">Giallo, viola, verde: vince il numero più alto del seme di apertura.</string>
+    <string name="hier_escape">Fuga</string>
+    <string name="hier_escape_sub">Perde sempre. Se la presa contiene solo Fughe, la Tigre Rossa come Fuga o Bottini, vince la prima carta giocata.</string>
+    <string name="help_remark">Attenzione</string>
+    <string name="play_bids_summary">Previsione totale %1$d per %2$d prese</string>
+    <string name="play_bids_over">%1$d in più</string>
+    <string name="play_bids_under">%1$d in meno</string>
+    <string name="collapse">Comprimi</string>
+    <string name="expand">Espandi</string>
+    <string name="trick_destroyed_button">Presa distrutta</string>
+    <string name="trick_loot_by">💰 Bottino giocato da %1$s</string>
+    <string name="results_initial_bid">Previsione iniziale: %1$d (modificata da Harry)</string>
+    <string name="results_bid_made">Previsione azzeccata</string>
+    <string name="results_bid_missed_over">Previsione sbagliata: %1$d presa/e in più</string>
+    <string name="results_bid_missed_under">Previsione sbagliata: %1$d presa/e in meno</string>
+    <string name="detail_bonus_halved">Bonus mantenuti (sbaglio di uno: metà)</string>
+    <string name="tab_ranking">Classifica</string>
+    <string name="ranking_gap">%1$s di distacco</string>
+    <string name="ranking_last_round">ultimo giro %1$s</string>
+    <string name="setup_drag_handle">Trascina per riordinare</string>
+    <string name="trick_events">Eventi della presa</string>
+    <string name="settings_remember_setup">Ricorda la configurazione della partita</string>
+    <string name="settings_remember_setup_desc">Una nuova partita inizia con la modalità di punteggio e l’espansione della precedente.</string>
+    <string name="setup_choose_dealer">Scegli il mazziere</string>
+    <string name="results_tap_trick">Tocca una presa per correggerla: vincitore, carte vinte, Bottino, Davy Jones…</string>
+    <string name="trick_choose_winner">Scegli il vincitore</string>
+</resources>

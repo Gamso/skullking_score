@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skull King Score</string>
+
+    <!-- General -->
+    <string name="back">Volver</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="close">Cerrar</string>
+    <string name="save">Guardar</string>
+    <string name="delete">Eliminar</string>
+    <string name="add">Añadir</string>
+    <string name="remove">Quitar</string>
+    <string name="more">Más opciones</string>
+    <string name="help">Ayuda</string>
+    <string name="scoreboard">Marcador</string>
+    <string name="unknown_player">?</string>
+    <string name="move_up">Subir</string>
+    <string name="move_down">Bajar</string>
+
+    <!-- Home -->
+    <string name="home_tagline">El bloc de puntuación de tus partidas de Skull King</string>
+    <string name="home_new_game">Nueva partida</string>
+    <string name="home_resume">Continuar la partida</string>
+    <string name="home_resume_detail">%1$d jugadores · %2$d rondas jugadas</string>
+    <string name="home_history">Historial</string>
+    <string name="home_stats">Estadísticas</string>
+    <string name="home_players">Jugadores</string>
+
+    <!-- Profiles -->
+    <string name="player_new">Nuevo perfil</string>
+    <string name="player_edit">Editar el perfil</string>
+    <string name="player_name">Nombre</string>
+    <string name="player_archive">Archivar</string>
+    <string name="player_restore">Restaurar</string>
+    <string name="player_archived">Archivado</string>
+    <string name="players_empty">Aún no hay perfiles. Crea uno para empezar.</string>
+
+    <!-- Scoring modes -->
+    <string name="mode_classic">Clásico</string>
+    <string name="mode_classic_desc">20 puntos por baza anunciada, −10 por baza de diferencia, más las bonificaciones</string>
+    <string name="mode_rascal">Rascal (“Golpe directo”)</string>
+    <string name="mode_rascal_desc">Mismo potencial para todos: 10 × cartas. Fallo por una: la mitad de los puntos y de las bonificaciones</string>
+    <string name="mode_cannonball">Rascal + Bala de cañón</string>
+    <string name="mode_cannonball_desc">Cada jugador elige Metralla (Rascal) o Bala de cañón (todo o nada)</string>
+
+    <!-- Expansion cards -->
+    <string name="card_sevens">7 (×4, uno por palo)</string>
+    <string name="card_eights">8 (×4)</string>
+    <string name="card_zero_fourteen">0/14 (×4)</string>
+    <string name="card_wild_15">15 comodín (mono)</string>
+    <string name="card_mary_thorne">Mary Thorne</string>
+    <string name="card_first_mate_con">Contramaestre Con</string>
+    <string name="card_davy_jones">Cofre de Davy Jones</string>
+    <string name="card_plank">Paseo por la tabla</string>
+    <string name="card_spotted_ray">Raya moteada</string>
+    <string name="card_last_salvo">Última andanada</string>
+
+    <string name="monster_kraken">Kraken</string>
+    <string name="monster_white_whale">Ballena Blanca</string>
+    <string name="monster_spotted_ray">Raya moteada</string>
+
+    <!-- Bonuses -->
+    <string name="bonus_colored_14">14 de palo</string>
+    <string name="bonus_black_14">14 negro</string>
+    <string name="bonus_mermaid_by_pirate">Sirena (por un pirata)</string>
+    <string name="bonus_pirate_by_skull_king">Pirata (por el Skull King)</string>
+    <string name="bonus_skull_king_by_mermaid">Skull King (por una sirena)</string>
+    <string name="bonus_con_captured">Contramaestre (por el SK o una sirena)</string>
+    <string name="bonus_loot">Botín</string>
+    <string name="bonus_davy_jones">Monstruo marino destruido (Davy Jones)</string>
+    <string name="bonus_eight">8</string>
+    <string name="bonus_seven">7</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Nueva partida</string>
+    <string name="setup_players_order">Jugadores, por orden en la mesa (%1$d)</string>
+    <string name="setup_search_players">Buscar un perfil</string>
+    <string name="setup_available_players">Perfiles disponibles</string>
+    <string name="setup_mode">Modo de puntuación</string>
+    <string name="setup_expansion">Expansión 2026</string>
+    <string name="setup_expansion_switch">Jugar con la expansión</string>
+    <string name="setup_expansion_desc">Activa las cartas que quieras, una a una</string>
+    <string name="setup_card_removed_two_players">Se retira con 2 jugadores</string>
+    <string name="setup_start">Empezar la partida</string>
+    <string name="setup_hint_min_players">Elige al menos 2 jugadores</string>
+    <string name="setup_hint_nine_players">Con más de 8 jugadores, la expansión es obligatoria</string>
+    <string name="setup_hint_max_players">9 jugadores como máximo</string>
+
+    <!-- Round -->
+    <string name="round_title_plain">Ronda %1$d</string>
+    <string name="round_title_extra">Ronda %1$d (extra)</string>
+    <string name="round_title_cards">Ronda %1$d · cartas: %2$d</string>
+    <string name="prepare_cards_question">Cartas repartidas</string>
+    <string name="prepare_cards_hint">Sugerencia: ronda anterior + 1. Cámbialo con un toque.</string>
+    <string name="prepare_start_bids">Empezar los envites</string>
+
+    <string name="bids_validate">Confirmar los envites</string>
+    <string name="bids_total">Total de envites: %1$d (cartas repartidas: %2$d)</string>
+
+    <string name="play_bids_reminder">Envites</string>
+    <string name="play_bid_chip">Envite %1$d</string>
+    <string name="play_live_events">Eventos en directo</string>
+    <!-- Live tricks -->
+    <string name="play_tricks_title">Bazas</string>
+    <string name="play_trick_progress">Baza %1$d de %2$d</string>
+    <string name="play_all_tricks_done">Todas las bazas introducidas</string>
+    <string name="play_enter_trick">Introducir la baza %1$d</string>
+    <string name="play_undo_last_trick">Deshacer la última baza</string>
+    <string name="play_bid_tricks_chip">Envite %1$d · bazas %2$d</string>
+    <string name="trick_dialog_new">Baza %1$d</string>
+    <string name="trick_dialog_edit">Corregir la baza %1$d</string>
+    <string name="trick_who_won">¿Quién ganó la baza?</string>
+    <string name="trick_destroyed">Baza destruida (Kraken, o Ballena Blanca / Raya moteada sin carta numerada)</string>
+    <string name="trick_destroyed_short">destruida</string>
+    <string name="trick_captured">Cartas ganadas</string>
+    <string name="trick_rascal_wager">Apuesta de Rascal</string>
+    <string name="trick_harry_title">Harry</string>
+    <string name="trick_harry_none">Ninguno</string>
+    <string name="trick_won_with">Ganada con</string>
+    <string name="win_mermaid">Sirena</string>
+    <string name="win_skull_king">Skull King</string>
+    <string name="win_first_mate">Contramaestre</string>
+    <string name="win_other">Otra</string>
+    <string name="win_pirate">Pirata</string>
+    <string name="pirate_rosie">Rosie</string>
+    <string name="pirate_rascal">Rascal</string>
+    <string name="pirate_will">Bendt</string>
+    <string name="pirate_juanita">Juanita</string>
+    <string name="pirate_harry">Harry</string>
+    <string name="pirate_tigress">Tigresa</string>
+    <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie de Laney</string>
+    <string name="pirate_rascal_full">Bribón de Roatán</string>
+    <string name="pirate_will_full">El bandido Bendt</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry, el Gigante</string>
+    <string name="pirate_tigress_full">Tigresa</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
+    <string name="stats_wins_with_title">Bazas ganadas con</string>
+    <string name="trick_validate">Confirmar la baza</string>
+    <string name="event_trick_prefix">"Baza %1$d · "</string>
+    <string name="event_loot_pending">Botín jugado por %1$s (falta introducir quién ganó la baza)</string>
+    <string name="play_validate_round">Confirmar la ronda</string>
+    <string name="play_warnings_title">Revisa antes de confirmar</string>
+    <string name="play_validate_anyway">Confirmar de todos modos</string>
+    <string name="play_fix">Corregir</string>
+
+    <string name="event_loot_button">Botín</string>
+    <string name="event_davy_jones_button">Davy Jones</string>
+    <string name="event_log">Diario de la ronda</string>
+    <string name="event_log_empty">Aún no hay eventos</string>
+    <string name="event_loot_line">Botín jugado por %1$s, baza ganada por %2$s</string>
+    <string name="event_davy_jones_line">Cofre de %1$s: %2$s</string>
+    <string name="event_cancelled">cancelado</string>
+    <string name="cancel_event">Cancelar</string>
+    <string name="loot_who_played">¿Quién jugó el Botín?</string>
+    <string name="loot_who_won">¿Quién ganó la baza?</string>
+    <string name="chest_who_played">¿Quién jugó el Cofre de Davy Jones?</string>
+    <string name="chest_which_creatures">¿Qué criaturas se destruyen?</string>
+
+    <string name="results_tab_round">Ronda</string>
+    <string name="results_title">Resultados · ronda %1$d</string>
+    <string name="results_validate">Confirmar la ronda</string>
+    <string name="results_save_correction">Guardar la corrección</string>
+    <string name="results_editing_hint">Estás corrigiendo una ronda ya confirmada: las puntuaciones se recalculan tras cada cambio.</string>
+    <string name="results_tricks">Bazas ganadas</string>
+    <string name="results_final_bid">Envite</string>
+    <string name="results_bonus_title">Cartas ganadas</string>
+    <string name="results_bonus_ignored">Envite fallido: las bonificaciones introducidas no cuentan.</string>
+    <string name="results_cannonball">Bala de cañón</string>
+    <string name="results_cannonball_hint">Todo o nada: 15 × cartas si el envite es exacto, si no 0</string>
+    <string name="results_rascal_wager">Apuesta de Bribón de Roatán</string>
+    <string name="results_discarded_title">Bazas descartadas</string>
+    <string name="results_discarded_label">Bazas destruidas o sin ganador</string>
+    <string name="results_discarded_hint">Kraken, o una baza hecha solo de cartas especiales</string>
+
+    <!-- Consistency warnings (never blocking) -->
+    <string name="warn_tricks_over">Total de bazas: %1$d (cartas repartidas: %2$d). Revisa lo introducido.</string>
+    <string name="warn_tricks_under">Total de bazas: %1$d (cartas repartidas: %2$d). Si alguna baza fue destruida (Kraken, solo cartas especiales), introdúcela como baza descartada.</string>
+    <string name="warn_cards_exceed_deck">%1$d cartas por repartir con una baraja de %2$d.</string>
+    <string name="warn_too_many_colored_14">%1$d 14 de palo capturados, solo existen %2$d.</string>
+    <string name="warn_too_many_black_14">%1$d 14 negros capturados, solo existe %2$d.</string>
+    <string name="warn_too_many_skull_king">Solo hay %2$d Skull King (%1$d introducidos).</string>
+    <string name="warn_too_many_con">Solo hay %2$d Contramaestre Con (%1$d introducidos).</string>
+    <string name="warn_too_many_sevens">%1$d 7 capturados, solo hay %2$d.</string>
+    <string name="warn_too_many_eights">%1$d 8 capturados, solo hay %2$d.</string>
+    <string name="warn_too_many_mermaids">%1$d sirenas capturadas, solo hay %2$d.</string>
+    <string name="warn_too_many_pirates">%1$d piratas capturados, solo hay %2$d en juego.</string>
+    <string name="warn_too_many_loot">%1$d cartas de Botín introducidas, la baraja solo tiene %2$d.</string>
+    <string name="warn_duplicate_monster">Criatura introducida dos veces: %1$s.</string>
+
+    <!-- Scoreboard -->
+    <string name="table_total">Total</string>
+    <string name="table_cards_short">%1$d c.</string>
+    <string name="scoreboard_next_round">Siguiente ronda</string>
+    <string name="scoreboard_extra_round">Ronda extra</string>
+    <string name="scoreboard_resume_round">Continuar la ronda %1$d</string>
+    <string name="scoreboard_finish">Terminar la partida</string>
+    <string name="scoreboard_finish_title">¿Terminar la partida?</string>
+    <string name="scoreboard_finish_message">Se muestra el podio y se actualizan las estadísticas. Ya no se podrán editar las rondas.</string>
+    <string name="scoreboard_reopen_last">Reabrir la última ronda</string>
+    <string name="scoreboard_see_podium">Ver el podio</string>
+    <string name="detail_title">%1$s · ronda %2$d</string>
+    <string name="detail_bid_tricks">Envite %1$d (final %2$d) · bazas %3$d</string>
+    <string name="detail_base_success">Envite cumplido</string>
+    <string name="detail_base_failure">Envite fallido</string>
+    <string name="detail_bonus_lost">Bonificaciones perdidas: no se cumplió el envite.</string>
+    <string name="detail_cannonball">Bala de cañón: todo o nada</string>
+    <string name="detail_rascal">Apuesta de Rascal</string>
+    <string name="detail_total">Total de la ronda</string>
+    <string name="detail_correct">Corregir la ronda</string>
+
+    <!-- End of game -->
+    <string name="end_title">Fin de la partida</string>
+    <string name="end_winner">¡%1$s gana!</string>
+    <string name="end_see_scoreboard">Ver el marcador</string>
+
+    <!-- History, export, import -->
+    <string name="history_search">Jugador, fecha o modo</string>
+    <string name="history_filter_all">Todas</string>
+    <string name="history_no_match">Ninguna partida coincide con tu búsqueda.</string>
+    <string name="history_open">Abrir</string>
+    <string name="history_empty">Aún no hay partidas guardadas.</string>
+    <string name="history_status_finished">%1$s · terminada</string>
+    <string name="history_status_in_progress">%1$s · en curso</string>
+    <string name="history_delete_title">¿Eliminar la partida?</string>
+    <string name="history_delete_message">La partida y sus estadísticas se eliminarán definitivamente de este dispositivo.</string>
+    <string name="export_action">Exportar</string>
+    <string name="export_title">Exportar el historial</string>
+    <string name="export_format">Formato</string>
+    <string name="export_csv_desc">Una línea por jugador y ronda, legible en una hoja de cálculo</string>
+    <string name="export_json_desc">Copia de seguridad completa, se puede reimportar en otro teléfono</string>
+    <string name="export_period">Periodo</string>
+    <string name="export_player">Jugador</string>
+    <string name="export_all_players">Todos los jugadores</string>
+    <string name="export_nothing">Ninguna partida coincide con este filtro.</string>
+    <string name="import_action">Importar</string>
+    <string name="import_title">Importar una copia de seguridad</string>
+    <string name="import_preview">%1$d partida(s) nueva(s), %2$d ya presente(s), %3$d jugador(es) nuevo(s). Las partidas ya presentes no se duplican.</string>
+    <string name="import_confirm">Importar</string>
+    <string name="import_done">%1$d partida(s) importada(s), %2$d omitida(s) por estar ya presentes.</string>
+    <string name="import_invalid">Este archivo no es una copia de seguridad legible de Skull King.</string>
+
+    <!-- Statistics -->
+    <string name="period_month">Este mes</string>
+    <string name="period_year">Este año</string>
+    <string name="period_all">Siempre</string>
+    <string name="stats_mode_note">Una puntuación Rascal no se puede comparar con una clásica: elige un modo.</string>
+    <string name="stats_empty">Aún no hay ninguna partida terminada para este filtro.</string>
+    <string name="stats_games_wins">Partidas: %1$d · Victorias: %2$d (%3$s)</string>
+    <string name="stats_average">Puntuación media</string>
+    <string name="stats_best">Mejor puntuación</string>
+    <string name="stats_worst">Peor puntuación</string>
+    <string name="stats_bid_success">Envites cumplidos</string>
+    <string name="stats_zero_success">Envites a cero cumplidos</string>
+    <string name="stats_bonus_title">Bonificaciones obtenidas</string>
+    <string name="stats_monthly_title">Mes a mes</string>
+    <string name="stats_monthly_line">%1$d partidas · media %2$d · %3$s envites cumplidos</string>
+    <string name="stats_head_to_head_title">Cara a cara</string>
+    <string name="stats_head_to_head_line">%1$d V · %2$d D en %3$d partidas</string>
+
+    <!-- Settings -->
+
+    <!-- Help -->
+    <string name="help_tab_cards">Cartas</string>
+    <string name="help_tab_scoring">Puntos</string>
+    <string name="help_tab_expansion">Expansión</string>
+    <string name="help_tab_faq">FAQ</string>
+    <string name="help_search">Buscar en la ayuda</string>
+    <string name="help_search_clear">Borrar la búsqueda</string>
+    <string name="help_no_results">Sin resultados para “%1$s”.</string>
+    <string name="help_hierarchy_title">Jerarquía de las cartas</string>
+    <string name="help_hierarchy_body">1. 🏳️ Huida (bandera blanca): siempre pierde, salvo que la baza solo tenga huidas, la Tigresa jugada como huida o Botines: entonces gana la primera carta jugada.\n2. 🟨🟪🟩 Amarillo, morado, verde (1 a 14): el palo de salida vence a los demás palos.\n3. ⚫ Triunfo negro (bandera pirata, 1 a 14): vence a todos los palos.\n4. 🧜‍♀️ Sirenas: vencen a los palos y a los triunfos, pierden contra los piratas.\n5. 🏴‍☠️ Piratas: vencen a las sirenas, pierden contra el Skull King.\n6. 💀 Skull King: vence a los piratas, pero pierde contra una sirena.\n\nCon la expansión: Huida &lt; palos &lt; triunfo negro &lt; sirena &lt; piratas &lt; Contramaestre Con &lt; Skull King &lt; sirena. La sirena vence al Contramaestre Con y al Skull King.\n!> Si un pirata, el Skull King y una sirena se juegan en la misma baza, gana la sirena, sea cual sea el orden de juego. La única bonificación es la de la sirena. El Skull King no gana la baza, así que no puntúa nada por el pirata.</string>
+    <string name="help_special_title">Cartas especiales del juego base</string>
+    <string name="help_special_body">• 🐯 Tigresa: se juega como pirata o como huida, a elección.\n• 🐙 Kraken: destruye la baza, nadie la gana.\n!> La baza siguiente la abre el jugador que la habría ganado sin el Kraken (FAQ oficial).\n• 🐳 Ballena Blanca: anula las cartas especiales, gana la carta numerada más alta.\n• 💰 Botín: se juega como una huida. Une al jugador que lo jugó con el ganador de la baza: si ambos cumplen su envite, cada uno puntúa +20.\n> Dos Botines pueden unir a los mismos dos jugadores: la misma alianza puede hacerse dos veces y cada uno puede puntuar hasta +40.\n!> Si una baza empieza con un Botín y todas las cartas siguientes son huidas, el jugador del Botín gana la baza: no se forma ninguna alianza y no se concede ninguna bonificación.</string>
+    <string name="help_points_title">Puntos (modo clásico)</string>
+    <string name="help_points_body">• Envite ≥ 1 cumplido: +20 por baza anunciada.\n• Envite ≥ 1 fallido: −10 por baza de diferencia.\n• Envite a cero cumplido: +10 × número de cartas de la ronda.\n• Envite a cero fallido: −10 × número de cartas de la ronda.</string>
+    <string name="help_bonus_title">Bonificaciones</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 14 de palo capturado: +10 cada uno\n• ⚫ 14 negro capturado: +20\n• 🧜‍♀️ Sirena capturada por un pirata: +20 cada una\n• 🏴‍☠️ Pirata capturado por el Skull King: +30 cada uno\n• 💀 Skull King capturado por una sirena: +40\n• 💰 Botín: +20 si el jugador del Botín y el ganador de la baza cumplen ambos su envite exactamente\n• 🎲 Apuesta de Rascal: +apuesta si el envite es exacto, −apuesta en caso contrario (0, 10 o 20), el único término que cuenta incluso con un envite fallido\n!> Puntuación clásica: los puntos de bonificación solo cuentan si se cumple el envite. En la puntuación Rascal, un golpe rasante (fallo por una) conserva la mitad de las bonificaciones: consulta “Modos de puntuación”.</string>
+    <string name="help_modes_title">Modos de puntuación</string>
+    <string name="help_modes_body">• **Clásico**: ver arriba.\n• **Rascal**: en cada ronda, todos los jugadores tienen el mismo potencial, sea cual sea su envite: 10 × N. La precisión decide:\n-- **Golpe directo** (envite exacto): todos los puntos en juego y todas las bonificaciones\n-- **Golpe rasante** (fallo por una): la mitad de los puntos en juego (5 × N) y la mitad de las bonificaciones\n-- **Fallo total** (fallo por dos o más): ningún punto, ninguna bonificación\n> Ejemplo: 4 cartas repartidas, 40 puntos en juego. Golpe directo: +40, golpe rasante: +20, fallo total: 0.\n!> La mitad de las bonificaciones no se redondea: con los 7 y 8 de la expansión, una puntuación puede tener medio punto (15 → 7,5). El Botín exige un envite exacto: nunca cuenta con un golpe rasante.\n• 💣 **Rascal + Bala de cañón** (regla opcional): tras los envites, todos revelan su elección a la vez:\n-- **Metralla** (mano abierta): la puntuación Rascal de arriba\n-- **Bala de cañón** (puño cerrado): envite exacto = 15 × N puntos más las bonificaciones, si no 0 puntos y ninguna bonificación\n> Ejemplo: 6 cartas, envite 3. Metralla: 60 puntos si es exacto, 30 si falla por una. Bala de cañón: 90 si es exacta, 0 si falla por una.\n> N es el número de cartas repartidas en la ronda. La apuesta de Rascal se suma o se resta en todos los modos.</string>
+    <string name="help_expansion_title">Expansión 2026</string>
+    <string name="help_expansion_body">• 7 capturado: −5 cada uno\n• 8 capturado: +5 cada uno\n• 0/14: su jugador declara 0 o 14 al jugarla. Sin bonificación.\n• 🐵 15 comodín: toma el palo de salida con valor 15, o el palo que elija su jugador si todavía no hay (nunca el negro). Pierde contra el triunfo. Sin bonificación.\n• {con} Contramaestre Con: vence a todos los piratas, pierde contra las sirenas y el Skull King. Capturado por el Skull King o una sirena: +30. No puntúa nada por los piratas capturados. Cuando gana una baza, su jugador puede usar los poderes de los piratas capturados.\n• 🏴‍☠️ Mary Thorne: cuenta como pirata (+30 si la captura el Skull King, +20 por sirena capturada).\n• {davy} Cofre de Davy Jones: no gana, destruye todos los monstruos marinos de la baza (🐙 🐳 {ray}): +20 por monstruo para su jugador.\n• 🦈 Paseo por la tabla: retira un pirata de la baza. No da bonificación.\n• {ray} Raya moteada: monstruo marino, como el Kraken y la Ballena Blanca. No gana la baza: gana la carta más baja de la baza. No da bonificación, y el Cofre de Davy Jones puede destruirla (+20).\n• 💥 Última andanada: no gana. Su jugador juega una 2.ª carta y se salta la última baza.\n!> Las bonificaciones de la expansión siguen la misma regla que las demás: todas con un envite cumplido, la mitad con un golpe rasante en la puntuación Rascal, ninguna en los demás casos.\n> El Cofre de Davy Jones, la Última andanada, la Raya moteada y el Paseo por la tabla no son huidas. Si las demás cartas jugadas son todas huidas, la primera huida jugada gana la baza.\n> Cuando el Cofre de Davy Jones, la Última andanada o el Paseo por la tabla abren una baza, el jugador siguiente elige el palo. Si una baza solo contiene cartas especiales que no ganan, se descarta y quien la abrió abre la siguiente.\n> Con 2 jugadores, el 15 comodín, el Paseo por la tabla y los 0/14 se retiran.</string>
+    <string name="help_faq_title">FAQ</string>
+    <string name="help_official_link">Reglas y FAQ oficiales (grandpabecksgames.com)</string>
+    <string name="help_faq_body">• ¿Las bazas no suman el número de cartas? Una baza puede estar destruida (Kraken, o Ballena Blanca / Raya moteada sin carta numerada) o estar hecha solo de cartas especiales: introdúcela como “baza descartada”. La aplicación no comprueba quién ganó cada baza, solo señala incoherencias y nunca te bloquea.\n• ¿Un error en una ronda pasada? Toca su casilla en el marcador y luego “Corregir la ronda”.\n• ¿Jugando a 2? Reparte 3 montones: el 3.º queda boca abajo y lo juega el fantasma de Barbagris. Juega siempre en segundo lugar, no tiene que seguir el palo, y su Tigresa cuenta como huida. Tú y tu compañero abrís cada ronda por turnos, y si Barbagris gana una baza, abre la siguiente. Los Botines no se juegan con 2. La aplicación solo sigue a los dos jugadores.\n• ¿Sin red? Sin problema, la aplicación funciona totalmente sin conexión.</string>
+
+    <!-- V2: game comfort and settings -->
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_game">Juego</string>
+    <string name="settings_keep_screen_on">Mantener la pantalla encendida</string>
+    <string name="settings_keep_screen_on_desc">Mientras haya una partida en curso.</string>
+    <string name="settings_backup">Copia de seguridad</string>
+    <string name="settings_auto_backup">Copia automática</string>
+    <string name="settings_auto_backup_desc">Guarda tus partidas en una carpeta a tu elección después de cada partida y una vez al día.</string>
+    <string name="settings_choose_folder">Elegir la carpeta de copia</string>
+    <string name="settings_change_folder">Cambiar la carpeta de copia</string>
+    <string name="settings_backup_now">Hacer la copia ahora</string>
+    <string name="settings_backup_no_folder">Aún no se ha elegido ninguna carpeta.</string>
+    <string name="settings_backup_never">Aún no se ha hecho ninguna copia.</string>
+    <string name="settings_backup_last">Última copia: %1$s</string>
+    <string name="settings_backup_failed">La última copia falló. Comprueba que la carpeta sigue disponible.</string>
+    <string name="settings_restore">Restaurar desde una copia</string>
+    <string name="settings_about">Acerca de</string>
+    <string name="settings_about_text">Contador de puntos de Skull King. Licencia MIT.</string>
+    <string name="undo_bid">envite de %1$s</string>
+    <string name="undo_cannonball">bala de cañón de %1$s</string>
+    <string name="undo_trick">baza %1$s</string>
+    <string name="undo_trick_deleted">baza %1$s eliminada</string>
+    <string name="undone_prefix">Deshecho: %1$s</string>
+    <string name="redone_prefix">Rehecho: %1$s</string>
+    <string name="dealer_label">Reparte: %1$s</string>
+    <string name="setup_draw_dealer">Sortear quién reparte</string>
+    <string name="setup_dealer_badge">Reparte</string>
+
+    <!-- V2 : jalon 1, partage -->
+    <string name="share_title">Compartir</string>
+    <string name="share_action">Compartir</string>
+    <string name="share_save">Guardar en la galería</string>
+    <string name="share_saved">Imagen guardada en Pictures/SkullKing.</string>
+    <string name="share_save_failed">No se pudo guardar la imagen.</string>
+    <string name="share_preview">Vista previa de la imagen a compartir</string>
+    <string name="share_nothing">Elige qué incluir en la imagen.</string>
+    <string name="share_podium">Podio</string>
+    <string name="share_table">Tabla de puntos</string>
+    <string name="share_stats">Momentos destacados de la partida</string>
+    <string name="share_round">Ronda</string>
+    <string name="share_with_expansion">con expansión</string>
+    <string name="share_without_expansion">sin expansión</string>
+    <string name="share_best_round">Mejor ronda: %1$s (%2$s puntos, ronda %3$d)</string>
+    <string name="share_worst_round">Peor ronda: %1$s (%2$s puntos, ronda %3$d)</string>
+    <string name="share_exact_bids">%1$s: %2$d envites exactos de %3$d</string>
+
+    <!-- V2 : jalon 2, courbes -->
+    <string name="tab_table">Tabla</string>
+    <string name="tab_curve">Curva</string>
+    <string name="curve_empty">Aún no se ha puntuado ninguna ronda.</string>
+    <string name="curve_summary_line">%1$s: %2$d puntos tras %3$d rondas</string>
+    <string name="curve_axis_rounds">Puntuación acumulada en %1$d rondas.</string>
+    <string name="curve_round_detail">Ronda %1$d (%2$d cartas)</string>
+    <string name="curve_round_line">%1$s (total %2$s)</string>
+    <string name="curve_tap_hint">Toca el gráfico para ver una ronda al detalle. Usa los chips para mostrar u ocultar jugadores.</string>
+
+    <!-- V2 : jalon 2, statistiques -->
+    <plurals name="stats_games_count">
+        <item quantity="one">%d partida</item>
+        <item quantity="many">%d partidas</item>
+        <item quantity="other">%d partidas</item>
+    </plurals>
+    <string name="stats_filter_present">Jugadores en la mesa</string>
+    <string name="filter_all_sizes">Cualquier número de jugadores</string>
+    <string name="filter_players_2_3">2–3 jugadores</string>
+    <string name="filter_players_4_5">4–5 jugadores</string>
+    <string name="filter_players_6_plus">6 o más</string>
+    <string name="filter_expansion_all">Con o sin expansión</string>
+    <string name="filter_expansion_with">Con expansión</string>
+    <string name="filter_expansion_without">Sin expansión</string>
+    <string name="stats_records_title">Récords</string>
+    <string name="stats_record_best_round">Mejor ronda</string>
+    <string name="stats_record_worst_round">Peor ronda</string>
+    <string name="stats_record_round">%1$s puntos, ronda %2$d (%3$s)</string>
+    <string name="stats_record_exact_streak">Racha más larga de envites exactos</string>
+    <string name="stats_record_win_streak">Racha más larga de victorias</string>
+    <string name="stats_record_zero_streak">Racha más larga de envites a cero cumplidos</string>
+    <string name="stats_record_bonus">Mayor bonificación en una ronda</string>
+    <string name="stats_trend_title">Evolución</string>
+    <string name="stats_trend_not_enough">Hacen falta al menos %1$d partidas terminadas para trazar una tendencia.</string>
+    <string name="stats_trend_games">Puntuación de la partida</string>
+    <string name="stats_trend_average">Media</string>
+    <string name="stats_trend_legend">Línea continua: puntuación de cada partida. Línea discontinua: media de las últimas %1$d partidas.</string>
+    <string name="stats_trend_description">%1$s: de %2$s a %3$s puntos en %4$d partidas</string>
+    <string name="stats_size_title">Envites cumplidos por tamaño de ronda</string>
+    <string name="size_small">1–3 cartas</string>
+    <string name="size_medium">4–6 cartas</string>
+    <string name="size_large">7–10 cartas</string>
+    <string name="size_huge">11 cartas o más</string>
+    <string name="stats_bias">Tendencia de los envites</string>
+    <string name="stats_bias_under">Envites bajos (%1$s baza por ronda)</string>
+    <string name="stats_bias_over">Envites altos (%1$s baza por ronda)</string>
+    <string name="stats_tricks_coverage">Bazas introducidas en directo en %1$d de %2$d partidas.</string>
+    <string name="stats_rascal_wagers">Apuestas de Rascal ganadas</string>
+    <string name="stats_harry_adjustments">Ajustes de Harry (ronda ganada)</string>
+    <string name="duel_title">Cara a cara</string>
+    <string name="duel_first">Primer jugador</string>
+    <string name="duel_second">Segundo jugador</string>
+    <string name="duel_choose">Elige dos jugadores para comparar.</string>
+    <string name="duel_not_enough">Pocas partidas jugadas juntos.</string>
+    <string name="duel_common_games">%1$d partidas jugadas juntos</string>
+    <string name="duel_versus">contra</string>
+    <string name="duel_ties">%1$d empates</string>
+    <string name="duel_average_gap">Ventaja media de %1$s</string>
+    <string name="duel_biggest_gap">Mayor diferencia en una partida</string>
+
+    <!-- V2 : jalon 4, import -->
+    <string name="import_homonyms">Jugadores con el mismo nombre</string>
+    <string name="import_merge">%1$s: combinar con el perfil existente</string>
+    <string name="import_create">%1$s: crear un perfil nuevo</string>
+    <string name="import_done_detail">%1$d partida(s) importada(s), %2$d omitida(s), %3$d perfil(es) combinado(s), %4$d creado(s).</string>
+    <string name="import_too_new">Esta copia procede de una versión más reciente de la aplicación. Actualiza la aplicación para importarla.</string>
+
+    <!-- V2: accessibility -->
+    <string name="a11y_score_cell">%1$s, ronda %2$d, %3$s puntos, total %4$s</string>
+    <string name="a11y_score_cell_pending">%1$s, ronda %2$d, aún sin puntuar</string>
+    <string name="a11y_expanded">Expandido</string>
+    <string name="a11y_collapsed">Contraído</string>
+    <string name="stats_more_filters">Más filtros</string>
+    <string name="setup_dealer_hint">Enumera a los jugadores por orden en la mesa (arrastra ≡ para moverlos), luego sortea o elige quién reparte primero 🃏.</string>
+    <string name="share_curve">Curva de puntuación</string>
+    <string name="stats_bias_balanced">Equilibrado</string>
+    <string name="stats_bias_help">Compara las bazas ganadas con el envite, ronda tras ronda: apostar bajo es ganar más de lo anunciado, apostar alto es ganar menos.</string>
+    <string name="mode_classic_short">Clásico</string>
+    <string name="mode_rascal_short">Rascal</string>
+    <string name="mode_cannonball_short">Rascal + Bala de cañón</string>
+    <string name="stats_search">Buscar un jugador</string>
+    <string name="stats_no_match">Ningún jugador coincide con tu búsqueda.</string>
+    <string name="stats_share_player">Compartir las estadísticas de %1$s</string>
+    <string name="stats_image_legend_games">Puntuación de la partida</string>
+    <string name="stats_image_legend_average">Media de las últimas %1$d partidas</string>
+
+    <!-- Card statistics -->
+    <string name="stats_tab_players">Jugadores</string>
+    <string name="stats_tab_cards">Cartas</string>
+    <string name="stats_favorite_card">Carta favorita</string>
+    <string name="cards_coverage">Bazas introducidas en directo en %1$d de %2$d partidas (%3$d bazas).</string>
+    <string name="cards_no_tricks">No se ha introducido ninguna baza en directo con estos filtros. Introduce las bazas durante el juego para ver estadísticas sobre las cartas.</string>
+    <string name="cards_by_card_title">Bazas ganadas por carta</string>
+    <string name="cards_by_card_hint">Parte de las bazas ganadas con cada carta. Refleja la frecuencia con la que una carta gana, no su fuerza: las cartas jugadas y perdidas no se registran.</string>
+    <string name="cards_pirates_title">Bazas ganadas por pirata</string>
+    <string name="cards_pirates_hint">Un pirata que gana más a menudo no es necesariamente más fuerte: depende de los jugadores y del modo de juego.</string>
+    <string name="cards_success_title">Envites cumplidos cuando gana una carta</string>
+    <string name="cards_success_hint">Rondas en las que un jugador ganó una baza con la carta, y parte de esas rondas que acabaron con un envite exacto para ese jugador.</string>
+    <string name="cards_timing_title">Cuándo ganan las cartas</string>
+    <string name="cards_timing_line">inicio %1$s · medio %2$s · final %3$s</string>
+    <string name="cards_timing_hint">Posición de las bazas ganadas en la ronda (primer, segundo y último tercio), para rondas de 3 cartas o más.</string>
+    <string name="cards_captures_title">Bonificaciones capturadas</string>
+    <string name="cards_bonus_share">Jugador-rondas con bonificación</string>
+    <string name="cards_bonus_average">Puntos de bonificación por jugador-ronda</string>
+    <string name="cards_settings_title">Poderes de los piratas</string>
+    <string name="cards_rascal_wager">Apuesta de Rascal de %1$d</string>
+    <string name="cards_wager_line">%1$d / %2$d cumplidas · %3$s</string>
+    <string name="cards_harry_adjustment">Ajuste de Harry %1$s</string>
+    <string name="cards_settings_hint">El éxito se mide en la ronda completa del jugador que ganó la baza.</string>
+    <string name="cards_loots_title">Botines</string>
+    <string name="cards_loots_played">Botines jugados</string>
+    <string name="cards_loots_valid">Válidos (los dos jugadores cumplieron su envite)</string>
+    <string name="cards_davy_title">Cofre de Davy Jones</string>
+    <string name="cards_davy_points">Puntos obtenidos</string>
+    <string name="cards_kraken_title">Kraken</string>
+    <string name="cards_kraken_destroyed">Bazas destruidas</string>
+    <string name="cards_kraken_per_game">Por partida</string>
+    <string name="cards_kraken_success_with">Envites cumplidos cuando se destruye una baza</string>
+    <string name="cards_kraken_success_without">Envites cumplidos en los demás casos</string>
+    <string name="cards_expansion_title">Expansión</string>
+    <string name="cards_expansion_with">Con la expansión</string>
+    <string name="cards_expansion_without">Juego base</string>
+    <string name="cards_expansion_points">Puntos por jugador y ronda</string>
+    <string name="cards_expansion_wins">Bazas ganadas con cartas de la expansión</string>
+    <string name="help_monsters_title">Monstruos marinos: cómo continúa el juego</string>
+    <string name="help_monsters_body">• **Jugar uno**: un monstruo marino (🐙 Kraken, 🐳 Ballena Blanca, {ray} Raya moteada) es una carta especial: se puede jugar en cualquier momento, aunque pudieras seguir el palo. La baza se resuelve cuando todos han jugado.\n!> Si un monstruo abre la baza, no se establece ningún palo: los jugadores siguientes juegan la carta que quieran. Si se juega después de que se haya abierto un palo, los jugadores siguientes siguen teniendo que seguir ese palo si pueden, o jugar una carta especial. El palo de salida sigue siendo el palo de salida: el monstruo solo aplica su efecto cuando se resuelve la baza (FAQ oficial).\n• 🐙 **Kraken**: nadie gana la baza, sus cartas se descartan y no se puntúa ninguna bonificación (introdúcela como “baza destruida”).\n!> El jugador que habría ganado la baza sin el Kraken abre la siguiente (FAQ oficial).\n• 🐳 **Ballena Blanca**: todas las cartas especiales de la baza (Skull King, piratas, sirenas, Kraken…) cuentan como huidas, y las cartas numeradas pierden su palo: los colores y el triunfo negro ya no importan, solo los números. Gana el número más alto (el primero jugado en caso de empate), y su jugador abre la baza siguiente.\n!> Si no hay ninguna carta numerada, la baza se destruye como con el Kraken, y el jugador que la habría ganado sin el monstruo abre la siguiente (libro de reglas oficial). Lo mismo vale para la Raya moteada.\n• {ray} **Raya moteada** (expansión): funciona exactamente como la Ballena Blanca, salvo que gana el número más bajo en lugar del más alto.\n• 🐙 🐳 {ray} **Varios monstruos en la misma baza**: solo tiene efecto el último monstruo jugado.\n> Quien gana una baza normalmente abre la siguiente. Las excepciones son una baza destruida (nadie la gana) y Rosie de Laney, que elige quién abre.</string>
+    <string name="help_pirates_title">Poderes de los piratas</string>
+    <string name="help_pirates_body">• **Rosie de Laney**: elige quién abre la siguiente, incluida ella misma.\n• **Bribón de Roatán**: apuesta 0, 10 o 20 puntos, que se suman si el envite se cumple y se restan si no.\n• **El bandido Bendt**: roba 2 cartas del mazo y luego descarta 2 de su mano.\n• **Juanita Jade**: mira las cartas no repartidas para ver cuáles no están en juego.\n• **Harry, el Gigante**: ajusta su envite en +1 o −1, o la deja como está.\n• **Mary Thorne** (expansión, poder opcional): si gana la baza, su jugador elige al azar una carta de la mano de cualquier jugador (incluida la suya) sin mirarla. Ese jugador debe jugarla en la baza siguiente, sea cual sea el palo de salida.\n> Harry, el Gigante es el único pirata cuyo poder también funciona en la última baza (debe ganar la baza para activarlo).</string>
+    <string name="help_note">Nota</string>
+    <string name="hier_skull_king">Skull King</string>
+    <string name="hier_skull_king_sub">Vence a todas las cartas excepto a las sirenas.</string>
+    <string name="hier_con">Contramaestre Con (expansión)</string>
+    <string name="hier_con_sub">Vence a los piratas. Pierde contra el Skull King y las sirenas.</string>
+    <string name="hier_pirates">Piratas</string>
+    <string name="hier_pirates_sub">Vencen a todas las cartas excepto al Skull King y al Contramaestre Con.</string>
+    <string name="hier_mermaids">Sirenas</string>
+    <string name="hier_mermaids_sub">Vencen a todas las cartas numeradas, al Skull King y al Contramaestre Con.</string>
+    <string name="hier_black">Triunfo negro</string>
+    <string name="hier_black_sub">Vence a todos los palos normales. Gana el triunfo más alto.</string>
+    <string name="hier_suits">Palos normales</string>
+    <string name="hier_suits_sub">Amarillo, morado, verde: gana el número más alto del palo de salida.</string>
+    <string name="hier_escape">Huida</string>
+    <string name="hier_escape_sub">Siempre pierde. Si la baza solo tiene huidas, la Tigresa como huida o Botines, gana la primera carta jugada.</string>
+    <string name="help_remark">Atención</string>
+    <string name="play_bids_summary">Envite total %1$d para %2$d bazas</string>
+    <string name="play_bids_over">%1$d de más</string>
+    <string name="play_bids_under">%1$d de menos</string>
+    <string name="collapse">Contraer</string>
+    <string name="expand">Expandir</string>
+    <string name="trick_destroyed_button">Baza destruida</string>
+    <string name="trick_loot_by">💰 Botín jugado por %1$s</string>
+    <string name="results_initial_bid">Envite inicial: %1$d (modificado por Harry)</string>
+    <string name="results_bid_made">Envite cumplido</string>
+    <string name="results_bid_missed_over">Envite fallido: %1$d baza(s) de más</string>
+    <string name="results_bid_missed_under">Envite fallido: %1$d baza(s) de menos</string>
+    <string name="detail_bonus_halved">Bonificaciones conservadas (fallo por una: la mitad)</string>
+    <string name="tab_ranking">Clasificación</string>
+    <string name="ranking_gap">%1$s por detrás</string>
+    <string name="ranking_last_round">última ronda %1$s</string>
+    <string name="setup_drag_handle">Arrastra para reordenar</string>
+    <string name="trick_events">Eventos de la baza</string>
+    <string name="settings_remember_setup">Recordar la configuración de la partida</string>
+    <string name="settings_remember_setup_desc">Una partida nueva empieza con el modo de puntuación y la expansión de la anterior.</string>
+    <string name="setup_choose_dealer">Elegir quién reparte</string>
+    <string name="results_tap_trick">Toca una baza para corregirla: ganador, cartas ganadas, Botín, Davy Jones…</string>
+    <string name="trick_choose_winner">Elige al ganador</string>
+</resources>
