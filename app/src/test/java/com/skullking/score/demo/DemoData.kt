@@ -317,7 +317,7 @@ object DemoData {
                 cannonball = game.mode == ScoringMode.CANNONBALL && rng.nextDouble() < 0.25,
                 rascalWager = mine?.rascalWager ?: 0,
                 bonus = mine?.bonus ?: Bonus.NONE,
-                score = 0,
+                score = 0.0,
             )
         }
 

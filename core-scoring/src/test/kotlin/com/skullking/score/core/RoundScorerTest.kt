@@ -1,9 +1,14 @@
 package com.skullking.score.core
 
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertEquals as assertEqualValues
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+
+/** Scores are doubles (half points exist): an expected whole number is compared exactly. */
+private fun assertEquals(expected: Int, actual: Double) = assertEqualValues(expected.toDouble(), actual)
+
+private fun assertEquals(expected: Any?, actual: Any?) = assertEqualValues(expected, actual)
 
 class RoundScorerTest {
 
@@ -162,6 +167,14 @@ class RoundScorerTest {
     fun rascalGapOneKeepsHalfOfBonusesButNoLoot() {
         // 5*6 + 40/2 = 50; the Loot (exact only) is excluded
         assertEquals(30 + 20, rascal(6, player(1, 3, 4, Bonus(piratesBySkullKing = 1, colored14 = 1)), loot = 1))
+    }
+
+    @Test
+    fun rascalGapOneKeepsTheHalfPoint() {
+        // 8 cards, black 14 (+20) and a 7 (-5): 40 + 15/2 = 47.5 (the rulebook says "half", without rounding)
+        assertEqualValues(47.5, rascal(8, player(1, 2, 3, Bonus(black14 = 1, sevens = 1))))
+        // A lone 8 (+5) halved: +2.5
+        assertEqualValues(42.5, rascal(8, player(1, 2, 3, Bonus(eights = 1))))
     }
 
     @Test

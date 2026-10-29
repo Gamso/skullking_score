@@ -31,6 +31,7 @@ import com.skullking.score.domain.model.RankedPlayer
 import com.skullking.score.ui.components.ActionBar
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SkullScaffold
+import com.skullking.score.ui.components.formatScore
 
 private fun medalFor(rank: Int): String = when (rank) {
     1 -> "🥇"
@@ -151,7 +152,7 @@ internal fun RankRow(entry: RankedPlayer, subtitle: String? = null, dense: Boole
                 }
             }
             Text(
-                entry.total.toString(),
+                formatScore(entry.total),
                 style = if (podium) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
             )

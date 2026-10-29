@@ -69,7 +69,9 @@ import com.skullking.score.domain.model.Player
 import com.skullking.score.domain.undo.UndoAction
 import com.skullking.score.domain.undo.UndoKind
 import com.skullking.score.domain.undo.UndoState
+import java.text.NumberFormat
 import java.util.WeakHashMap
+import kotlin.math.roundToLong
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -337,6 +339,23 @@ fun SectionTitle(text: String, modifier: Modifier = Modifier) {
 
 /** "+20" / "-10" format for points. */
 fun formatPoints(value: Int): String = if (value > 0) "+$value" else value.toString()
+
+/** "+2,5" / "-10" format for a score, which can hold a half point (Rascal scoring). */
+fun formatPoints(value: Double): String = if (value > 0) "+" + formatScore(value) else formatScore(value)
+
+/** A score: whole numbers without decimals, half points with the locale's separator ("2,5" in French). */
+fun formatScore(value: Double): String {
+    val whole = value.roundToLong()
+    return if (value == whole.toDouble()) {
+        whole.toString()
+    } else {
+        NumberFormat.getNumberInstance().apply {
+            minimumFractionDigits = 1
+            maximumFractionDigits = 1
+            isGroupingUsed = false
+        }.format(value)
+    }
+}
 
 /** "Keep the screen on" setting; provided at the application root. */
 val LocalKeepScreenOnSetting = compositionLocalOf { true }

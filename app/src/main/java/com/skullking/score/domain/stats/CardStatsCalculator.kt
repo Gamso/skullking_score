@@ -45,7 +45,7 @@ data class CardStats(
     /** Player-rounds analysed, and those where at least one bonus counted. */
     val playerRounds: Int,
     val playerRoundsWithBonus: Int,
-    val bonusPoints: Int,
+    val bonusPoints: Double,
     /** Wagers made by the winner of a trick, by amount (10 or 20). */
     val rascalWagers: Map<Int, WagerStats>,
     /** Bid adjustments by Harry the Giant (+1 or -1) and whether the round was then successful. */
@@ -85,7 +85,7 @@ object CardStatsCalculator {
         var tricks = 0
         var playerRounds = 0
         var playerRoundsWithBonus = 0
-        var bonusPoints = 0
+        var bonusPoints = 0.0
         var lootTotal = 0
         var lootValid = 0
         var davyPoints = 0
@@ -139,7 +139,7 @@ object CardStatsCalculator {
         round.breakdowns.values.forEach { breakdown ->
             playerRounds++
             bonusPoints += breakdown.bonusApplied
-            if (breakdown.bonusApplied != 0) playerRoundsWithBonus++
+            if (breakdown.bonusApplied != 0.0) playerRoundsWithBonus++
             breakdown.bonusLines.filter { it.count != 0 }.forEach { line ->
                 val previous = captures[line.type] ?: CaptureStats(0, 0)
                 // Bonuses entered on a missed bid are counted as captured but are worth nothing.
@@ -227,7 +227,7 @@ object CardStatsCalculator {
     fun expansionComparison(scored: List<ScoredGame>): ExpansionComparison {
         fun side(games: List<ScoredGame>): ExpansionSide {
             var bids: SuccessRate? = null
-            var points = 0
+            var points = 0.0
             var count = 0
             games.forEach { game ->
                 game.rounds.filter { it.isScored }.forEach { round ->
@@ -246,7 +246,7 @@ object CardStatsCalculator {
                 ) {
                     0.0
                 } else {
-                    points.toDouble() / count
+                    points / count
                 },
             )
         }

@@ -9,6 +9,7 @@ import com.skullking.score.data.backup.BackupCodec
 import com.skullking.score.data.local.BonusEntity
 import com.skullking.score.data.local.TrickEntity
 import com.skullking.score.data.local.toDomain
+import com.skullking.score.demo.DemoData
 import com.skullking.score.domain.model.Game
 import com.skullking.score.domain.model.GameDetails
 import com.skullking.score.domain.model.GameStatus
@@ -28,13 +29,19 @@ import com.skullking.score.domain.stats.StatsFilter
 import com.skullking.score.domain.undo.UndoAction
 import com.skullking.score.domain.undo.UndoHistory
 import com.skullking.score.domain.undo.UndoKind
-import kotlin.test.assertEquals
+import kotlin.test.assertEquals as assertEqualValues
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+
+/** Scores are doubles (half points exist): an expected whole number is compared exactly. */
+private fun assertEquals(expected: Int, actual: Double?) = assertEqualValues(expected.toDouble(), actual)
+
+private fun assertEquals(expected: Any?, actual: Any?, message: String? = null) =
+    assertEqualValues(expected, actual, message)
 
 /** Tests of the V2 features: dealer, undo / redo, richer statistics, head-to-head, import. */
 class V2Test {
@@ -60,7 +67,7 @@ class V2Test {
         val details = rounds.mapIndexed { index, picks ->
             val roundId = id * 100 + index
             val entries = players.zip(picks).map { (p, pick) ->
-                PlayerRound(roundId, p.id, pick.first, null, pick.second, false, 0, Bonus.NONE, 0)
+                PlayerRound(roundId, p.id, pick.first, null, pick.second, false, 0, Bonus.NONE, 0.0)
             }
             RoundDetails(
                 Round(roundId, id, index + 1, index + 1, false, 0, RoundPhase.SCORED),
@@ -198,7 +205,7 @@ class V2Test {
         val annStats = StatsCalculator.compute(games, StatsFilter()).first { it.player.id == ann.id }
         val rolling = annStats.rollingAverage(window = 5)
         assertEquals(annStats.gameTotals.size, rolling.size)
-        assertEquals(annStats.gameTotals.first().toDouble(), rolling.first())
+        assertEquals(annStats.gameTotals.first(), rolling.first())
         assertEquals(annStats.gameTotals.takeLast(5).average(), rolling.last())
     }
 
@@ -238,6 +245,16 @@ class V2Test {
         val json = BackupCodec.encode(listOf(played(1, 1_000, listOf(ann, bob), three(listOf(1 to 1, 0 to 0)))))
         val future = json.replace("\"formatVersion\":${BackupCodec.FORMAT_VERSION}", "\"formatVersion\":99")
         assertFailsWith<NewerBackupException> { BackupCodec.decode(future) }
+    }
+
+    @Test
+    fun aVersion1BackupWithWholeScoresIsStillRead() {
+        val json = DemoData.json()
+        // Version 1 wrote the cached scores as integers ("score":20), version 2 as decimals ("score":20.0).
+        val v1 = json.replace("\"formatVersion\":${BackupCodec.FORMAT_VERSION}", "\"formatVersion\":1")
+            .replace(Regex("""score":(-?\d+)\.0"""), """score":$1""")
+        assertTrue(v1.length < json.length)
+        assertEquals(BackupCodec.decode(json).games, BackupCodec.decode(v1).games)
     }
 
     @Test

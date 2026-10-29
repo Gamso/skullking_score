@@ -33,6 +33,7 @@ import com.skullking.score.ui.components.ChartSeries
 import com.skullking.score.ui.components.LineChart
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 
 /** Player colors are light: they are darkened so they read well on the chart background. */
 fun Player.chartColor(): Color = lerp(Color(color), Color.Black, CHART_DARKEN)
@@ -103,7 +104,7 @@ fun ScoreCurve(scored: ScoredGame, modifier: Modifier = Modifier) {
                 stringResource(R.string.curve_round_detail, round.round.number, round.round.cardsDealt),
                 style = MaterialTheme.typography.titleMedium,
             )
-            players.sortedByDescending { round.cumulative[it.id] ?: 0 }.forEach { player ->
+            players.sortedByDescending { round.cumulative[it.id] ?: 0.0 }.forEach { player ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -112,8 +113,8 @@ fun ScoreCurve(scored: ScoredGame, modifier: Modifier = Modifier) {
                     Text(
                         stringResource(
                             R.string.curve_round_line,
-                            formatPoints(round.breakdowns[player.id]?.total ?: 0),
-                            round.cumulative[player.id] ?: 0,
+                            formatPoints(round.breakdowns[player.id]?.total ?: 0.0),
+                            formatScore(round.cumulative[player.id] ?: 0.0),
                         ),
                         fontWeight = FontWeight.Medium,
                     )

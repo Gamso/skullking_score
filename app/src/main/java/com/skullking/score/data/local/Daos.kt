@@ -107,7 +107,7 @@ interface GameDao {
     suspend fun insertPlayerRounds(entries: List<PlayerRoundEntity>)
 
     @Query("UPDATE player_rounds SET score = :score WHERE roundId = :roundId AND playerId = :playerId")
-    suspend fun updateScore(roundId: Long, playerId: Long, score: Int)
+    suspend fun updateScore(roundId: Long, playerId: Long, score: Double)
 
     // --- Live events ---
 

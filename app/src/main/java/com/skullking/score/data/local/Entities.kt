@@ -118,8 +118,8 @@ data class PlayerRoundEntity(
     val cannonball: Boolean,
     val rascalWager: Int,
     @Embedded(prefix = "bonus_") val bonus: BonusEntity,
-    /** Cached computed score. */
-    val score: Int,
+    /** Cached computed score; half points exist (Rascal). */
+    val score: Double,
 )
 
 @Entity(
@@ -201,4 +201,4 @@ data class TrickEntity(
 )
 
 /** Per-game, per-player total row, computed from the cached scores of the validated rounds. */
-data class TotalRow(val gameId: Long, val playerId: Long, val total: Int)
+data class TotalRow(val gameId: Long, val playerId: Long, val total: Double)

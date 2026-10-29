@@ -77,6 +77,7 @@ import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.WidthClass
 import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.components.rememberWidthClass
 import com.skullking.score.ui.labelRes
 import com.skullking.score.ui.navigation.Routes
@@ -294,7 +295,7 @@ private fun ScoreboardTab(tab: Int, scored: ScoredGame, onCell: (ScoredRound, Pl
 /** Current ranking: who leads, by how much, and how the last round went. */
 @Composable
 private fun RankingTab(scored: ScoredGame) {
-    val leader = scored.ranking.firstOrNull()?.total ?: 0
+    val leader = scored.ranking.firstOrNull()?.total ?: 0.0
     val last = scored.rounds.lastOrNull { it.isScored }
     Column(
         modifier = Modifier
@@ -307,7 +308,7 @@ private fun RankingTab(scored: ScoredGame) {
             val gap = leader - entry.total
             val lastPoints = last?.breakdowns?.get(entry.player.id)?.total
             val subtitle = listOfNotNull(
-                stringResource(R.string.ranking_gap, gap).takeIf { gap > 0 },
+                stringResource(R.string.ranking_gap, formatScore(gap)).takeIf { gap > 0 },
                 lastPoints?.let { stringResource(R.string.ranking_last_round, formatPoints(it)) },
             ).joinToString(" · ").ifEmpty { null }
             RankRow(entry, subtitle = subtitle, dense = true)
@@ -391,7 +392,7 @@ private fun ScoreTable(scored: ScoredGame, onCell: (ScoredRound, Player) -> Unit
                         )
                     }
                     Text(
-                        text = ranked.total.toString(),
+                        text = formatScore(ranked.total),
                         modifier = Modifier.width(TOTAL_COLUMN_WIDTH),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium,
@@ -421,7 +422,7 @@ private fun ScoreCell(round: ScoredRound, player: Player, width: Dp, onCell: (Sc
             player.name,
             round.round.number,
             formatPoints(breakdown.total),
-            round.cumulative[player.id] ?: 0,
+            formatScore(round.cumulative[player.id] ?: 0.0),
         )
     } else {
         stringResource(R.string.a11y_score_cell_pending, player.name, round.round.number)
@@ -442,7 +443,7 @@ private fun ScoreCell(round: ScoredRound, player: Player, width: Dp, onCell: (Sc
                 color = if (breakdown.success) MaterialTheme.colorScheme.onSurface else ScoreNegative,
             )
             Text(
-                (round.cumulative[player.id] ?: 0).toString(),
+                formatScore(round.cumulative[player.id] ?: 0.0),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -532,7 +533,7 @@ private fun RoundBreakdownBody(round: ScoredRound, player: Player) {
                     struck = breakdown.bonusDiscarded,
                 )
             }
-            if (breakdown.bonusDiscarded && breakdown.bonusApplied != 0) {
+            if (breakdown.bonusDiscarded && breakdown.bonusApplied != 0.0) {
                 // Rascal, off by one: half of the bonuses are kept.
                 DetailRow(stringResource(R.string.detail_bonus_halved), formatPoints(breakdown.bonusApplied))
             } else if (breakdown.bonusDiscarded) {

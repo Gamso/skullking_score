@@ -182,7 +182,7 @@ class GameRepositoryImpl @Inject constructor(
                         cannonball = false,
                         rascalWager = 0,
                         bonus = Bonus.NONE,
-                        score = 0,
+                        score = 0.0,
                     ).toEntity()
                 },
             )

@@ -60,8 +60,8 @@ data class PlayerRound(
     val cannonball: Boolean,
     val rascalWager: Int,
     val bonus: Bonus,
-    /** Computed score, cached for display (never entered). */
-    val score: Int,
+    /** Computed score, cached for display (never entered); half points exist (Rascal). */
+    val score: Double,
 ) {
     val effectiveBid: Int get() = finalBid ?: bid
 }
@@ -145,7 +145,7 @@ data class GameDetails(
 }
 
 /** Summary for the history: totals come from the cached scores. */
-data class GameSummary(val game: Game, val totals: Map<Long, Int>) {
+data class GameSummary(val game: Game, val totals: Map<Long, Double>) {
     val winners: List<Player>
         get() {
             val best = totals.values.maxOrNull() ?: return emptyList()

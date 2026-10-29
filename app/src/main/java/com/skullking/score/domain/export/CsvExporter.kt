@@ -71,8 +71,8 @@ object CsvExporter {
                         count(BonusType.LOOT).toString(),
                         count(BonusType.DAVY_JONES).toString(),
                         entry.rascalWager.toString(),
-                        breakdown.total.toString(),
-                        (round.cumulative[player.id] ?: 0).toString(),
+                        csvNumber(breakdown.total),
+                        csvNumber(round.cumulative[player.id] ?: 0.0),
                     )
                     out.append(row.joinToString(SEPARATOR) { escape(it) }).append('\n')
                 }
@@ -86,3 +86,6 @@ object CsvExporter {
     private fun escape(value: String): String =
         if (value.any { it == ';' || it == '"' || it == '\n' }) "\"" + value.replace("\"", "\"\"") + "\"" else value
 }
+
+/** A score in the CSV: whole numbers without decimals, half points with a dot ("2.5"), whatever the locale. */
+internal fun csvNumber(value: Double): String = if (value % 1.0 == 0.0) value.toLong().toString() else value.toString()

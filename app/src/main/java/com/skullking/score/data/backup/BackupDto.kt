@@ -59,7 +59,7 @@ data class EntryDto(
     val cannonball: Boolean = false,
     val rascalWager: Int = 0,
     val bonus: BonusDto = BonusDto(),
-    val score: Int = 0,
+    val score: Double = 0.0,
 )
 
 @Serializable

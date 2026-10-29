@@ -23,9 +23,15 @@ import com.skullking.score.domain.scoring.TrickAggregator
 import com.skullking.score.domain.stats.StatsCalculator
 import com.skullking.score.domain.stats.StatsFilter
 import com.skullking.score.domain.stats.StatsPeriod
-import kotlin.test.assertEquals
+import kotlin.test.assertEquals as assertEqualValues
 import kotlin.test.assertTrue
 import org.junit.Test
+
+/** Scores are doubles (half points exist): an expected whole number is compared exactly. */
+private fun assertEquals(expected: Int, actual: Double?) = assertEqualValues(expected.toDouble(), actual)
+
+private fun assertEquals(expected: Any?, actual: Any?, message: String? = null) =
+    assertEqualValues(expected, actual, message)
 
 class DomainTest {
 
@@ -46,7 +52,7 @@ class DomainTest {
         tricks: Int,
         bonus: Bonus = Bonus.NONE,
         finalBid: Int? = null,
-    ) = PlayerRound(roundId, player.id, bid, finalBid, tricks, false, 0, bonus, 0)
+    ) = PlayerRound(roundId, player.id, bid, finalBid, tricks, false, 0, bonus, 0.0)
 
     private fun round(
         id: Long,
@@ -295,5 +301,39 @@ class DomainTest {
         // A 2023 game falls outside a "this year" filter computed in 2026
         val now = 1_793_000_000_000 // fin octobre 2026
         assertTrue(ExportFilter(StatsPeriod.YEAR).apply(listOf(old), now).isEmpty())
+    }
+
+    @Test
+    fun halfPointsAddUpInTotalsRankingAndCsv() {
+        // Rascal, 8 cards: Léa off by one with a black 14 (+20) and a 7 (-5) keeps 40 + 15 / 2 = 47.5.
+        val r1 = round(
+            1,
+            1,
+            8,
+            RoundPhase.SCORED,
+            listOf(
+                entry(1, lea, bid = 2, tricks = 3, bonus = Bonus(black14 = 1, sevens = 1)),
+                entry(1, tom, bid = 2, tricks = 2),
+                entry(1, ines, bid = 4, tricks = 3),
+            ),
+        )
+        val r2 = round(
+            2,
+            2,
+            1,
+            RoundPhase.SCORED,
+            listOf(entry(2, lea, 0, 0), entry(2, tom, 1, 1), entry(2, ines, 0, 1)),
+        )
+        val details = GameDetails(game(mode = ScoringMode.RASCAL), listOf(r1, r2))
+        val scored = GameScoreCalculator.calculate(details)
+
+        assertEqualValues(47.5, scored.rounds[0].cumulative[lea.id])
+        assertEqualValues(57.5, scored.totals[lea.id])
+        assertEqualValues(listOf(tom, lea, ines), scored.ranking.map { it.player })
+        assertEqualValues(listOf(1, 2, 3), scored.ranking.map { it.rank })
+        // The CSV keeps the half point with a dot whatever the locale, and whole scores without decimals.
+        val csv = CsvExporter.export(listOf(details))
+        assertTrue("47.5" in csv && "57.5" in csv)
+        assertTrue(csv.lines().none { line -> line.split(";").any { it.endsWith(".0") } })
     }
 }

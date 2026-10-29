@@ -89,6 +89,7 @@ import com.skullking.score.domain.stats.StatsPeriod
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SectionTitle
 import com.skullking.score.ui.components.SkullScaffold
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.labelRes
 import com.skullking.score.ui.navigation.Routes
 import com.skullking.score.ui.normalizeForSearch
@@ -460,7 +461,7 @@ private fun GameCard(
             }
             if (expanded) {
                 Column(modifier = Modifier.padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    game.players.sortedByDescending { summary.totals[it.id] ?: 0 }.forEach { player ->
+                    game.players.sortedByDescending { summary.totals[it.id] ?: 0.0 }.forEach { player ->
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                             PlayerAvatar(player, size = 28.dp)
                             Text(
@@ -469,7 +470,7 @@ private fun GameCard(
                                     .weight(1f)
                                     .padding(start = 8.dp),
                             )
-                            Text((summary.totals[player.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
+                            Text(formatScore(summary.totals[player.id] ?: 0.0), fontWeight = FontWeight.Bold)
                         }
                     }
                     Row(

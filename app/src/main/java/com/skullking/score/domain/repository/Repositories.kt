@@ -22,7 +22,7 @@ interface PlayerRepository {
     suspend fun updatePlayer(player: Player)
 }
 
-data class ScoreUpdate(val roundId: Long, val playerId: Long, val score: Int)
+data class ScoreUpdate(val roundId: Long, val playerId: Long, val score: Double)
 
 interface GameRepository {
     fun observeGame(gameId: Long): Flow<GameDetails?>
