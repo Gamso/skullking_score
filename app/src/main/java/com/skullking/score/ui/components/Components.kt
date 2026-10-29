@@ -31,6 +31,7 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -55,7 +56,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -177,10 +180,17 @@ fun PlayerAvatar(player: Player, modifier: Modifier = Modifier, size: Dp = 40.dp
             .background(Color(player.color)),
         contentAlignment = Alignment.Center,
     ) {
-        // The palette colors are light: the initial is always dark.
+        // The palette colors are light: the initial is always dark. Line height trimmed to the glyph and no font
+        // padding: otherwise the letter sits low in small avatars.
+        val fontSize = (size.value * 0.5f).sp
         Text(
             text = player.name.trim().firstOrNull()?.uppercase() ?: "?",
-            fontSize = (size.value * 0.5f).sp,
+            style = LocalTextStyle.current.copy(
+                fontSize = fontSize,
+                lineHeight = fontSize,
+                platformStyle = PlatformTextStyle(includeFontPadding = false),
+                lineHeightStyle = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.Both),
+            ),
             fontWeight = FontWeight.Bold,
             color = Color(0xFF1B1B1B),
             textAlign = TextAlign.Center,

@@ -146,7 +146,6 @@
     <string name="play_warnings_title">À vérifier avant de valider</string>
     <string name="play_validate_anyway">Valider quand même</string>
     <string name="play_fix">Corriger</string>
-    <string name="play_enter_results">Saisir les résultats</string>
 
     <string name="event_loot_button">Butin</string>
     <string name="event_davy_jones_button">Davy Jones</string>
@@ -406,7 +405,7 @@
     <string name="a11y_expanded">Déplié</string>
     <string name="a11y_collapsed">Replié</string>
     <string name="stats_more_filters">Plus de filtres</string>
-    <string name="setup_dealer_hint">Listez les joueurs dans l’ordre de la table, puis touchez 🃏 sur celui qui donne en premier.</string>
+    <string name="setup_dealer_hint">Listez les joueurs dans l’ordre de la table (glissez ≡ pour les déplacer), puis tirez ou choisissez celui qui donne en premier 🃏.</string>
     <string name="share_curve">Courbe de score</string>
     <string name="stats_bias_balanced">Équilibrée</string>
     <string name="stats_bias_help">Compare les plis gagnés à l’annonce, manche après manche : sous-annoncer, c’est gagner plus de plis que prévu. Sur-annoncer, en gagner moins.</string>
@@ -477,12 +476,9 @@
     <string name="hier_escape">Fuite</string>
     <string name="hier_escape_sub">Perd toujours. Si le pli n’est fait que de fuites, de la Tigresse jouée comme une fuite ou de Butins, la première carte jouée gagne.</string>
     <string name="help_remark">Remarque</string>
-    <string name="settings_trick_by_trick">Saisir les plis un par un</string>
-    <string name="settings_trick_by_trick_desc">Sinon, les résultats se saisissent à la fin de la manche.</string>
     <string name="play_bids_summary">Total annoncé %1$d pour %2$d plis</string>
     <string name="play_bids_over">%1$d de trop</string>
     <string name="play_bids_under">%1$d de moins</string>
-    <string name="play_tricks_over_bid">plis / annonce</string>
     <string name="collapse">Replier</string>
     <string name="expand">Déplier</string>
     <string name="trick_destroyed_button">Pli détruit</string>
@@ -499,4 +495,7 @@
     <string name="trick_events">Événements du pli</string>
     <string name="settings_remember_setup">Mémoriser le paramétrage des parties</string>
     <string name="settings_remember_setup_desc">Une nouvelle partie reprend le mode de calcul et l’extension de la précédente.</string>
+    <string name="setup_choose_dealer">Choisir le donneur</string>
+    <string name="results_tap_trick">Touchez un pli pour le corriger : gagnant, cartes gagnées, Butin, Davy Jones…</string>
+    <string name="trick_choose_winner">Choisir le gagnant</string>
 </resources>

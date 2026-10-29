@@ -82,28 +82,35 @@ fun LiveEventsPanel(
     modifier: Modifier = Modifier,
     /** False during play: the Loot winner is filled in when the trick is entered. */
     askWinner: Boolean = true,
+    /** False when the events are entered elsewhere (trick dialog): only the log is shown. */
+    showButtons: Boolean = true,
 ) {
     var dialog by remember { mutableStateOf<EventDialog?>(null) }
     val hasChest = ExpansionCard.DAVY_JONES_CHEST in game.expansionCards
     val names = game.players.associate { it.id to it.name }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
-            Button(
-                onClick = { dialog = EventDialog.LootWho },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(72.dp),
-            ) { Text(stringResource(R.string.event_loot_button), style = MaterialTheme.typography.titleMedium) }
-            if (hasChest) {
+        if (showButtons) {
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
                 Button(
-                    onClick = { dialog = EventDialog.ChestWho },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                    onClick = { dialog = EventDialog.LootWho },
                     modifier = Modifier
                         .weight(1f)
-                        .height(72.dp),
-                ) {
-                    Text(stringResource(R.string.event_davy_jones_button), style = MaterialTheme.typography.titleMedium)
+                        .height(56.dp),
+                ) { Text(stringResource(R.string.event_loot_button), style = MaterialTheme.typography.titleMedium) }
+                if (hasChest) {
+                    Button(
+                        onClick = { dialog = EventDialog.ChestWho },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp),
+                    ) {
+                        Text(
+                            stringResource(R.string.event_davy_jones_button),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
                 }
             }
         }
@@ -220,7 +227,7 @@ fun LiveEventsPanel(
 }
 
 @Composable
-private fun PlayerPickerDialog(title: String, players: List<Player>, onPick: (Player) -> Unit, onDismiss: () -> Unit) {
+internal fun PlayerPickerDialog(title: String, players: List<Player>, onPick: (Player) -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(title) },
@@ -248,7 +255,7 @@ private fun PlayerPickerDialog(title: String, players: List<Player>, onPick: (Pl
 }
 
 @Composable
-private fun CreaturePickerDialog(
+internal fun CreaturePickerDialog(
     available: List<SeaMonster>,
     onConfirm: (Set<SeaMonster>) -> Unit,
     onDismiss: () -> Unit,

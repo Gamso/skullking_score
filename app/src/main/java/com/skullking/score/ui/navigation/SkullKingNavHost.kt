@@ -117,7 +117,6 @@ fun SkullKingNavHost() {
                 onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
                 onScoreboard = { navController.navigate(Routes.scoreboard(gameId)) },
                 onHelp = { navController.navigate(Routes.HELP) },
-                onEnterResults = { navController.replaceFlow(Routes.results(gameId, roundId)) },
                 onRoundValidated = { navController.replaceFlow(Routes.scoreboard(gameId)) },
             )
         }

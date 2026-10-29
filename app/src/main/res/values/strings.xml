@@ -146,7 +146,6 @@
     <string name="play_warnings_title">Check before confirming</string>
     <string name="play_validate_anyway">Confirm anyway</string>
     <string name="play_fix">Fix</string>
-    <string name="play_enter_results">Enter the results</string>
 
     <string name="event_loot_button">Loot</string>
     <string name="event_davy_jones_button">Davy Jones</string>
@@ -406,7 +405,7 @@
     <string name="a11y_expanded">Expanded</string>
     <string name="a11y_collapsed">Collapsed</string>
     <string name="stats_more_filters">More filters</string>
-    <string name="setup_dealer_hint">List players in table order, then tap 🃏 on whoever deals first.</string>
+    <string name="setup_dealer_hint">List the players in seating order (drag ≡ to move them), then draw or choose who deals first 🃏.</string>
     <string name="share_curve">Score curve</string>
     <string name="stats_bias_balanced">Balanced</string>
     <string name="stats_bias_help">Compares the tricks won with the bid, round after round: under-bidding means winning more than announced, over-bidding less.</string>
@@ -477,12 +476,9 @@
     <string name="hier_escape">Escape</string>
     <string name="hier_escape_sub">Always loses. If the trick holds only escapes, the Tigress as an escape or Loots, the first card played wins.</string>
     <string name="help_remark">Remark</string>
-    <string name="settings_trick_by_trick">Enter tricks one by one</string>
-    <string name="settings_trick_by_trick_desc">Otherwise, the results are entered at the end of the round.</string>
     <string name="play_bids_summary">Total bid %1$d for %2$d tricks</string>
     <string name="play_bids_over">%1$d over</string>
     <string name="play_bids_under">%1$d under</string>
-    <string name="play_tricks_over_bid">tricks / bid</string>
     <string name="collapse">Collapse</string>
     <string name="expand">Expand</string>
     <string name="trick_destroyed_button">Destroyed trick</string>
@@ -499,4 +495,7 @@
     <string name="trick_events">Trick events</string>
     <string name="settings_remember_setup">Remember the game setup</string>
     <string name="settings_remember_setup_desc">A new game starts with the scoring mode and expansion of the previous one.</string>
+    <string name="setup_choose_dealer">Choose the dealer</string>
+    <string name="results_tap_trick">Tap a trick to correct it: winner, cards won, Loot, Davy Jones…</string>
+    <string name="trick_choose_winner">Choose the winner</string>
 </resources>
