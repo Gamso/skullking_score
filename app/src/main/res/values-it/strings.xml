@@ -336,7 +336,7 @@
     <string name="tab_table">Tabella</string>
     <string name="tab_curve">Curva</string>
     <string name="curve_empty">Nessun giro ancora conteggiato.</string>
-    <string name="curve_summary_line">%1$s: %2$d punti dopo %3$d giri</string>
+    <string name="curve_summary_line">%1$s: %2$s punti dopo %3$d giri</string>
     <string name="curve_axis_rounds">Punteggio cumulato su %1$d giri.</string>
     <string name="curve_round_detail">Giro %1$d (%2$d carte)</string>
     <string name="curve_round_line">%1$s (totale %2$s)</string>

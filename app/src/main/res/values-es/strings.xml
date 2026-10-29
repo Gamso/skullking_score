@@ -336,7 +336,7 @@
     <string name="tab_table">Tabla</string>
     <string name="tab_curve">Curva</string>
     <string name="curve_empty">Aún no se ha puntuado ninguna ronda.</string>
-    <string name="curve_summary_line">%1$s: %2$d puntos tras %3$d rondas</string>
+    <string name="curve_summary_line">%1$s: %2$s puntos tras %3$d rondas</string>
     <string name="curve_axis_rounds">Puntuación acumulada en %1$d rondas.</string>
     <string name="curve_round_detail">Ronda %1$d (%2$d cartas)</string>
     <string name="curve_round_line">%1$s (total %2$s)</string>
