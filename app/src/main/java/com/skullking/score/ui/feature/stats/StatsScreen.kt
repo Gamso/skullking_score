@@ -81,6 +81,7 @@ import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SectionTitle
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.labelRes
 import com.skullking.score.ui.normalizeForSearch
 import com.skullking.score.ui.share.StatsImageRenderer
@@ -458,8 +459,8 @@ private fun PlayerStatsCard(stats: PlayerStats, expanded: Boolean, onToggle: () 
                 )
             }
             StatLine(R.string.stats_average, "%.1f".format(locale, stats.averageScore))
-            StatLine(R.string.stats_best, stats.bestScore.toString())
-            StatLine(R.string.stats_worst, stats.worstScore.toString())
+            StatLine(R.string.stats_best, formatScore(stats.bestScore))
+            StatLine(R.string.stats_worst, formatScore(stats.worstScore))
             StatLine(R.string.stats_bid_success, stats.bidSuccessRate.percent())
             StatLine(R.string.stats_zero_success, stats.zeroBidSuccessRate?.percent() ?: "–")
 
@@ -507,8 +508,8 @@ private fun ExpandedStats(stats: PlayerStats, locale: java.util.Locale) {
             description = stringResource(
                 R.string.stats_trend_description,
                 stats.player.name,
-                stats.gameTotals.first(),
-                stats.gameTotals.last(),
+                formatScore(stats.gameTotals.first()),
+                formatScore(stats.gameTotals.last()),
                 stats.gameTotals.size,
             ),
         )

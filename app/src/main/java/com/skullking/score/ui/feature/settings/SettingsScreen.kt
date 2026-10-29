@@ -49,6 +49,8 @@ class SettingsViewModel @Inject constructor(
 
     fun setKeepScreenOn(enabled: Boolean) = repository.update { it.copy(keepScreenOn = enabled) }
 
+    fun setRememberSetup(enabled: Boolean) = repository.update { it.copy(rememberSetup = enabled) }
+
     fun setAutoBackup(enabled: Boolean) {
         repository.update { it.copy(autoBackup = enabled, lastBackupFailed = false) }
         if (enabled) backupNow()
@@ -93,6 +95,12 @@ fun SettingsScreen(onBack: () -> Unit, onRestore: () -> Unit, viewModel: Setting
                 description = stringResource(R.string.settings_keep_screen_on_desc),
                 checked = settings.keepScreenOn,
                 onChange = viewModel::setKeepScreenOn,
+            )
+            SettingSwitch(
+                title = stringResource(R.string.settings_remember_setup),
+                description = stringResource(R.string.settings_remember_setup_desc),
+                checked = settings.rememberSetup,
+                onChange = viewModel::setRememberSetup,
             )
 
             SectionTitle(stringResource(R.string.settings_backup))

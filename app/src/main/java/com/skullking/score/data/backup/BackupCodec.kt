@@ -8,7 +8,8 @@ import kotlinx.serialization.json.Json
 
 /** Encoding and decoding of the JSON backup format, independent of the database (so usable from tests). */
 object BackupCodec {
-    const val FORMAT_VERSION = 1
+    /** 2: scores are decimal numbers (half points in Rascal scoring); version 1 is still read. */
+    const val FORMAT_VERSION = 2
 
     private val json = Json {
         ignoreUnknownKeys = true

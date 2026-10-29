@@ -107,8 +107,8 @@ class DataLayerTest {
         assertEquals(Pirate.ROSIE, trick.winningPirate)
         // Bid 0: Ana wins a trick and misses (-10), Bob succeeds (+10 x 1 card).
         assertEquals(1, round.entry(ids[0])?.tricks)
-        assertEquals(-10, round.entry(ids[0])?.score)
-        assertEquals(10, round.entry(ids[1])?.score)
+        assertEquals(-10.0, round.entry(ids[0])?.score)
+        assertEquals(10.0, round.entry(ids[1])?.score)
     }
 
     @Test

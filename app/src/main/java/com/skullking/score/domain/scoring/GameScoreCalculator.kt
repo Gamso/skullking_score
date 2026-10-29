@@ -43,11 +43,11 @@ object GameScoreCalculator {
     /** Computes the whole game. [mode] allows a read-only comparison with another mode. */
     fun calculate(details: GameDetails, mode: ScoringMode = details.game.mode): ScoredGame {
         val game = details.game
-        val running = game.players.associate { it.id to 0 }.toMutableMap()
+        val running = game.players.associate { it.id to 0.0 }.toMutableMap()
         val rounds = details.rounds.map { round ->
             val breakdowns = scoreRound(game, round, mode)
             if (round.round.phase == RoundPhase.SCORED) {
-                breakdowns.forEach { (playerId, b) -> running[playerId] = (running[playerId] ?: 0) + b.total }
+                breakdowns.forEach { (playerId, b) -> running[playerId] = (running[playerId] ?: 0.0) + b.total }
             }
             ScoredRound(round, breakdowns, running.toMap())
         }

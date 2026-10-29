@@ -91,3 +91,15 @@ fun Pirate.labelRes(): Int = when (this) {
     Pirate.TIGRESS -> R.string.pirate_tigress
     Pirate.MARY_THORNE -> R.string.pirate_mary_thorne
 }
+
+/** Full name of the pirate, as printed on the card ("Harry le Géant"). */
+@StringRes
+fun Pirate.fullLabelRes(): Int = when (this) {
+    Pirate.ROSIE -> R.string.pirate_rosie_full
+    Pirate.RASCAL -> R.string.pirate_rascal_full
+    Pirate.WILL -> R.string.pirate_will_full
+    Pirate.JUANITA -> R.string.pirate_juanita_full
+    Pirate.HARRY -> R.string.pirate_harry_full
+    Pirate.TIGRESS -> R.string.pirate_tigress_full
+    Pirate.MARY_THORNE -> R.string.pirate_mary_thorne_full
+}

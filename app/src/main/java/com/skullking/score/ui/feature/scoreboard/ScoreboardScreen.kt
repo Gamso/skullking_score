@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -76,6 +77,7 @@ import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.WidthClass
 import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.components.rememberWidthClass
 import com.skullking.score.ui.labelRes
 import com.skullking.score.ui.navigation.Routes
@@ -121,8 +123,9 @@ class ScoreboardViewModel @Inject constructor(
     }
 }
 
-private val ROUND_COLUMN_WIDTH = 64.dp
-private val PLAYER_COLUMN_WIDTH = 80.dp
+private val NAME_COLUMN_WIDTH = 116.dp
+private val TOTAL_COLUMN_WIDTH = 52.dp
+private val ROUND_COLUMN_WIDTH = 48.dp
 private val DETAIL_PANEL_WIDTH = 340.dp
 
 @Composable
@@ -140,6 +143,7 @@ fun ScoreboardScreen(
     var selected by remember { mutableStateOf<Pair<ScoredRound, Player>?>(null) }
     var menuOpen by remember { mutableStateOf(false) }
     var confirmFinish by remember { mutableStateOf(false) }
+    // Ranking first: it is what the players look for between two rounds.
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val sidePanel = rememberWidthClass() == WidthClass.EXPANDED
 
@@ -219,14 +223,14 @@ fun ScoreboardScreen(
         Row(modifier = Modifier.fillMaxSize().padding(padding)) {
             Column(modifier = Modifier.weight(1f).fillMaxHeight()) {
                 PrimaryTabRow(selectedTabIndex = tab) {
-                    Tab(selected = tab == 0, onClick = { tab = 0 }, text = { Text(stringResource(R.string.tab_table)) })
-                    Tab(selected = tab == 1, onClick = { tab = 1 }, text = { Text(stringResource(R.string.tab_curve)) })
+                    listOf(R.string.tab_ranking, R.string.tab_table, R.string.tab_curve).forEachIndexed {
+                            index,
+                            label,
+                        ->
+                        Tab(selected = tab == index, onClick = { tab = index }, text = { Text(stringResource(label)) })
+                    }
                 }
-                if (tab == 0) {
-                    ScoreTable(scored, onCell = { round, player -> selected = round to player })
-                } else {
-                    ScoreCurve(scored)
-                }
+                ScoreboardTab(tab, scored, onCell = { round, player -> selected = round to player })
             }
             val detail = selected
             if (sidePanel && detail != null) {
@@ -280,81 +284,70 @@ fun ScoreboardScreen(
 }
 
 @Composable
+private fun ScoreboardTab(tab: Int, scored: ScoredGame, onCell: (ScoredRound, Player) -> Unit) {
+    when (tab) {
+        0 -> RankingTab(scored)
+        1 -> ScoreTable(scored, onCell)
+        else -> ScoreCurve(scored)
+    }
+}
+
+/** Current ranking: who leads, by how much, and how the last round went. */
+@Composable
+private fun RankingTab(scored: ScoredGame) {
+    val leader = scored.ranking.firstOrNull()?.total ?: 0.0
+    val last = scored.rounds.lastOrNull { it.isScored }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        scored.ranking.forEach { entry ->
+            val gap = leader - entry.total
+            val lastPoints = last?.breakdowns?.get(entry.player.id)?.total
+            val subtitle = listOfNotNull(
+                stringResource(R.string.ranking_gap, formatScore(gap)).takeIf { gap > 0 },
+                lastPoints?.let { stringResource(R.string.ranking_last_round, formatPoints(it)) },
+            ).joinToString(" · ").ifEmpty { null }
+            RankRow(entry, subtitle = subtitle, dense = true)
+        }
+    }
+}
+
+/**
+ * One line per player (phones are tall, players are few), one column per round. The players are sorted by
+ * rank; name and total stay visible while the rounds scroll horizontally.
+ */
+@Composable
 private fun ScoreTable(scored: ScoredGame, onCell: (ScoredRound, Player) -> Unit) {
-    val players = scored.game.players
     val horizontal = rememberScrollState()
     val bestTotal = scored.totals.values.maxOrNull()
+    val rounds = scored.rounds
 
-    // Few players: the columns share the width; otherwise fixed width and horizontal scrolling.
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        val playerWidth = maxOf(PLAYER_COLUMN_WIDTH, (maxWidth - ROUND_COLUMN_WIDTH) / players.size)
-        Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.horizontalScroll(horizontal)) {
-                Box(Modifier.width(ROUND_COLUMN_WIDTH).height(60.dp))
-                players.forEach { player ->
-                    Column(
-                        modifier = Modifier.width(playerWidth).height(60.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        PlayerAvatar(player, size = 28.dp)
-                        Text(
-                            player.name,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.labelMedium,
-                        )
-                    }
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .horizontalScroll(horizontal)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
+        val roundWidth = maxOf(
+            ROUND_COLUMN_WIDTH,
+            (maxWidth - NAME_COLUMN_WIDTH - TOTAL_COLUMN_WIDTH) / rounds.size.coerceAtLeast(1),
+        )
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+            // Header: round number and cards dealt.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(Modifier.width(NAME_COLUMN_WIDTH))
                 Text(
                     stringResource(R.string.table_total),
-                    modifier = Modifier.width(ROUND_COLUMN_WIDTH).padding(start = 12.dp),
+                    modifier = Modifier.width(TOTAL_COLUMN_WIDTH),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold,
                 )
-                players.forEach { player ->
-                    val total = scored.totals[player.id] ?: 0
-                    Text(
-                        text = total.toString(),
-                        modifier = Modifier.width(playerWidth).padding(vertical = 12.dp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = if (total == bestTotal) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSurface
-                        },
-                    )
-                }
-            }
-            HorizontalDivider(thickness = 2.dp)
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-                    .horizontalScroll(horizontal),
-            ) {
-                scored.rounds.forEachIndexed { index, round ->
-                    Row(
-                        modifier = Modifier.background(
-                            if (index % 2 ==
-                                1
-                            ) {
-                                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                            } else {
-                                Color.Transparent
-                            },
-                        ),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Column(modifier = Modifier.width(ROUND_COLUMN_WIDTH).padding(start = 12.dp)) {
+                Row(modifier = Modifier.horizontalScroll(horizontal)) {
+                    rounds.forEach { round ->
+                        Column(
+                            modifier = Modifier.width(roundWidth).padding(vertical = 6.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
                             Text(round.round.number.toString(), fontWeight = FontWeight.Bold)
                             Text(
                                 stringResource(R.string.table_cards_short, round.round.cardsDealt) +
@@ -363,12 +356,58 @@ private fun ScoreTable(scored: ScoredGame, onCell: (ScoredRound, Player) -> Unit
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
-                        players.forEach { player ->
-                            ScoreCell(round, player, playerWidth, onCell)
-                        }
                     }
-                    HorizontalDivider()
                 }
+            }
+            HorizontalDivider(thickness = 2.dp)
+            scored.ranking.forEachIndexed { index, ranked ->
+                val player = ranked.player
+                Row(
+                    modifier = Modifier.background(
+                        if (index % 2 == 1) {
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                        } else {
+                            Color.Transparent
+                        },
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Row(
+                        modifier = Modifier.width(NAME_COLUMN_WIDTH).padding(start = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            "${ranked.rank}",
+                            modifier = Modifier.width(18.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        PlayerAvatar(player, size = 24.dp)
+                        Text(
+                            player.name,
+                            modifier = Modifier.padding(start = 6.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                    Text(
+                        text = formatScore(ranked.total),
+                        modifier = Modifier.width(TOTAL_COLUMN_WIDTH),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (ranked.total == bestTotal) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
+                    )
+                    Row(modifier = Modifier.horizontalScroll(horizontal)) {
+                        rounds.forEach { round -> ScoreCell(round, player, roundWidth, onCell) }
+                    }
+                }
+                HorizontalDivider()
             }
         }
     }
@@ -383,7 +422,7 @@ private fun ScoreCell(round: ScoredRound, player: Player, width: Dp, onCell: (Sc
             player.name,
             round.round.number,
             formatPoints(breakdown.total),
-            round.cumulative[player.id] ?: 0,
+            formatScore(round.cumulative[player.id] ?: 0.0),
         )
     } else {
         stringResource(R.string.a11y_score_cell_pending, player.name, round.round.number)
@@ -391,7 +430,7 @@ private fun ScoreCell(round: ScoredRound, player: Player, width: Dp, onCell: (Sc
     Column(
         modifier = Modifier
             .width(width)
-            .heightIn(min = 56.dp)
+            .heightIn(min = 48.dp)
             .clearAndSetSemantics { contentDescription = description }
             .clickable(enabled = round.isScored) { onCell(round, player) },
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -404,7 +443,7 @@ private fun ScoreCell(round: ScoredRound, player: Player, width: Dp, onCell: (Sc
                 color = if (breakdown.success) MaterialTheme.colorScheme.onSurface else ScoreNegative,
             )
             Text(
-                (round.cumulative[player.id] ?: 0).toString(),
+                formatScore(round.cumulative[player.id] ?: 0.0),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -491,10 +530,13 @@ private fun RoundBreakdownBody(round: ScoredRound, player: Player) {
                 DetailRow(
                     label = "${stringResource(line.type.labelRes())} × ${line.count}",
                     value = formatPoints(line.points),
-                    struck = breakdown.bonusDiscarded && breakdown.bonusApplied == 0,
+                    struck = breakdown.bonusDiscarded,
                 )
             }
-            if (breakdown.bonusDiscarded) {
+            if (breakdown.bonusDiscarded && breakdown.bonusApplied != 0.0) {
+                // Rascal, off by one: half of the bonuses are kept.
+                DetailRow(stringResource(R.string.detail_bonus_halved), formatPoints(breakdown.bonusApplied))
+            } else if (breakdown.bonusDiscarded) {
                 Text(
                     stringResource(R.string.detail_bonus_lost),
                     style = MaterialTheme.typography.bodySmall,

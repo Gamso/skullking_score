@@ -2,7 +2,10 @@ package com.skullking.score.ui.feature.setup
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -11,16 +14,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,15 +39,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerInputChange
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,6 +68,8 @@ import com.skullking.score.core.ScoringMode
 import com.skullking.score.domain.model.Player
 import com.skullking.score.domain.repository.GameRepository
 import com.skullking.score.domain.repository.PlayerRepository
+import com.skullking.score.domain.repository.SavedSetup
+import com.skullking.score.domain.repository.SettingsRepository
 import com.skullking.score.ui.components.ActionBar
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.PlayerEditDialog
@@ -107,10 +125,22 @@ private data class SetupInput(
 )
 
 @HiltViewModel
-class SetupViewModel @Inject constructor(private val players: PlayerRepository, private val games: GameRepository) :
-    ViewModel() {
+class SetupViewModel @Inject constructor(
+    private val players: PlayerRepository,
+    private val games: GameRepository,
+    private val settings: SettingsRepository,
+) : ViewModel() {
 
-    private val input = MutableStateFlow(SetupInput())
+    // Starts from the previous game's mode and expansion if the setting is on.
+    private val input = MutableStateFlow(
+        settings.settings.value.takeIf { it.rememberSetup }?.lastSetup?.let {
+            SetupInput(
+                mode = it.mode,
+                expansionEnabled = it.expansionEnabled,
+                chosenCards = it.cards,
+            )
+        } ?: SetupInput(),
+    )
 
     val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input) { all, input ->
         val active = all.filter { !it.archived }
@@ -139,15 +169,22 @@ class SetupViewModel @Inject constructor(private val players: PlayerRepository, 
     }
 
     fun movePlayer(player: Player, delta: Int) = input.update { current ->
-        val ids = current.selectedIds.toMutableList()
-        val from = ids.indexOf(player.id)
-        val to = from + delta
-        if (from < 0 || to !in ids.indices) {
-            current
-        } else {
-            ids.add(to, ids.removeAt(from))
-            current.copy(selectedIds = ids)
-        }
+        val from = current.selectedIds.indexOf(player.id)
+        current.reordered(from, from + delta)
+    }
+
+    /** Drag and drop: player [playerId] takes the place of player [targetId]. */
+    fun movePlayerTo(playerId: Long, targetId: Long) = input.update { current ->
+        current.reordered(current.selectedIds.indexOf(playerId), current.selectedIds.indexOf(targetId))
+    }
+
+    /** Moves the player at [from] to [to]; the first dealer stays the same player. */
+    private fun SetupInput.reordered(from: Int, to: Int): SetupInput {
+        val ids = selectedIds.toMutableList()
+        if (from < 0 || to !in ids.indices) return this
+        val dealer = ids.getOrNull(firstDealerSeat)
+        ids.add(to, ids.removeAt(from))
+        return copy(selectedIds = ids, firstDealerSeat = ids.indexOf(dealer).coerceAtLeast(0))
     }
 
     fun createPlayer(name: String) {
@@ -174,6 +211,16 @@ class SetupViewModel @Inject constructor(private val players: PlayerRepository, 
     fun start(onCreated: (Long) -> Unit) {
         val current = state.value
         if (!current.canStart) return
+        val chosen = input.value
+        settings.update {
+            it.copy(
+                lastSetup = SavedSetup(
+                    mode = current.mode,
+                    expansionEnabled = chosen.expansionEnabled,
+                    cards = chosen.chosenCards,
+                ),
+            )
+        }
         viewModelScope.launch {
             val id = games.createGame(
                 playerIds = current.selected.map { it.id },
@@ -213,11 +260,25 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
             }
         },
     ) { padding ->
+        val listState = rememberLazyListState()
+        val reorder = remember(listState) { PlayerReorderState(listState) }
+        val dealerId = state.selected.getOrNull(state.firstDealerSeat)?.id
         LazyColumn(
+            state = listState,
             modifier = Modifier.padding(padding),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            // Profiles first: they stay in sight however many players are already chosen.
+            item { SectionTitle(stringResource(R.string.setup_available_players)) }
+            item {
+                AvailablePlayers(
+                    players = state.available,
+                    onAdd = viewModel::addPlayer,
+                    onCreate = { creating = true },
+                )
+            }
+
             item { SectionTitle(stringResource(R.string.setup_players_order, state.selected.size)) }
             if (state.selected.size > 1) {
                 item {
@@ -227,34 +288,78 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
-                        OutlinedButton(onClick = viewModel::drawDealer) {
-                            Text(stringResource(R.string.setup_draw_dealer))
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedButton(onClick = viewModel::drawDealer) {
+                                Text(stringResource(R.string.setup_draw_dealer))
+                            }
+                            ChooseDealerButton(state.selected, onChoose = viewModel::setDealer)
                         }
                     }
                 }
             }
-            itemsIndexed(state.selected, key = { _, p -> "sel-${p.id}" }) { index, player ->
-                Card(modifier = Modifier.fillMaxWidth()) {
+            items(state.selected, key = { PlayerReorderState.key(it.id) }) { player ->
+                val dragging = reorder.draggedId == player.id
+                val onDrag: (PointerInputChange, Offset) -> Unit = { change, amount ->
+                    change.consume()
+                    reorder.drag(amount.y)?.let { target -> viewModel.movePlayerTo(player.id, target) }
+                }
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(if (dragging) Modifier else Modifier.animateItem())
+                        .zIndex(if (dragging) 1f else 0f)
+                        .graphicsLayer {
+                            translationY = reorder.offsetOf(player.id)
+                            shadowElevation = if (dragging) 8.dp.toPx() else 0f
+                        }
+                        // Long press anywhere on the line, or immediate drag on the handle.
+                        .pointerInput(player.id) {
+                            detectDragGesturesAfterLongPress(
+                                onDragStart = { reorder.start(player.id) },
+                                onDragEnd = reorder::stop,
+                                onDragCancel = reorder::stop,
+                                onDrag = onDrag,
+                            )
+                        },
+                ) {
+                    val isDealer = player.id == dealerId && state.selected.size > 1
+                    val dealerDescription = stringResource(R.string.setup_dealer_badge)
                     Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        modifier = Modifier.padding(end = 4.dp, top = 2.dp, bottom = 2.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        PlayerLabel(player, modifier = Modifier.weight(1f))
-                        if (state.selected.size > 1) {
-                            val isDealer = index == state.firstDealerSeat
-                            TextButton(onClick = { viewModel.setDealer(player) }) {
-                                Text(
-                                    if (isDealer) "🃏 " + stringResource(R.string.setup_dealer_badge) else "🃏",
-                                    style = MaterialTheme.typography.labelLarge,
-                                    color = if (isDealer) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else {
-                                        MaterialTheme.colorScheme.outline
-                                    },
-                                    fontWeight = if (isDealer) FontWeight.Bold else null,
-                                )
-                            }
+                        Icon(
+                            Icons.Filled.Menu,
+                            contentDescription = stringResource(R.string.setup_drag_handle),
+                            tint = MaterialTheme.colorScheme.outline,
+                            modifier = Modifier
+                                .pointerInput(player.id) {
+                                    detectDragGestures(
+                                        onDragStart = { reorder.start(player.id) },
+                                        onDragEnd = reorder::stop,
+                                        onDragCancel = reorder::stop,
+                                        onDrag = onDrag,
+                                    )
+                                }
+                                .padding(12.dp),
+                        )
+                        // The dealer is chosen with the buttons above; the line only shows the icon, so the
+                        // name keeps its room.
+                        PlayerAvatar(player, size = 32.dp)
+                        Text(
+                            player.name,
+                            modifier = Modifier.weight(1f).padding(start = 8.dp),
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        if (isDealer) {
+                            Text(
+                                "🃏",
+                                modifier = Modifier.semantics {
+                                    contentDescription = dealerDescription
+                                },
+                            )
                         }
                         IconButton(onClick = { viewModel.movePlayer(player, -1) }) {
                             Icon(Icons.Filled.KeyboardArrowUp, contentDescription = stringResource(R.string.move_up))
@@ -270,15 +375,6 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
                         }
                     }
                 }
-            }
-
-            item { SectionTitle(stringResource(R.string.setup_available_players)) }
-            item {
-                AvailablePlayers(
-                    players = state.available,
-                    onAdd = viewModel::addPlayer,
-                    onCreate = { creating = true },
-                )
             }
 
             item { SectionTitle(stringResource(R.string.setup_mode)) }
@@ -403,6 +499,83 @@ private fun AvailablePlayers(players: List<Player>, onAdd: (Player) -> Unit, onC
                 label = { Text(stringResource(R.string.player_new)) },
                 leadingIcon = { Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp)) },
             )
+        }
+    }
+}
+
+/**
+ * Drag and drop of the chosen players in the [LazyColumn]: the dragged line follows the finger and takes the place
+ * of the line it covers. Its shift is computed from the layout, so it stays under the finger after each move.
+ */
+private class PlayerReorderState(private val listState: LazyListState) {
+    var draggedId by mutableStateOf<Long?>(null)
+        private set
+    private var startOffset by mutableFloatStateOf(0f)
+    private var distance by mutableFloatStateOf(0f)
+
+    /** Index the dragged line must reach before another move: the list updates asynchronously. */
+    private var pendingIndex: Int? = null
+
+    private fun info(id: Long) = listState.layoutInfo.visibleItemsInfo.firstOrNull { it.key == key(id) }
+
+    fun offsetOf(id: Long): Float =
+        if (id != draggedId) 0f else info(id)?.let { startOffset + distance - it.offset } ?: 0f
+
+    fun start(id: Long) {
+        draggedId = id
+        startOffset = info(id)?.offset?.toFloat() ?: 0f
+        distance = 0f
+        pendingIndex = null
+    }
+
+    fun stop() {
+        draggedId = null
+        distance = 0f
+        pendingIndex = null
+    }
+
+    /** Follows the finger; returns the id of the player whose place the dragged line now takes, if any. */
+    fun drag(dy: Float): Long? {
+        distance += dy
+        val current = draggedId?.let(::info)
+        // Wait for the previous move to reach the layout before moving again.
+        if (current == null || (pendingIndex != null && current.index != pendingIndex)) return null
+        pendingIndex = null
+        val center = startOffset + distance + current.size / 2f
+        val target = listState.layoutInfo.visibleItemsInfo.firstOrNull {
+            it.key != current.key &&
+                (it.key as? String)?.startsWith(PREFIX) == true &&
+                center > it.offset &&
+                center < it.offset + it.size
+        }
+        pendingIndex = target?.index
+        return (target?.key as? String)?.removePrefix(PREFIX)?.toLong()
+    }
+
+    companion object {
+        private const val PREFIX = "sel-"
+
+        fun key(id: Long) = "$PREFIX$id"
+    }
+}
+
+/** Manual choice of the first dealer, next to the random draw. */
+@Composable
+private fun ChooseDealerButton(players: List<Player>, onChoose: (Player) -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    Box {
+        OutlinedButton(onClick = { open = true }) { Text(stringResource(R.string.setup_choose_dealer)) }
+        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+            players.forEach { player ->
+                DropdownMenuItem(
+                    text = { Text(player.name) },
+                    leadingIcon = { PlayerAvatar(player, size = 24.dp) },
+                    onClick = {
+                        open = false
+                        onChoose(player)
+                    },
+                )
+            }
         }
     }
 }

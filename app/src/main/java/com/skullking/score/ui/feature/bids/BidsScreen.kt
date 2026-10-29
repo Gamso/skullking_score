@@ -2,17 +2,20 @@ package com.skullking.score.ui.feature.bids
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +29,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -46,10 +51,10 @@ import com.skullking.score.domain.undo.UndoKind
 import com.skullking.score.domain.undo.UndoState
 import com.skullking.score.domain.usecase.EditRoundUseCase
 import com.skullking.score.ui.components.ActionBar
+import com.skullking.score.ui.components.CompactChip
 import com.skullking.score.ui.components.DealerLine
 import com.skullking.score.ui.components.KeepScreenOn
-import com.skullking.score.ui.components.NumberSelector
-import com.skullking.score.ui.components.PlayerLabel
+import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.UndoNotice
 import com.skullking.score.ui.components.UndoNotices
@@ -67,16 +72,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+private val BID_NAME_WIDTH = 88.dp
+
 data class BidsUiState(val scored: ScoredGame, val round: ScoredRound) {
     val players: List<Player> get() = scored.game.players
     val cards: Int get() = round.round.cardsDealt
     val totalBid: Int get() = round.details.entries.sumOf { it.effectiveBid }
-
-    /** Each player's cumulative total before this round. */
-    fun scoreBefore(playerId: Long): Int {
-        val index = scored.rounds.indexOfFirst { it.round.id == round.round.id }
-        return if (index <= 0) 0 else scored.rounds[index - 1].cumulative[playerId] ?: 0
-    }
 }
 
 @HiltViewModel
@@ -208,13 +209,21 @@ fun BidsScreen(
         if (current == null) return@SkullScaffold
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             item {
                 DealerLine(current.scored.game, current.round.round.number, onChoose = viewModel::setDealer)
             }
-            items(current.players, key = { it.id }) { player -> BidCard(current, player, viewModel) }
+            // All the players in one card, one thin line each: the whole table fits on the screen.
+            item {
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    current.players.forEachIndexed { index, player ->
+                        if (index > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        BidRow(current, player, viewModel)
+                    }
+                }
+            }
             item {
                 Text(
                     stringResource(R.string.bids_total, current.totalBid, current.cards),
@@ -226,34 +235,47 @@ fun BidsScreen(
     }
 }
 
+/** One thin line per player: name on the left, bid choices on the right (wrapping when there are many). */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun BidCard(state: BidsUiState, player: Player, viewModel: BidsViewModel) {
+private fun BidRow(state: BidsUiState, player: Player, viewModel: BidsViewModel) {
     val entry = state.round.details.entry(player.id)
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            // The cumulative score under each name helps decide the bid.
-            PlayerLabel(player, subtitle = stringResource(R.string.bids_score_so_far, state.scoreBefore(player.id)))
-            NumberSelector(
-                selected = entry?.bid ?: 0,
-                max = state.cards,
-                onSelect = { viewModel.setBid(player.id, it) },
+    val selected = entry?.bid ?: 0
+    Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            PlayerAvatar(player, size = 24.dp)
+            Text(
+                player.name,
+                modifier = Modifier.padding(start = 8.dp).width(BID_NAME_WIDTH),
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-            // Rascal + Cannonball mode: each player can wager "all or nothing" along with their bid.
-            if (state.scored.game.mode == ScoringMode.CANNONBALL) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        "💣 " + stringResource(R.string.results_cannonball),
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    Switch(
-                        checked = entry?.cannonball == true,
-                        onCheckedChange = { viewModel.setCannonball(player.id, it) },
-                    )
+            FlowRow(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                for (n in 0..state.cards) {
+                    CompactChip(n.toString(), selected = n == selected, onClick = { viewModel.setBid(player.id, n) })
                 }
+            }
+        }
+        // Rascal + Cannonball mode: each player can wager "all or nothing" along with their bid.
+        if (state.scored.game.mode == ScoringMode.CANNONBALL) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    "💣 " + stringResource(R.string.results_cannonball),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Switch(
+                    checked = entry?.cannonball == true,
+                    onCheckedChange = { viewModel.setCannonball(player.id, it) },
+                )
             }
         }
     }

@@ -35,7 +35,7 @@ class CardStatsTest {
     private val cat = Player(3, "u3", "Cat", 0xFFAED581, 0)
 
     private fun entry(roundId: Long, player: Player, bid: Int, tricks: Int, bonus: Bonus = Bonus.NONE, wager: Int = 0) =
-        PlayerRound(roundId, player.id, bid, null, tricks, false, wager, bonus, 0)
+        PlayerRound(roundId, player.id, bid, null, tricks, false, wager, bonus, 0.0)
 
     private fun trick(
         number: Int,

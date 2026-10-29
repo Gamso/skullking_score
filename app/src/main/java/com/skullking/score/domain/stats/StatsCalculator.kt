@@ -75,7 +75,7 @@ data class MonthlyPoint(val month: YearMonth, val games: Int, val averageScore: 
 data class HeadToHead(val opponent: Player, val commonGames: Int, val wins: Int, val losses: Int)
 
 /** A notable round (best, worst): points, round number and date of the game. */
-data class RoundRecord(val points: Int, val roundNumber: Int, val gameStartedAt: Long)
+data class RoundRecord(val points: Double, val roundNumber: Int, val gameStartedAt: Long)
 
 data class SuccessRate(val attempts: Int, val successes: Int) {
     val rate: Double? get() = if (attempts == 0) null else successes.toDouble() / attempts
@@ -86,8 +86,8 @@ data class PlayerStats(
     val gamesPlayed: Int,
     val wins: Int,
     val averageScore: Double,
-    val bestScore: Int,
-    val worstScore: Int,
+    val bestScore: Double,
+    val worstScore: Double,
     val roundsPlayed: Int,
     val bidsSucceeded: Int,
     val zeroBids: Int,
@@ -106,7 +106,7 @@ data class PlayerStats(
     val longestWinStreak: Int = 0,
     val longestZeroStreak: Int = 0,
     /** Biggest bonus total actually scored in a single round. */
-    val biggestBonusRound: Int = 0,
+    val biggestBonusRound: Double = 0.0,
     val successBySize: Map<RoundSize, SuccessRate> = emptyMap(),
     /** Tricks won minus tricks bid, on average per round: positive = tends to under-bid. */
     val averageBidBias: Double = 0.0,
@@ -115,7 +115,7 @@ data class PlayerStats(
     val rascalWagers: SuccessRate = SuccessRate(0, 0),
     val harryAdjustments: SuccessRate = SuccessRate(0, 0),
     /** Game totals, from the oldest to the most recent. */
-    val gameTotals: List<Int> = emptyList(),
+    val gameTotals: List<Double> = emptyList(),
 ) {
     /** Card this player wins tricks with most often, when tricks were entered live. */
     val favoriteCard: WinningCard? get() = winsByCard.maxByOrNull { it.value }?.key
@@ -188,13 +188,13 @@ object StatsCalculator {
         var longestExact = 0
         var zeroStreak = 0
         var longestZero = 0
-        var biggestBonus = 0
+        var biggestBonus = 0.0
         var best: RoundRecord? = null
         var worst: RoundRecord? = null
         val sizes = mutableMapOf<RoundSize, SuccessRate>()
         val bonus = mutableMapOf<BonusType, Int>()
         val monthRounds = mutableMapOf<YearMonth, Pair<Int, Int>>() // (rounds, successful)
-        val monthTotals = mutableMapOf<YearMonth, MutableList<Int>>()
+        val monthTotals = mutableMapOf<YearMonth, MutableList<Double>>()
         var rascalTried = 0
         var rascalWon = 0
         var harryUsed = 0
@@ -284,8 +284,8 @@ object StatsCalculator {
             gamesPlayed = mine.size,
             wins = wins,
             averageScore = if (totals.isEmpty()) 0.0 else totals.average(),
-            bestScore = totals.maxOrNull() ?: 0,
-            worstScore = totals.minOrNull() ?: 0,
+            bestScore = totals.maxOrNull() ?: 0.0,
+            worstScore = totals.minOrNull() ?: 0.0,
             roundsPlayed = rounds,
             bidsSucceeded = succeeded,
             zeroBids = zeroBids,
@@ -321,7 +321,7 @@ data class DuelStats(
     val ties: Int,
     /** Average score gap, positive when [first] is ahead. */
     val averageGap: Double,
-    val biggestGap: Int,
+    val biggestGap: Double,
     val firstBestRound: RoundRecord?,
     val firstWorstRound: RoundRecord?,
     val secondBestRound: RoundRecord?,
@@ -357,9 +357,9 @@ object DuelCalculator {
             commonGames = common.size,
             firstWins = gaps.count { it > 0 },
             secondWins = gaps.count { it < 0 },
-            ties = gaps.count { it == 0 },
+            ties = gaps.count { it == 0.0 },
             averageGap = if (gaps.isEmpty()) 0.0 else gaps.average(),
-            biggestGap = gaps.maxOfOrNull { abs(it) } ?: 0,
+            biggestGap = gaps.maxOfOrNull { abs(it) } ?: 0.0,
             firstBestRound = firstBest,
             firstWorstRound = firstWorst,
             secondBestRound = secondBest,

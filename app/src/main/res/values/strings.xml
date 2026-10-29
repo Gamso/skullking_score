@@ -40,9 +40,9 @@
     <string name="mode_classic">Classic</string>
     <string name="mode_classic_desc">20 points per bid trick, −10 per trick off, plus bonuses</string>
     <string name="mode_rascal">Rascal (“Direct hit”)</string>
-    <string name="mode_rascal_desc">Same potential for everyone: 10 × cards. Off by one: half the points</string>
+    <string name="mode_rascal_desc">Same potential for everyone: 10 × cards. Off by one: half the points and bonuses</string>
     <string name="mode_cannonball">Rascal + Cannonball</string>
-    <string name="mode_cannonball_desc">Each player can go “all or nothing” on their bid</string>
+    <string name="mode_cannonball_desc">Each player picks Grapeshot (Rascal) or Cannonball (all or nothing)</string>
 
     <!-- Expansion cards -->
     <string name="card_sevens">7 (×4, one per suit)</string>
@@ -97,7 +97,6 @@
 
     <string name="bids_validate">Confirm bids</string>
     <string name="bids_total">Total bid: %1$d (cards dealt: %2$d)</string>
-    <string name="bids_score_so_far">Current score: %1$d</string>
 
     <string name="play_bids_reminder">Bids</string>
     <string name="play_bid_chip">Bid %1$d</string>
@@ -131,16 +130,21 @@
     <string name="pirate_harry">Harry</string>
     <string name="pirate_tigress">Tigress</string>
     <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie D’Laney</string>
+    <string name="pirate_rascal_full">Rascal of Roatan</string>
+    <string name="pirate_will_full">Bendt the Bandit</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry the Giant</string>
+    <string name="pirate_tigress_full">Tigress</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
     <string name="stats_wins_with_title">Tricks won with</string>
     <string name="trick_validate">Confirm the trick</string>
     <string name="event_trick_prefix">"Trick %1$d · "</string>
     <string name="event_loot_pending">Loot played by %1$s (trick winner to be entered)</string>
-    <string name="results_tricks_prefilled">Tricks and captured cards pre-filled from the tricks entered during play.</string>
     <string name="play_validate_round">Confirm the round</string>
     <string name="play_warnings_title">Check before confirming</string>
     <string name="play_validate_anyway">Confirm anyway</string>
     <string name="play_fix">Fix</string>
-    <string name="play_enter_results">Enter the results</string>
 
     <string name="event_loot_button">Loot</string>
     <string name="event_davy_jones_button">Davy Jones</string>
@@ -160,9 +164,8 @@
     <string name="results_validate">Confirm the round</string>
     <string name="results_save_correction">Save the correction</string>
     <string name="results_editing_hint">You are correcting a round that was already confirmed: scores are recalculated after every change.</string>
-    <string name="results_summary">Bid %1$d · tricks %2$d</string>
     <string name="results_tricks">Tricks won</string>
-    <string name="results_final_bid">Final bid (Harry the Giant)</string>
+    <string name="results_final_bid">Bid</string>
     <string name="results_bonus_title">Cards won</string>
     <string name="results_bonus_ignored">Missed bid: the bonuses entered don’t count.</string>
     <string name="results_cannonball">Cannonball</string>
@@ -274,11 +277,11 @@
     <string name="help_points_title">Points (classic mode)</string>
     <string name="help_points_body">• Bid ≥ 1 made: +20 per bid trick.\n• Bid ≥ 1 missed: −10 per trick off.\n• Zero bid made: +10 × number of cards in the round.\n• Zero bid missed: −10 × number of cards in the round.</string>
     <string name="help_bonus_title">Bonuses</string>
-    <string name="help_bonus_body">• 🟨🟪🟩 Suit 14 captured: +10 each\n• ⚫ Black 14 captured: +20\n• 🧜‍♀️ Mermaid captured by a pirate: +20 each\n• 🏴‍☠️ Pirate captured by the Skull King: +30 each\n• 💀 Skull King captured by a mermaid: +40\n• 💰 Loot: +20 if the Loot player and the trick winner both make their bid\n• 🎲 Rascal wager: +wager if the bid is exact, −wager otherwise (0, 10 or 20) — the only term counted even on a missed bid\n!> Bonus points only count if the bid is made.</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 Suit 14 captured: +10 each\n• ⚫ Black 14 captured: +20\n• 🧜‍♀️ Mermaid captured by a pirate: +20 each\n• 🏴‍☠️ Pirate captured by the Skull King: +30 each\n• 💀 Skull King captured by a mermaid: +40\n• 💰 Loot: +20 if the Loot player and the trick winner both make their bid exactly\n• 🎲 Rascal wager: +wager if the bid is exact, −wager otherwise (0, 10 or 20) — the only term counted even on a missed bid\n!> Classic scoring: bonus points only count if the bid is made. In Rascal scoring, a glancing blow (off by one) keeps half the bonuses: see “Scoring modes”.</string>
     <string name="help_modes_title">Scoring modes</string>
-    <string name="help_modes_body">• Classic: see above.\n• Rascal (“Direct hit”):\n-- exact bid: 10 × N points plus all bonuses\n-- off by one: 5 × N points plus half the bonuses\n-- off by more: 0 points\n• 💣 Rascal + Cannonball: each player can go “all or nothing” on their bid:\n-- exact bid: 15 × N points plus bonuses\n-- otherwise: 0 points\n-- no wager: the Rascal scoring above applies\n> N is the number of cards dealt in the round.</string>
+    <string name="help_modes_body">• **Classic**: see above.\n• **Rascal**: each round, every player has the same potential, whatever their bid: 10 × N. Accuracy decides:\n-- **Direct hit** (exact bid): all the points at stake and all bonuses\n-- **Glancing blow** (off by one): half the points at stake (5 × N) and half the bonuses\n-- **Complete miss** (off by two or more): no points, no bonuses\n> Example: 4 cards dealt, 40 points at stake. Direct hit: +40; glancing blow: +20; complete miss: 0.\n!> Half the bonuses is not rounded: with the expansion 7s and 8s, a score may hold a half point (15 → 7.5). Loot needs an exact bid: it never counts on a glancing blow.\n• 💣 **Rascal + Cannonball** (optional rule): after bidding, everyone reveals their choice at the same time:\n-- **Grapeshot** (open hand): the Rascal scoring above\n-- **Cannonball** (closed fist): exact bid = 15 × N points plus bonuses; otherwise 0 points and no bonus\n> Example: 6 cards, bid 3. Grapeshot: 60 points if exact, 30 if off by one. Cannonball: 90 if exact, 0 if off by one.\n> N is the number of cards dealt in the round. The Rascal wager is added or subtracted in every mode.</string>
     <string name="help_expansion_title">2026 expansion</string>
-    <string name="help_expansion_body">• 7 captured: −5 each\n• 8 captured: +5 each\n• 0/14 and 🐵 Wild 15: no bonus.\n• {con} First Mate Con: beats all pirates, loses to mermaids and the Skull King. Captured by the Skull King or a mermaid: +30. Scores nothing for captured pirates.\n• 🏴‍☠️ Mary Thorne: counts as a pirate (+30 if captured by the Skull King, +20 per mermaid captured).\n• {davy} Davy Jones’ Locker: doesn’t win, destroys all sea monsters in the trick (🐙 🐳 {ray}): +20 per monster for its player.\n• 🦈 Walk the Plank: removes a pirate from the trick. It scores no bonus.\n• {ray} Spotted Ray: a sea monster, like the Kraken and the White Whale. It doesn’t win the trick: the lowest card in the trick wins. It scores no bonus, and Davy Jones’ Locker can destroy it (+20).\n• 💥 Last Salvo: doesn’t win. Its player plays a 2nd card then skips the last trick.\n!> Like the other bonuses, the expansion ones only count if the bid is made.\n> With 2 players, Wild 15, Walk the Plank and the 0/14s are removed.</string>
+    <string name="help_expansion_body">• 7 captured: −5 each\n• 8 captured: +5 each\n• 0/14 and 🐵 Wild 15: no bonus.\n• {con} First Mate Con: beats all pirates, loses to mermaids and the Skull King. Captured by the Skull King or a mermaid: +30. Scores nothing for captured pirates.\n• 🏴‍☠️ Mary Thorne: counts as a pirate (+30 if captured by the Skull King, +20 per mermaid captured).\n• {davy} Davy Jones’ Locker: doesn’t win, destroys all sea monsters in the trick (🐙 🐳 {ray}): +20 per monster for its player.\n• 🦈 Walk the Plank: removes a pirate from the trick. It scores no bonus.\n• {ray} Spotted Ray: a sea monster, like the Kraken and the White Whale. It doesn’t win the trick: the lowest card in the trick wins. It scores no bonus, and Davy Jones’ Locker can destroy it (+20).\n• 💥 Last Salvo: doesn’t win. Its player plays a 2nd card then skips the last trick.\n!> The expansion bonuses follow the same rule as the others: all of them on a made bid, half on a glancing blow in Rascal scoring, none otherwise.\n> With 2 players, Wild 15, Walk the Plank and the 0/14s are removed.</string>
     <string name="help_faq_title">FAQ</string>
     <string name="help_faq_body">• Tricks don’t add up to the number of cards? A trick can be destroyed (Kraken, or White Whale / Spotted Ray with no numbered card) or made only of special cards: enter it as a “discarded trick”. The app doesn’t check who won each trick, it only flags inconsistencies and never blocks you.\n• A mistake in a past round? Tap its cell in the scoreboard, then “Correct the round”.\n• No network? No problem, the app works entirely offline.</string>
 
@@ -324,8 +327,8 @@
     <string name="share_round">Round</string>
     <string name="share_with_expansion">with expansion</string>
     <string name="share_without_expansion">without expansion</string>
-    <string name="share_best_round">Best round: %1$s (%2$d points, round %3$d)</string>
-    <string name="share_worst_round">Worst round: %1$s (%2$d points, round %3$d)</string>
+    <string name="share_best_round">Best round: %1$s (%2$s points, round %3$d)</string>
+    <string name="share_worst_round">Worst round: %1$s (%2$s points, round %3$d)</string>
     <string name="share_exact_bids">%1$s: %2$d exact bids out of %3$d</string>
 
     <!-- V2 : jalon 2, courbes -->
@@ -335,7 +338,7 @@
     <string name="curve_summary_line">%1$s: %2$d points after %3$d rounds</string>
     <string name="curve_axis_rounds">Cumulative score over %1$d rounds.</string>
     <string name="curve_round_detail">Round %1$d (%2$d cards)</string>
-    <string name="curve_round_line">%1$s (total %2$d)</string>
+    <string name="curve_round_line">%1$s (total %2$s)</string>
     <string name="curve_tap_hint">Tap the chart to see a round in detail. Use the chips to show or hide players.</string>
 
     <!-- V2 : jalon 2, statistiques -->
@@ -364,7 +367,7 @@
     <string name="stats_trend_games">Game score</string>
     <string name="stats_trend_average">Average</string>
     <string name="stats_trend_legend">Solid line: score of each game. Dashed line: average over the last %1$d games.</string>
-    <string name="stats_trend_description">%1$s: from %2$d to %3$d points over %4$d games</string>
+    <string name="stats_trend_description">%1$s: from %2$s to %3$s points over %4$d games</string>
     <string name="stats_size_title">Bid success by round size</string>
     <string name="size_small">1–3 cards</string>
     <string name="size_medium">4–6 cards</string>
@@ -395,12 +398,12 @@
     <string name="import_too_new">This backup comes from a newer version of the app. Update the app to import it.</string>
 
     <!-- V2: accessibility -->
-    <string name="a11y_score_cell">%1$s, round %2$d, %3$s points, total %4$d</string>
+    <string name="a11y_score_cell">%1$s, round %2$d, %3$s points, total %4$s</string>
     <string name="a11y_score_cell_pending">%1$s, round %2$d, not scored yet</string>
     <string name="a11y_expanded">Expanded</string>
     <string name="a11y_collapsed">Collapsed</string>
     <string name="stats_more_filters">More filters</string>
-    <string name="setup_dealer_hint">List players in table order, then tap 🃏 on whoever deals first.</string>
+    <string name="setup_dealer_hint">List the players in seating order (drag ≡ to move them), then draw or choose who deals first 🃏.</string>
     <string name="share_curve">Score curve</string>
     <string name="stats_bias_balanced">Balanced</string>
     <string name="stats_bias_help">Compares the tricks won with the bid, round after round: under-bidding means winning more than announced, over-bidding less.</string>
@@ -471,4 +474,26 @@
     <string name="hier_escape">Escape</string>
     <string name="hier_escape_sub">Always loses. If the trick holds only escapes, the Tigress as an escape or Loots, the first card played wins.</string>
     <string name="help_remark">Remark</string>
+    <string name="play_bids_summary">Total bid %1$d for %2$d tricks</string>
+    <string name="play_bids_over">%1$d over</string>
+    <string name="play_bids_under">%1$d under</string>
+    <string name="collapse">Collapse</string>
+    <string name="expand">Expand</string>
+    <string name="trick_destroyed_button">Destroyed trick</string>
+    <string name="trick_loot_by">💰 Loot played by %1$s</string>
+    <string name="results_initial_bid">Initial bid: %1$d (changed by Harry)</string>
+    <string name="results_bid_made">Bid made</string>
+    <string name="results_bid_missed_over">Bid missed: %1$d trick(s) over</string>
+    <string name="results_bid_missed_under">Bid missed: %1$d trick(s) under</string>
+    <string name="detail_bonus_halved">Bonuses kept (off by one: half)</string>
+    <string name="tab_ranking">Ranking</string>
+    <string name="ranking_gap">%1$s behind</string>
+    <string name="ranking_last_round">last round %1$s</string>
+    <string name="setup_drag_handle">Drag to reorder</string>
+    <string name="trick_events">Trick events</string>
+    <string name="settings_remember_setup">Remember the game setup</string>
+    <string name="settings_remember_setup_desc">A new game starts with the scoring mode and expansion of the previous one.</string>
+    <string name="setup_choose_dealer">Choose the dealer</string>
+    <string name="results_tap_trick">Tap a trick to correct it: winner, cards won, Loot, Davy Jones…</string>
+    <string name="trick_choose_winner">Choose the winner</string>
 </resources>

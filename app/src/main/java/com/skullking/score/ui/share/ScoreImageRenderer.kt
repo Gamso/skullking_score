@@ -7,6 +7,8 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import com.skullking.score.domain.model.Player
 import com.skullking.score.domain.model.ScoredGame
+import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 
 data class ShareOptions(
     val podium: Boolean = true,
@@ -142,7 +144,7 @@ object ScoreImageRenderer {
             drawAvatar(canvas, entry.player, MARGIN + 170f, cy, 34f)
             canvas.drawText(entry.player.name, MARGIN + 230f, cy + 15f, paint(44f, INK, bold = entry.rank == 1))
             canvas.drawText(
-                entry.total.toString(),
+                formatScore(entry.total),
                 WIDTH - MARGIN - 32f,
                 cy + 18f,
                 paint(54f, if (entry.total < 0) NEGATIVE else INK, bold = true, align = Paint.Align.RIGHT),
@@ -176,9 +178,9 @@ object ScoreImageRenderer {
         canvas.drawText(texts.totalLabel, MARGIN + 8f, y + 56f, paint(32f, INK, bold = true))
         val best = scored.totals.values.maxOrNull()
         players.forEachIndexed { index, player ->
-            val total = scored.totals[player.id] ?: 0
+            val total = scored.totals[player.id] ?: 0.0
             canvas.drawText(
-                total.toString(),
+                formatScore(total),
                 columnCenter(index),
                 y + 58f,
                 paint(
@@ -203,7 +205,7 @@ object ScoreImageRenderer {
             )
             players.forEachIndexed { index, player ->
                 val breakdown = round.breakdowns[player.id] ?: return@forEachIndexed
-                val points = (if (breakdown.total > 0) "+" else "") + breakdown.total
+                val points = formatPoints(breakdown.total)
                 canvas.drawText(
                     points,
                     columnCenter(index),

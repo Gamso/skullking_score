@@ -31,20 +31,20 @@ data class ScoreBreakdown(
     val base: Int,
     /** All bonus lines entered, even if they do not count. */
     val bonusLines: List<BonusLine>,
-    /** Bonus actually added to the score. */
-    val bonusApplied: Int,
+    /** Bonus actually added to the score: half of an odd bonus keeps its half point (2.5). */
+    val bonusApplied: Double,
     /** Gain (+) or loss (-) of the Rascal of Roatan wager. */
     val rascalPoints: Int,
-    val total: Int,
+    val total: Double,
 ) {
     val bonusEntered: Int get() = bonusLines.sumOf { it.points }
 
     /** True if bonuses were entered but do not count (missed bid). */
-    val bonusDiscarded: Boolean get() = bonusLines.any { it.count != 0 } && bonusApplied != bonusEntered
+    val bonusDiscarded: Boolean get() = bonusLines.any { it.count != 0 } && bonusApplied != bonusEntered.toDouble()
 }
 
 object RoundScorer {
-    private const val PERCENT = 100
+    private const val PERCENT = 100.0
 
     /**
      * Computes the scores of all players of a round. The result does not depend on the order
@@ -85,23 +85,25 @@ object RoundScorer {
         val bonusFull = lines.sumOf { it.points }
         val lootPoints = lines.filter { it.type == BonusType.LOOT }.sumOf { it.points }
 
-        fun rascalBase(): Pair<Int, Int> = when (diff) {
-            0 -> ruleSet.rascalExactPerCard * n to bonusFull
+        val full = bonusFull.toDouble()
+
+        fun rascalBase(): Pair<Int, Double> = when (diff) {
+            0 -> ruleSet.rascalExactPerCard * n to full
 
             // Gap of 1: 50% of the bonuses, Loots excluded (they require an exact bid).
             1 ->
                 ruleSet.rascalOffByOnePerCard * n to
                     (bonusFull - lootPoints) * ruleSet.rascalOffByOneBonusPercent / PERCENT
 
-            else -> 0 to 0
+            else -> 0 to 0.0
         }
 
         val (base, applied) = when (mode) {
             ScoringMode.CLASSIC -> when {
-                bid == 0 && diff == 0 -> ruleSet.zeroBidPerCard * n to bonusFull
-                bid == 0 -> -ruleSet.zeroBidPerCard * n to 0
-                diff == 0 -> ruleSet.exactPerTrick * bid to bonusFull
-                else -> -ruleSet.missPerTrick * diff to 0
+                bid == 0 && diff == 0 -> ruleSet.zeroBidPerCard * n to full
+                bid == 0 -> -ruleSet.zeroBidPerCard * n to 0.0
+                diff == 0 -> ruleSet.exactPerTrick * bid to full
+                else -> -ruleSet.missPerTrick * diff to 0.0
             }
 
             ScoringMode.RASCAL -> rascalBase()
@@ -110,9 +112,9 @@ object RoundScorer {
                 if (!input.cannonball) {
                     rascalBase()
                 } else if (diff == 0) {
-                    ruleSet.cannonballPerCard * n to bonusFull
+                    ruleSet.cannonballPerCard * n to full
                 } else {
-                    0 to 0
+                    0 to 0.0
                 }
         }
 

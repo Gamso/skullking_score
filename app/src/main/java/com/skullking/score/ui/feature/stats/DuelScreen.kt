@@ -40,6 +40,7 @@ import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SectionTitle
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.labelRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.DateFormat
@@ -188,7 +189,7 @@ private fun DuelResult(duel: DuelStats) {
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(stringResource(R.string.duel_biggest_gap))
-                Text(duel.biggestGap.toString(), fontWeight = FontWeight.Medium)
+                Text(formatScore(duel.biggestGap), fontWeight = FontWeight.Medium)
             }
             SectionTitle(stringResource(R.string.stats_records_title))
             RecordLine(R.string.stats_record_best_round, duel.first.name, duel.firstBestRound)

@@ -79,7 +79,7 @@ class SupportTest {
 
     @Test
     fun aTrendKeepsTheScoresAndTheirAverage() {
-        val trend = StatsTrend(listOf(10, 20, 30), listOf(10.0, 15.0, 20.0))
+        val trend = StatsTrend(listOf(10.0, 20.0, 30.0), listOf(10.0, 15.0, 20.0))
         assertEquals(3, trend.totals.size)
         assertEquals(trend.totals.size, trend.rolling.size)
     }

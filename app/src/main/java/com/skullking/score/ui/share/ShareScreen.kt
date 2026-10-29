@@ -44,6 +44,7 @@ import com.skullking.score.domain.repository.GameRepository
 import com.skullking.score.domain.scoring.GameScoreCalculator
 import com.skullking.score.ui.components.ActionBar
 import com.skullking.score.ui.components.SkullScaffold
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.labelRes
 import com.skullking.score.ui.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -155,8 +156,8 @@ class ShareViewModel @Inject constructor(
         val best = all.maxBy { it.second.total }
         val worst = all.minBy { it.second.total }
         val lines = mutableListOf(
-            context.getString(R.string.share_best_round, best.first, best.second.total, best.third),
-            context.getString(R.string.share_worst_round, worst.first, worst.second.total, worst.third),
+            context.getString(R.string.share_best_round, best.first, formatScore(best.second.total), best.third),
+            context.getString(R.string.share_worst_round, worst.first, formatScore(worst.second.total), worst.third),
         )
         scored.game.players.forEach { player ->
             val exact = rounds.count { it.breakdowns[player.id]?.success == true }

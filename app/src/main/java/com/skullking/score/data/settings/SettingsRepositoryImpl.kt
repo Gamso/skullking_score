@@ -1,7 +1,10 @@
 package com.skullking.score.data.settings
 
 import android.content.Context
+import com.skullking.score.core.ExpansionCard
+import com.skullking.score.core.ScoringMode
 import com.skullking.score.domain.repository.AppSettings
+import com.skullking.score.domain.repository.SavedSetup
 import com.skullking.score.domain.repository.SettingsRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -22,6 +25,10 @@ class SettingsRepositoryImpl @Inject constructor(@ApplicationContext context: Co
         val next = transform(state.value)
         prefs.edit()
             .putBoolean(KEEP_SCREEN_ON, next.keepScreenOn)
+            .putBoolean(REMEMBER_SETUP, next.rememberSetup)
+            .putString(LAST_MODE, next.lastSetup?.mode?.name)
+            .putBoolean(LAST_EXPANSION, next.lastSetup?.expansionEnabled == true)
+            .putString(LAST_CARDS, next.lastSetup?.cards?.joinToString(SEPARATOR) { it.name })
             .putBoolean(AUTO_BACKUP, next.autoBackup)
             .putString(BACKUP_FOLDER, next.backupFolder)
             .putLong(LAST_BACKUP_AT, next.lastBackupAt ?: NONE)
@@ -32,15 +39,35 @@ class SettingsRepositoryImpl @Inject constructor(@ApplicationContext context: Co
 
     private fun read() = AppSettings(
         keepScreenOn = prefs.getBoolean(KEEP_SCREEN_ON, true),
+        rememberSetup = prefs.getBoolean(REMEMBER_SETUP, true),
+        lastSetup = readSetup(),
         autoBackup = prefs.getBoolean(AUTO_BACKUP, false),
         backupFolder = prefs.getString(BACKUP_FOLDER, null),
         lastBackupAt = prefs.getLong(LAST_BACKUP_AT, NONE).takeIf { it != NONE },
         lastBackupFailed = prefs.getBoolean(LAST_BACKUP_FAILED, false),
     )
 
+    /** Unknown names (renamed enum values) are skipped: the setup is only a suggestion. */
+    private fun readSetup(): SavedSetup? {
+        val mode = prefs.getString(LAST_MODE, null)?.let { name -> ScoringMode.entries.firstOrNull { it.name == name } }
+            ?: return null
+        return SavedSetup(
+            mode = mode,
+            expansionEnabled = prefs.getBoolean(LAST_EXPANSION, false),
+            cards = prefs.getString(LAST_CARDS, null).orEmpty().split(SEPARATOR)
+                .mapNotNull { name -> ExpansionCard.entries.firstOrNull { it.name == name } }
+                .toSet(),
+        )
+    }
+
     private companion object {
         const val FILE = "settings"
         const val KEEP_SCREEN_ON = "keep_screen_on"
+        const val REMEMBER_SETUP = "remember_setup"
+        const val LAST_MODE = "last_setup_mode"
+        const val LAST_EXPANSION = "last_setup_expansion"
+        const val LAST_CARDS = "last_setup_cards"
+        const val SEPARATOR = ","
         const val AUTO_BACKUP = "auto_backup"
         const val BACKUP_FOLDER = "backup_folder"
         const val LAST_BACKUP_AT = "last_backup_at"

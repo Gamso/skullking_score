@@ -2,6 +2,8 @@ package com.skullking.score.ui.feature.results
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,13 +13,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryScrollableTabRow
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Switch
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -51,20 +52,26 @@ import com.skullking.score.domain.model.PlayerRound
 import com.skullking.score.domain.model.RoundPhase
 import com.skullking.score.domain.model.ScoredGame
 import com.skullking.score.domain.model.ScoredRound
+import com.skullking.score.domain.model.TrickDraft
 import com.skullking.score.domain.repository.GameRepository
 import com.skullking.score.domain.scoring.GameScoreCalculator
 import com.skullking.score.domain.usecase.EditRoundUseCase
 import com.skullking.score.ui.components.ActionBar
 import com.skullking.score.ui.components.BonusCounterList
+import com.skullking.score.ui.components.CompactChip
 import com.skullking.score.ui.components.KeepScreenOn
 import com.skullking.score.ui.components.LiveEventsPanel
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SectionTitle
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.Stepper
+import com.skullking.score.ui.components.TrickDialog
+import com.skullking.score.ui.components.TrickEvents
 import com.skullking.score.ui.components.WarningCard
 import com.skullking.score.ui.components.formatPoints
 import com.skullking.score.ui.components.message
+import com.skullking.score.ui.components.trickEventLines
+import com.skullking.score.ui.components.trickLabel
 import com.skullking.score.ui.labelRes
 import com.skullking.score.ui.navigation.Routes
 import com.skullking.score.ui.theme.ScoreNegative
@@ -141,6 +148,17 @@ class ResultsViewModel @Inject constructor(
         viewModelScope.launch { edit.cancelDavyJones(gameId, id) }
     }
 
+    /** Corrects trick [number] (and records the events added in the dialog) like during play. */
+    fun recordTrick(number: Int, draft: TrickDraft, events: TrickEvents) {
+        viewModelScope.launch {
+            events.lootPlayerIds.forEach { edit.addLoot(gameId, roundId, it, null, number) }
+            events.chests.forEach { (playerId, creatures) ->
+                edit.addDavyJones(gameId, roundId, playerId, creatures, number)
+            }
+            edit.recordTrick(gameId, roundId, number, draft)
+        }
+    }
+
     fun validate(onDone: () -> Unit) {
         viewModelScope.launch {
             edit.setPhase(gameId, roundId, RoundPhase.SCORED)
@@ -194,30 +212,36 @@ fun ResultsScreen(
         val tab = selectedTab.coerceIn(0, game.players.size)
 
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            PrimaryScrollableTabRow(selectedTabIndex = tab, edgePadding = 8.dp) {
-                Tab(
+            // "Round", then one chip per player, wrapping: every page is reachable without scrolling sideways.
+            FlowRow(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+                itemVerticalAlignment = Alignment.CenterVertically,
+            ) {
+                // The warning is already visible on the round page: the badge reminds it from the player pages.
+                val warning = if (current.warnings.isEmpty() || tab == 0) "" else " ⚠️"
+                CompactChip(
+                    text = stringResource(R.string.results_tab_round) + warning,
                     selected = tab == 0,
                     onClick = { selectedTab = 0 },
-                    text = {
-                        // The warning is already visible here: the badge reminds it from the player tabs.
-                        val warning = if (current.warnings.isEmpty() || tab == 0) "" else " ⚠️"
-                        Text(stringResource(R.string.results_tab_round) + warning)
-                    },
                 )
                 game.players.forEachIndexed { index, player ->
-                    Tab(
+                    CompactChip(
+                        text = player.name,
                         selected = tab == index + 1,
                         onClick = { selectedTab = index + 1 },
-                        text = { Text(player.name, maxLines = 1) },
+                        leading = { PlayerAvatar(player, size = 20.dp) },
                     )
                 }
             }
+            HorizontalDivider()
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 if (tab == 0) {
                     RoundPage(current, viewModel)
@@ -263,17 +287,16 @@ fun ResultsScreen(
     }
 }
 
-/** Round page: discarded tricks, consistency warnings and live events. */
+/**
+ * Round page: the tricks entered during play (a tap corrects one with the same dialog), or the discarded tricks
+ * for a round without them; then the consistency warnings and the events.
+ */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
     val details = state.round.details
-    if (details.tricks.isNotEmpty()) {
-        Text(
-            stringResource(R.string.results_tricks_prefilled),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
+    val game = state.scored.game
+    var editing by remember { mutableStateOf<Int?>(null) }
     if (state.isEdit) {
         Text(
             stringResource(R.string.results_editing_hint),
@@ -282,6 +305,68 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
         )
     }
 
+    if (details.tricks.isNotEmpty()) {
+        SectionTitle(stringResource(R.string.play_tricks_title))
+        Text(
+            stringResource(R.string.results_tap_trick),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        val names = game.players.associate { it.id to it.name }
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            details.tricks.forEach { trick ->
+                SuggestionChip(onClick = { editing = trick.number }, label = { Text(trickLabel(trick, names)) })
+            }
+        }
+    } else {
+        DiscardedTricks(details.round.discardedTricks, details.round.cardsDealt, viewModel::setDiscarded)
+    }
+
+    state.warnings.forEach { WarningCard(it.message()) }
+
+    // With tricks, events are added in their trick: the log is only shown when there is something in it.
+    val hasEvents = details.loots.isNotEmpty() || details.captures.isNotEmpty()
+    if (details.tricks.isEmpty() || hasEvents) {
+        SectionTitle(stringResource(R.string.play_live_events))
+        LiveEventsPanel(
+            game = game,
+            round = details,
+            onAddLoot = viewModel::addLoot,
+            onAddDavyJones = viewModel::addDavyJones,
+            onCancelLoot = viewModel::cancelLoot,
+            onCancelDavyJones = viewModel::cancelDavyJones,
+            // With tricks, the events are added in the trick they were played in.
+            showButtons = details.tricks.isEmpty(),
+        )
+    }
+
+    editing?.let { number ->
+        val existing = details.tricks.firstOrNull { it.number == number } ?: return@let
+        TrickDialog(
+            trickNumber = number,
+            players = game.players,
+            expansion = game.expansionCards,
+            initial = TrickDraft(
+                existing.winnerId,
+                existing.bonus,
+                existing.rascalWager,
+                existing.bidAdjustment,
+                existing.winningCard,
+                existing.winningPirate,
+            ),
+            recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
+            onConfirm = { draft, events ->
+                viewModel.recordTrick(number, draft, events)
+                editing = null
+            },
+            onDismiss = { editing = null },
+        )
+    }
+}
+
+/** Tricks nobody won, entered by hand for a round recorded without its tricks. */
+@Composable
+private fun DiscardedTricks(count: Int, cards: Int, onChange: (Int) -> Unit) {
     SectionTitle(stringResource(R.string.results_discarded_title))
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -296,24 +381,8 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Stepper(
-            value = details.round.discardedTricks,
-            onValueChange = viewModel::setDiscarded,
-            range = 0..details.round.cardsDealt,
-        )
+        Stepper(value = count, onValueChange = onChange, range = 0..cards)
     }
-
-    state.warnings.forEach { WarningCard(it.message()) }
-
-    SectionTitle(stringResource(R.string.play_live_events))
-    LiveEventsPanel(
-        game = state.scored.game,
-        round = details,
-        onAddLoot = viewModel::addLoot,
-        onAddDavyJones = viewModel::addDavyJones,
-        onCancelLoot = viewModel::cancelLoot,
-        onCancelDavyJones = viewModel::cancelDavyJones,
-    )
 }
 
 /** Player page: tricks, final bid, cards won, Rascal wager (and Cannonball if enabled). */
@@ -328,14 +397,21 @@ private fun PlayerPage(
     viewModel: ResultsViewModel,
 ) {
     val failed = !breakdown.success
+    val gap = entry.tricks - entry.effectiveBid
+    // Header: the bid status replaces the "bid · tricks" reminder, already visible in the counters below.
     Row(verticalAlignment = Alignment.CenterVertically) {
-        PlayerAvatar(player)
-        Column(modifier = Modifier.padding(start = 12.dp).weight(1f)) {
+        PlayerAvatar(player, size = 32.dp)
+        Column(modifier = Modifier.padding(start = 10.dp).weight(1f)) {
             Text(player.name, style = MaterialTheme.typography.titleMedium)
             Text(
-                stringResource(R.string.results_summary, entry.effectiveBid, entry.tricks),
+                text = when {
+                    gap == 0 -> "✓ " + stringResource(R.string.results_bid_made)
+                    gap > 0 -> "✗ " + stringResource(R.string.results_bid_missed_over, gap)
+                    else -> "✗ " + stringResource(R.string.results_bid_missed_under, -gap)
+                },
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.Bold,
+                color = if (gap == 0) MaterialTheme.colorScheme.primary else ScoreNegative,
             )
         }
         // Red if the bid is missed
@@ -350,11 +426,27 @@ private fun PlayerPage(
     if (cannonballAvailable) {
         CannonballRow(checked = entry.cannonball, onChange = { viewModel.setCannonball(player.id, it) })
     }
-    LabeledStepper(stringResource(R.string.results_tricks), entry.tricks, 0..cards) {
-        viewModel.setTricks(player.id, it)
+    // Bid then tricks, side by side: the same order as at the table. The bid stays editable (Harry the Giant).
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        LabeledStepper(
+            label = stringResource(R.string.results_final_bid),
+            value = entry.effectiveBid,
+            range = 0..cards,
+            modifier = Modifier.weight(1f),
+        ) { viewModel.setFinalBid(player.id, it) }
+        LabeledStepper(
+            label = stringResource(R.string.results_tricks),
+            value = entry.tricks,
+            range = 0..cards,
+            modifier = Modifier.weight(1f),
+        ) { viewModel.setTricks(player.id, it) }
     }
-    LabeledStepper(stringResource(R.string.results_final_bid), entry.effectiveBid, 0..cards) {
-        viewModel.setFinalBid(player.id, it)
+    if (entry.effectiveBid != entry.bid) {
+        Text(
+            stringResource(R.string.results_initial_bid, entry.bid),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 
     SectionTitle(stringResource(R.string.results_bonus_title))
@@ -368,12 +460,13 @@ private fun PlayerPage(
     // Bonus entered on a missed bid: kept but greyed out, counted as 0.
     Column(
         modifier = Modifier.alpha(if (failed) 0.5f else 1f),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         BonusCounterList(
             bonus = entry.bonus,
             expansion = expansion,
             onChange = { updated -> viewModel.setBonus(player.id) { updated } },
+            compact = true,
         )
         breakdown.bonusLines
             .filter { it.type == BonusType.LOOT || it.type == BonusType.DAVY_JONES }
@@ -385,27 +478,34 @@ private fun PlayerPage(
             }
     }
 
-    Text(stringResource(R.string.results_rascal_wager), style = MaterialTheme.typography.bodyLarge)
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            stringResource(R.string.results_rascal_wager),
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodyMedium,
+        )
         listOf(0, 10, 20).forEach { wager ->
-            FilterChip(
+            CompactChip(
+                text = wager.toString(),
                 selected = entry.rascalWager == wager,
                 onClick = { viewModel.setWager(player.id, wager) },
-                label = { Text(wager.toString()) },
             )
         }
     }
 }
 
+/** Small label above a compact counter: two of them fit on one line. */
 @Composable
-private fun LabeledStepper(label: String, value: Int, range: IntRange, onChange: (Int) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(label, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-        Stepper(value = value, onValueChange = onChange, range = range)
+private fun LabeledStepper(
+    label: String,
+    value: Int,
+    range: IntRange,
+    modifier: Modifier = Modifier,
+    onChange: (Int) -> Unit,
+) {
+    Column(modifier = modifier) {
+        Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+        Stepper(value = value, onValueChange = onChange, range = range, compact = true)
     }
 }
 

@@ -9,6 +9,7 @@ import com.skullking.score.domain.stats.RoundRecord
 import com.skullking.score.domain.stats.RoundSize
 import com.skullking.score.domain.stats.StatsFilter
 import com.skullking.score.ui.components.formatPoints
+import com.skullking.score.ui.components.formatScore
 import com.skullking.score.ui.feature.stats.labelRes
 import com.skullking.score.ui.feature.stats.percent
 import com.skullking.score.ui.labelRes
@@ -47,8 +48,8 @@ object StatsImageTextsFactory {
             playerLine = text(R.string.stats_games_wins, stats.gamesPlayed, stats.wins, stats.winRate.percent()),
             summary = listOf(
                 text(R.string.stats_average) to "%.1f".format(locale, stats.averageScore),
-                text(R.string.stats_best) to stats.bestScore.toString(),
-                text(R.string.stats_worst) to stats.worstScore.toString(),
+                text(R.string.stats_best) to formatScore(stats.bestScore),
+                text(R.string.stats_worst) to formatScore(stats.worstScore),
                 text(R.string.stats_bid_success) to stats.bidSuccessRate.percent(),
                 text(R.string.stats_zero_success) to (stats.zeroBidSuccessRate?.percent() ?: "–"),
             ),

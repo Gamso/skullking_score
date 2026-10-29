@@ -22,7 +22,7 @@ data class StatsImageTexts(
 )
 
 /** Data of the trend chart: score of each game and rolling average. `null` if there are too few games. */
-data class StatsTrend(val totals: List<Int>, val rolling: List<Double>)
+data class StatsTrend(val totals: List<Double>, val rolling: List<Double>)
 
 /** Statistics image of a player: same look and same fixed width as the game image. */
 object StatsImageRenderer {
