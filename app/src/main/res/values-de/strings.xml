@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skull King Score</string>
+
+    <!-- General -->
+    <string name="back">Zurück</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="close">Schließen</string>
+    <string name="save">Speichern</string>
+    <string name="delete">Löschen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="remove">Entfernen</string>
+    <string name="more">Weitere Optionen</string>
+    <string name="help">Hilfe</string>
+    <string name="scoreboard">Spielstand</string>
+    <string name="unknown_player">?</string>
+    <string name="move_up">Nach oben</string>
+    <string name="move_down">Nach unten</string>
+
+    <!-- Home -->
+    <string name="home_tagline">Der Punkteblock für deine Skull-King-Partien</string>
+    <string name="home_new_game">Neue Partie</string>
+    <string name="home_resume">Partie fortsetzen</string>
+    <string name="home_resume_detail">%1$d Spieler · %2$d Runden gespielt</string>
+    <string name="home_history">Verlauf</string>
+    <string name="home_stats">Statistiken</string>
+    <string name="home_players">Spieler</string>
+
+    <!-- Profiles -->
+    <string name="player_new">Neues Profil</string>
+    <string name="player_edit">Profil bearbeiten</string>
+    <string name="player_name">Name</string>
+    <string name="player_archive">Archivieren</string>
+    <string name="player_restore">Wiederherstellen</string>
+    <string name="player_archived">Archiviert</string>
+    <string name="players_empty">Noch keine Profile. Lege eines an, um zu starten.</string>
+
+    <!-- Scoring modes -->
+    <string name="mode_classic">Klassisch</string>
+    <string name="mode_classic_desc">20 Punkte pro angesagtem Stich, −10 pro Stich Abweichung, plus Bonuspunkte</string>
+    <string name="mode_rascal">Rascal („Volltreffer“)</string>
+    <string name="mode_rascal_desc">Gleiches Potenzial für alle: 10 × Karten. Eine Abweichung: halbe Punkte und halbe Boni</string>
+    <string name="mode_cannonball">Rascal + Kanonenkugel</string>
+    <string name="mode_cannonball_desc">Jeder Spieler wählt Kartätsche (Rascal) oder Kanonenkugel (alles oder nichts)</string>
+
+    <!-- Expansion cards -->
+    <string name="card_sevens">7 (×4, eine pro Farbe)</string>
+    <string name="card_eights">8 (×4)</string>
+    <string name="card_zero_fourteen">0/14 (×4)</string>
+    <string name="card_wild_15">Wilde 15 (Affe)</string>
+    <string name="card_mary_thorne">Mary Thorne</string>
+    <string name="card_first_mate_con">Erster Maat Con</string>
+    <string name="card_davy_jones">Davy Jones’ Truhe</string>
+    <string name="card_plank">Über die Planke</string>
+    <string name="card_spotted_ray">Gefleckter Rochen</string>
+    <string name="card_last_salvo">Letzte Salve</string>
+
+    <string name="monster_kraken">Kraken</string>
+    <string name="monster_white_whale">Weißer Wal</string>
+    <string name="monster_spotted_ray">Gefleckter Rochen</string>
+
+    <!-- Bonuses -->
+    <string name="bonus_colored_14">14 einer Farbe</string>
+    <string name="bonus_black_14">Schwarze 14</string>
+    <string name="bonus_mermaid_by_pirate">Meerjungfrau (von einem Piraten)</string>
+    <string name="bonus_pirate_by_skull_king">Pirat (vom Skull King)</string>
+    <string name="bonus_skull_king_by_mermaid">Skull King (von einer Meerjungfrau)</string>
+    <string name="bonus_con_captured">Erster Maat (vom SK oder einer Meerjungfrau)</string>
+    <string name="bonus_loot">Beute</string>
+    <string name="bonus_davy_jones">Zerstörtes Seemonster (Davy Jones)</string>
+    <string name="bonus_eight">8</string>
+    <string name="bonus_seven">7</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Neue Partie</string>
+    <string name="setup_players_order">Spieler in Sitzreihenfolge (%1$d)</string>
+    <string name="setup_search_players">Profil suchen</string>
+    <string name="setup_available_players">Verfügbare Profile</string>
+    <string name="setup_mode">Wertungsmodus</string>
+    <string name="setup_expansion">Erweiterung 2026</string>
+    <string name="setup_expansion_switch">Mit der Erweiterung spielen</string>
+    <string name="setup_expansion_desc">Aktiviere die gewünschten Karten einzeln</string>
+    <string name="setup_card_removed_two_players">Entfällt bei 2 Spielern</string>
+    <string name="setup_start">Partie starten</string>
+    <string name="setup_hint_min_players">Wähle mindestens 2 Spieler</string>
+    <string name="setup_hint_nine_players">Ab 9 Spielern ist die Erweiterung erforderlich</string>
+    <string name="setup_hint_max_players">Höchstens 9 Spieler</string>
+
+    <!-- Round -->
+    <string name="round_title_plain">Runde %1$d</string>
+    <string name="round_title_extra">Runde %1$d (extra)</string>
+    <string name="round_title_cards">Runde %1$d · Karten: %2$d</string>
+    <string name="prepare_cards_question">Ausgeteilte Karten</string>
+    <string name="prepare_cards_hint">Vorschlag: vorherige Runde + 1. Mit einem Tipp änderbar.</string>
+    <string name="prepare_start_bids">Ansagen beginnen</string>
+
+    <string name="bids_validate">Ansagen bestätigen</string>
+    <string name="bids_total">Summe der Ansagen: %1$d (ausgeteilte Karten: %2$d)</string>
+
+    <string name="play_bids_reminder">Ansagen</string>
+    <string name="play_bid_chip">Ansage %1$d</string>
+    <string name="play_live_events">Live-Ereignisse</string>
+    <!-- Live tricks -->
+    <string name="play_tricks_title">Stiche</string>
+    <string name="play_trick_progress">Stich %1$d von %2$d</string>
+    <string name="play_all_tricks_done">Alle Stiche erfasst</string>
+    <string name="play_enter_trick">Stich %1$d erfassen</string>
+    <string name="play_undo_last_trick">Letzten Stich rückgängig machen</string>
+    <string name="play_bid_tricks_chip">Ansage %1$d · Stiche %2$d</string>
+    <string name="trick_dialog_new">Stich %1$d</string>
+    <string name="trick_dialog_edit">Stich %1$d korrigieren</string>
+    <string name="trick_who_won">Wer hat den Stich gewonnen?</string>
+    <string name="trick_destroyed">Zerstörter Stich (Kraken, oder Weißer Wal / Gefleckter Rochen ohne Zahlenkarte)</string>
+    <string name="trick_destroyed_short">zerstört</string>
+    <string name="trick_captured">Gewonnene Karten</string>
+    <string name="trick_rascal_wager">Rascals Einsatz</string>
+    <string name="trick_harry_title">Harry</string>
+    <string name="trick_harry_none">Keine</string>
+    <string name="trick_won_with">Gewonnen mit</string>
+    <string name="win_mermaid">Meerjungfrau</string>
+    <string name="win_skull_king">Skull King</string>
+    <string name="win_first_mate">Erster Maat</string>
+    <string name="win_other">Andere</string>
+    <string name="win_pirate">Pirat</string>
+    <string name="pirate_rosie">Rosie</string>
+    <string name="pirate_rascal">Rascal</string>
+    <string name="pirate_will">Bendt</string>
+    <string name="pirate_juanita">Juanita</string>
+    <string name="pirate_harry">Harry</string>
+    <string name="pirate_tigress">Tigerin</string>
+    <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie D’Laney</string>
+    <string name="pirate_rascal_full">Rascal von Roatan</string>
+    <string name="pirate_will_full">Bendt der Bandit</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry der Riese</string>
+    <string name="pirate_tigress_full">Tigerin</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
+    <string name="stats_wins_with_title">Stiche gewonnen mit</string>
+    <string name="trick_validate">Stich bestätigen</string>
+    <string name="event_trick_prefix">"Stich %1$d · "</string>
+    <string name="event_loot_pending">Beute gespielt von %1$s (Stichgewinner noch zu erfassen)</string>
+    <string name="play_validate_round">Runde bestätigen</string>
+    <string name="play_warnings_title">Vor dem Bestätigen prüfen</string>
+    <string name="play_validate_anyway">Trotzdem bestätigen</string>
+    <string name="play_fix">Korrigieren</string>
+
+    <string name="event_loot_button">Beute</string>
+    <string name="event_davy_jones_button">Davy Jones</string>
+    <string name="event_log">Rundenprotokoll</string>
+    <string name="event_log_empty">Noch keine Ereignisse</string>
+    <string name="event_loot_line">Beute gespielt von %1$s, Stich gewonnen von %2$s</string>
+    <string name="event_davy_jones_line">Truhe von %1$s: %2$s</string>
+    <string name="event_cancelled">abgebrochen</string>
+    <string name="cancel_event">Abbrechen</string>
+    <string name="loot_who_played">Wer hat die Beute gespielt?</string>
+    <string name="loot_who_won">Wer hat den Stich gewonnen?</string>
+    <string name="chest_who_played">Wer hat Davy Jones’ Truhe gespielt?</string>
+    <string name="chest_which_creatures">Welche Kreaturen werden zerstört?</string>
+
+    <string name="results_tab_round">Runde</string>
+    <string name="results_title">Ergebnisse · Runde %1$d</string>
+    <string name="results_validate">Runde bestätigen</string>
+    <string name="results_save_correction">Korrektur speichern</string>
+    <string name="results_editing_hint">Du korrigierst eine bereits bestätigte Runde: Die Punkte werden nach jeder Änderung neu berechnet.</string>
+    <string name="results_tricks">Gewonnene Stiche</string>
+    <string name="results_final_bid">Ansage</string>
+    <string name="results_bonus_title">Gewonnene Karten</string>
+    <string name="results_bonus_ignored">Ansage verfehlt: Die erfassten Boni zählen nicht.</string>
+    <string name="results_cannonball">Kanonenkugel</string>
+    <string name="results_cannonball_hint">Alles oder nichts: 15 × Karten bei exakter Ansage, sonst 0</string>
+    <string name="results_rascal_wager">Einsatz von Rascal von Roatan</string>
+    <string name="results_discarded_title">Verworfene Stiche</string>
+    <string name="results_discarded_label">Zerstörte Stiche oder Stiche ohne Gewinner</string>
+    <string name="results_discarded_hint">Kraken, oder ein Stich nur aus Sonderkarten</string>
+
+    <!-- Consistency warnings (never blocking) -->
+    <string name="warn_tricks_over">Summe der Stiche: %1$d (ausgeteilte Karten: %2$d). Prüfe die Eingaben.</string>
+    <string name="warn_tricks_under">Summe der Stiche: %1$d (ausgeteilte Karten: %2$d). Wurden Stiche zerstört (Kraken, nur Sonderkarten), erfasse sie als verworfene Stiche.</string>
+    <string name="warn_cards_exceed_deck">%1$d Karten auszuteilen bei einem Deck von %2$d.</string>
+    <string name="warn_too_many_colored_14">%1$d Farb-14er erobert, es gibt nur %2$d.</string>
+    <string name="warn_too_many_black_14">%1$d schwarze 14er erobert, es gibt nur %2$d.</string>
+    <string name="warn_too_many_skull_king">Es gibt nur %2$d Skull King (%1$d erfasst).</string>
+    <string name="warn_too_many_con">Es gibt nur %2$d Ersten Maat Con (%1$d erfasst).</string>
+    <string name="warn_too_many_sevens">%1$d 7er erobert, es gibt nur %2$d.</string>
+    <string name="warn_too_many_eights">%1$d 8er erobert, es gibt nur %2$d.</string>
+    <string name="warn_too_many_mermaids">%1$d Meerjungfrauen erobert, es gibt nur %2$d.</string>
+    <string name="warn_too_many_pirates">%1$d Piraten erobert, nur %2$d sind im Spiel.</string>
+    <string name="warn_too_many_loot">%1$d Beutekarten erfasst, das Deck hat nur %2$d.</string>
+    <string name="warn_duplicate_monster">Kreatur doppelt erfasst: %1$s.</string>
+
+    <!-- Scoreboard -->
+    <string name="table_total">Summe</string>
+    <string name="table_cards_short">%1$d K.</string>
+    <string name="scoreboard_next_round">Nächste Runde</string>
+    <string name="scoreboard_extra_round">Zusatzrunde</string>
+    <string name="scoreboard_resume_round">Runde %1$d fortsetzen</string>
+    <string name="scoreboard_finish">Partie beenden</string>
+    <string name="scoreboard_finish_title">Partie beenden?</string>
+    <string name="scoreboard_finish_message">Das Siegerpodest wird angezeigt und die Statistiken werden aktualisiert. Runden können danach nicht mehr bearbeitet werden.</string>
+    <string name="scoreboard_reopen_last">Letzte Runde wieder öffnen</string>
+    <string name="scoreboard_see_podium">Siegerpodest ansehen</string>
+    <string name="detail_title">%1$s · Runde %2$d</string>
+    <string name="detail_bid_tricks">Ansage %1$d (final %2$d) · Stiche %3$d</string>
+    <string name="detail_base_success">Ansage erfüllt</string>
+    <string name="detail_base_failure">Ansage verfehlt</string>
+    <string name="detail_bonus_lost">Boni verloren: Die Ansage wurde nicht erfüllt.</string>
+    <string name="detail_cannonball">Kanonenkugel: alles oder nichts</string>
+    <string name="detail_rascal">Rascals Einsatz</string>
+    <string name="detail_total">Rundensumme</string>
+    <string name="detail_correct">Runde korrigieren</string>
+
+    <!-- End of game -->
+    <string name="end_title">Spielende</string>
+    <string name="end_winner">%1$s gewinnt!</string>
+    <string name="end_see_scoreboard">Spielstand ansehen</string>
+
+    <!-- History, export, import -->
+    <string name="history_search">Spieler, Datum oder Modus</string>
+    <string name="history_filter_all">Alle</string>
+    <string name="history_no_match">Keine Partie passt zu deiner Suche.</string>
+    <string name="history_open">Öffnen</string>
+    <string name="history_empty">Noch keine Partien gespeichert.</string>
+    <string name="history_status_finished">%1$s · beendet</string>
+    <string name="history_status_in_progress">%1$s · läuft</string>
+    <string name="history_delete_title">Partie löschen?</string>
+    <string name="history_delete_message">Die Partie und ihre Statistiken werden endgültig von diesem Gerät gelöscht.</string>
+    <string name="export_action">Exportieren</string>
+    <string name="export_title">Verlauf exportieren</string>
+    <string name="export_format">Format</string>
+    <string name="export_csv_desc">Eine Zeile pro Spieler und Runde, in einer Tabellenkalkulation lesbar</string>
+    <string name="export_json_desc">Vollständige Sicherung, auf einem anderen Handy wieder importierbar</string>
+    <string name="export_period">Zeitraum</string>
+    <string name="export_player">Spieler</string>
+    <string name="export_all_players">Alle Spieler</string>
+    <string name="export_nothing">Keine Partie passt zu diesem Filter.</string>
+    <string name="import_action">Importieren</string>
+    <string name="import_title">Sicherung importieren</string>
+    <string name="import_preview">%1$d neue Partie(n), %2$d bereits vorhanden, %3$d neue(r) Spieler. Bereits vorhandene Partien werden nicht doppelt angelegt.</string>
+    <string name="import_confirm">Importieren</string>
+    <string name="import_done">%1$d Partie(n) importiert, %2$d übersprungen, weil bereits vorhanden.</string>
+    <string name="import_invalid">Diese Datei ist keine lesbare Skull-King-Sicherung.</string>
+
+    <!-- Statistics -->
+    <string name="period_month">Diesen Monat</string>
+    <string name="period_year">Dieses Jahr</string>
+    <string name="period_all">Gesamt</string>
+    <string name="stats_mode_note">Eine Rascal-Wertung lässt sich nicht mit einer klassischen vergleichen: Wähle einen Modus.</string>
+    <string name="stats_empty">Für diesen Filter gibt es noch keine beendete Partie.</string>
+    <string name="stats_games_wins">Partien: %1$d · Siege: %2$d (%3$s)</string>
+    <string name="stats_average">Durchschnittliche Punktzahl</string>
+    <string name="stats_best">Beste Punktzahl</string>
+    <string name="stats_worst">Schlechteste Punktzahl</string>
+    <string name="stats_bid_success">Erfüllte Ansagen</string>
+    <string name="stats_zero_success">Erfüllte Nullansagen</string>
+    <string name="stats_bonus_title">Erzielte Boni</string>
+    <string name="stats_monthly_title">Monat für Monat</string>
+    <string name="stats_monthly_line">%1$d Partien · Ø %2$d · %3$s Ansagen erfüllt</string>
+    <string name="stats_head_to_head_title">Direktvergleich</string>
+    <string name="stats_head_to_head_line">%1$d S · %2$d N in %3$d Partien</string>
+
+    <!-- Settings -->
+
+    <!-- Help -->
+    <string name="help_tab_cards">Karten</string>
+    <string name="help_tab_scoring">Punkte</string>
+    <string name="help_tab_expansion">Erweiterung</string>
+    <string name="help_tab_faq">FAQ</string>
+    <string name="help_search">In der Hilfe suchen</string>
+    <string name="help_search_clear">Suche löschen</string>
+    <string name="help_no_results">Keine Ergebnisse für „%1$s“.</string>
+    <string name="help_hierarchy_title">Rangfolge der Karten</string>
+    <string name="help_hierarchy_body">1. 🏳️ Flucht (weiße Flagge): verliert immer, außer der Stich besteht nur aus Fluchtkarten, der als Flucht gespielten Tigerin oder Beuten: Dann gewinnt die zuerst gespielte Karte.\n2. 🟨🟪🟩 Gelb, Lila, Grün (1 bis 14): Die angespielte Farbe schlägt die anderen Farben.\n3. ⚫ Schwarzer Trumpf (Piratenflagge, 1 bis 14): schlägt alle Farben.\n4. 🧜‍♀️ Meerjungfrauen: schlagen Farben und Trümpfe, verlieren gegen Piraten.\n5. 🏴‍☠️ Piraten: schlagen Meerjungfrauen, verlieren gegen den Skull King.\n6. 💀 Skull King: schlägt Piraten, verliert aber gegen eine Meerjungfrau.\n\nMit der Erweiterung: Flucht &lt; Farben &lt; schwarzer Trumpf &lt; Meerjungfrau &lt; Piraten &lt; Erster Maat Con &lt; Skull King &lt; Meerjungfrau. Die Meerjungfrau schlägt den Ersten Maat Con und den Skull King.\n!> Werden ein Pirat, der Skull King und eine Meerjungfrau im selben Stich gespielt, gewinnt die Meerjungfrau, egal in welcher Reihenfolge. Der einzige Bonus ist der der Meerjungfrau. Der Skull King gewinnt den Stich nicht und erhält daher nichts für den Piraten.</string>
+    <string name="help_special_title">Sonderkarten des Grundspiels</string>
+    <string name="help_special_body">• 🐯 Tigerin: wird wahlweise als Pirat oder als Flucht gespielt.\n• 🐙 Kraken: zerstört den Stich, niemand gewinnt ihn.\n!> Den nächsten Stich eröffnet der Spieler, der ihn ohne den Kraken gewonnen hätte (offizielle FAQ).\n• 🐳 Weißer Wal: hebt die Sonderkarten auf, die höchste Zahlenkarte gewinnt.\n• 💰 Beute: wird wie eine Flucht gespielt. Sie verbindet den Spieler, der sie gespielt hat, mit dem Stichgewinner: Erfüllen beide ihre Ansage, erhält jeder +20.\n> Zwei Beuten können dieselben zwei Spieler verbinden: Dieselbe Allianz kann zweimal geschlossen werden, und jeder kann bis zu +40 erzielen.\n!> Beginnt ein Stich mit einer Beute und sind alle folgenden Karten Fluchtkarten, gewinnt der Spieler der Beute den Stich: Es entsteht keine Allianz und es gibt keinen Bonus.</string>
+    <string name="help_points_title">Punkte (klassischer Modus)</string>
+    <string name="help_points_body">• Ansage ≥ 1 erfüllt: +20 pro angesagtem Stich.\n• Ansage ≥ 1 verfehlt: −10 pro Stich Abweichung.\n• Nullansage erfüllt: +10 × Kartenzahl der Runde.\n• Nullansage verfehlt: −10 × Kartenzahl der Runde.</string>
+    <string name="help_bonus_title">Bonuspunkte</string>
+    <string name="help_bonus_body">• 🟨🟪🟩 Farb-14 erobert: je +10\n• ⚫ Schwarze 14 erobert: +20\n• 🧜‍♀️ Von einem Piraten eroberte Meerjungfrau: je +20\n• 🏴‍☠️ Vom Skull King eroberter Pirat: je +30\n• 💀 Von einer Meerjungfrau eroberter Skull King: +40\n• 💰 Beute: +20, wenn der Spieler der Beute und der Stichgewinner ihre Ansage beide genau erfüllen\n• 🎲 Rascals Einsatz: +Einsatz bei exakter Ansage, sonst −Einsatz (0, 10 oder 20), der einzige Posten, der auch bei verfehlter Ansage zählt\n!> Klassische Wertung: Bonuspunkte zählen nur, wenn die Ansage erfüllt ist. In der Rascal-Wertung behält ein Streifschuss (eine Abweichung) die Hälfte der Boni: siehe „Wertungsmodi“.</string>
+    <string name="help_modes_title">Wertungsmodi</string>
+    <string name="help_modes_body">• **Klassisch**: siehe oben.\n• **Rascal**: In jeder Runde hat jeder Spieler dasselbe Potenzial, unabhängig von der Ansage: 10 × N. Die Genauigkeit entscheidet:\n-- **Volltreffer** (exakte Ansage): alle Punkte im Spiel und alle Boni\n-- **Streifschuss** (eine Abweichung): die Hälfte der Punkte im Spiel (5 × N) und die Hälfte der Boni\n-- **Fehlschuss** (zwei oder mehr Abweichung): keine Punkte, keine Boni\n> Beispiel: 4 Karten ausgeteilt, 40 Punkte im Spiel. Volltreffer: +40, Streifschuss: +20, Fehlschuss: 0.\n!> Die Hälfte der Boni wird nicht gerundet: Mit den 7ern und 8ern der Erweiterung kann eine Wertung einen halben Punkt enthalten (15 → 7,5). Die Beute verlangt eine exakte Ansage: Sie zählt bei einem Streifschuss nie.\n• 💣 **Rascal + Kanonenkugel** (optionale Regel): Nach den Ansagen enthüllen alle gleichzeitig ihre Wahl:\n-- **Kartätsche** (offene Hand): die Rascal-Wertung von oben\n-- **Kanonenkugel** (geschlossene Faust): exakte Ansage = 15 × N Punkte plus Boni, sonst 0 Punkte und kein Bonus\n> Beispiel: 6 Karten, Ansage 3. Kartätsche: 60 Punkte bei exakter Ansage, 30 bei einer Abweichung. Kanonenkugel: 90 bei exakter Ansage, 0 bei einer Abweichung.\n> N ist die Zahl der in der Runde ausgeteilten Karten. Rascals Einsatz wird in jedem Modus addiert oder abgezogen.</string>
+    <string name="help_expansion_title">Erweiterung 2026</string>
+    <string name="help_expansion_body">• 7 erobert: je −5\n• 8 erobert: je +5\n• 0/14: Ihr Spieler erklärt beim Ausspielen 0 oder 14. Kein Bonus.\n• 🐵 Wilde 15: nimmt die angespielte Farbe mit Wert 15 an, oder die vom Spieler gewählte Farbe, falls noch keine angespielt ist (nie Schwarz). Verliert gegen den Trumpf. Kein Bonus.\n• {con} Erster Maat Con: schlägt alle Piraten, verliert gegen Meerjungfrauen und den Skull King. Vom Skull King oder einer Meerjungfrau erobert: +30. Bringt nichts für eroberte Piraten. Gewinnt er einen Stich, darf sein Spieler die Kräfte der eroberten Piraten nutzen.\n• 🏴‍☠️ Mary Thorne: zählt als Pirat (+30, wenn vom Skull King erobert, +20 pro eroberte Meerjungfrau).\n• {davy} Davy Jones’ Truhe: gewinnt nicht, zerstört alle Seemonster im Stich (🐙 🐳 {ray}): +20 pro Monster für ihren Spieler.\n• 🦈 Über die Planke: entfernt einen Piraten aus dem Stich. Bringt keinen Bonus.\n• {ray} Gefleckter Rochen: ein Seemonster wie der Kraken und der Weiße Wal. Er gewinnt den Stich nicht: Die niedrigste Karte des Stichs gewinnt. Er bringt keinen Bonus, und Davy Jones’ Truhe kann ihn zerstören (+20).\n• 💥 Letzte Salve: gewinnt nicht. Ihr Spieler spielt eine 2. Karte und setzt den letzten Stich aus.\n!> Die Boni der Erweiterung folgen derselben Regel wie die anderen: alle bei erfüllter Ansage, die Hälfte bei einem Streifschuss in der Rascal-Wertung, sonst keine.\n> Davy Jones’ Truhe, die Letzte Salve, der Gefleckte Rochen und Über die Planke sind keine Fluchtkarten. Sind alle anderen gespielten Karten Fluchtkarten, gewinnt die zuerst gespielte Flucht den Stich.\n> Eröffnet Davy Jones’ Truhe, die Letzte Salve oder Über die Planke einen Stich, wählt der nächste Spieler die Farbe. Enthält ein Stich nur Sonderkarten, die nicht gewinnen, wird er verworfen und wer ihn eröffnet hat, eröffnet den nächsten.\n> Bei 2 Spielern entfallen die Wilde 15, Über die Planke und die 0/14.</string>
+    <string name="help_faq_title">FAQ</string>
+    <string name="help_official_link">Offizielle Regeln und FAQ (grandpabecksgames.com)</string>
+    <string name="help_faq_body">• Die Stiche ergeben nicht die Kartenzahl? Ein Stich kann zerstört sein (Kraken, oder Weißer Wal / Gefleckter Rochen ohne Zahlenkarte) oder nur aus Sonderkarten bestehen: Erfasse ihn als „verworfenen Stich“. Die App prüft nicht, wer welchen Stich gewonnen hat, sie weist nur auf Unstimmigkeiten hin und blockiert dich nie.\n• Ein Fehler in einer früheren Runde? Tippe im Spielstand auf ihre Zelle, dann auf „Runde korrigieren“.\n• Zu zweit spielen? Teile 3 Stapel aus: Der 3. bleibt verdeckt und wird vom Geist von Graubart gespielt. Er spielt immer als Zweiter, muss die Farbe nicht bedienen, und seine Tigerin zählt als Flucht. Du und dein Partner eröffnet jede Runde abwechselnd, und gewinnt Graubart einen Stich, eröffnet er den nächsten. Beuten werden zu zweit nicht gespielt. Die App erfasst nur die beiden Spieler.\n• Kein Netz? Kein Problem, die App funktioniert komplett offline.</string>
+
+    <!-- V2: game comfort and settings -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_game">Spiel</string>
+    <string name="settings_keep_screen_on">Bildschirm eingeschaltet lassen</string>
+    <string name="settings_keep_screen_on_desc">Solange eine Partie läuft.</string>
+    <string name="settings_backup">Sicherung</string>
+    <string name="settings_auto_backup">Automatische Sicherung</string>
+    <string name="settings_auto_backup_desc">Speichert deine Partien nach jeder Partie und einmal täglich in einem Ordner deiner Wahl.</string>
+    <string name="settings_choose_folder">Sicherungsordner wählen</string>
+    <string name="settings_change_folder">Sicherungsordner ändern</string>
+    <string name="settings_backup_now">Jetzt sichern</string>
+    <string name="settings_backup_no_folder">Noch kein Ordner gewählt.</string>
+    <string name="settings_backup_never">Noch keine Sicherung erstellt.</string>
+    <string name="settings_backup_last">Letzte Sicherung: %1$s</string>
+    <string name="settings_backup_failed">Die letzte Sicherung ist fehlgeschlagen. Prüfe, ob der Ordner noch verfügbar ist.</string>
+    <string name="settings_restore">Aus einer Sicherung wiederherstellen</string>
+    <string name="settings_about">Über</string>
+    <string name="settings_about_text">Punktezähler für Skull King. MIT-Lizenz.</string>
+    <string name="undo_bid">Ansage von %1$s</string>
+    <string name="undo_cannonball">Kanonenkugel von %1$s</string>
+    <string name="undo_trick">Stich %1$s</string>
+    <string name="undo_trick_deleted">gelöschter Stich %1$s</string>
+    <string name="undone_prefix">Rückgängig: %1$s</string>
+    <string name="redone_prefix">Wiederholt: %1$s</string>
+    <string name="dealer_label">Geber: %1$s</string>
+    <string name="setup_draw_dealer">Geber auslosen</string>
+    <string name="setup_dealer_badge">Geber</string>
+
+    <!-- V2 : jalon 1, partage -->
+    <string name="share_title">Teilen</string>
+    <string name="share_action">Teilen</string>
+    <string name="share_save">In der Galerie speichern</string>
+    <string name="share_saved">Bild in Pictures/SkullKing gespeichert.</string>
+    <string name="share_save_failed">Das Bild konnte nicht gespeichert werden.</string>
+    <string name="share_preview">Vorschau des zu teilenden Bildes</string>
+    <string name="share_nothing">Wähle, was im Bild enthalten sein soll.</string>
+    <string name="share_podium">Siegerpodest</string>
+    <string name="share_table">Punktetabelle</string>
+    <string name="share_stats">Höhepunkte der Partie</string>
+    <string name="share_round">Runde</string>
+    <string name="share_with_expansion">mit Erweiterung</string>
+    <string name="share_without_expansion">ohne Erweiterung</string>
+    <string name="share_best_round">Beste Runde: %1$s (%2$s Punkte, Runde %3$d)</string>
+    <string name="share_worst_round">Schlechteste Runde: %1$s (%2$s Punkte, Runde %3$d)</string>
+    <string name="share_exact_bids">%1$s: %2$d exakte Ansagen von %3$d</string>
+
+    <!-- V2 : jalon 2, courbes -->
+    <string name="tab_table">Tabelle</string>
+    <string name="tab_curve">Kurve</string>
+    <string name="curve_empty">Noch keine Runde gewertet.</string>
+    <string name="curve_summary_line">%1$s: %2$d Punkte nach %3$d Runden</string>
+    <string name="curve_axis_rounds">Kumulierte Punktzahl über %1$d Runden.</string>
+    <string name="curve_round_detail">Runde %1$d (%2$d Karten)</string>
+    <string name="curve_round_line">%1$s (Summe %2$s)</string>
+    <string name="curve_tap_hint">Tippe auf das Diagramm, um eine Runde im Detail zu sehen. Mit den Chips blendest du Spieler ein oder aus.</string>
+
+    <!-- V2 : jalon 2, statistiques -->
+    <plurals name="stats_games_count">
+        <item quantity="one">%d Partie</item>
+        <item quantity="other">%d Partien</item>
+    </plurals>
+    <string name="stats_filter_present">Spieler am Tisch</string>
+    <string name="filter_all_sizes">Beliebige Spielerzahl</string>
+    <string name="filter_players_2_3">2–3 Spieler</string>
+    <string name="filter_players_4_5">4–5 Spieler</string>
+    <string name="filter_players_6_plus">6 oder mehr</string>
+    <string name="filter_expansion_all">Mit oder ohne Erweiterung</string>
+    <string name="filter_expansion_with">Mit Erweiterung</string>
+    <string name="filter_expansion_without">Ohne Erweiterung</string>
+    <string name="stats_records_title">Rekorde</string>
+    <string name="stats_record_best_round">Beste Runde</string>
+    <string name="stats_record_worst_round">Schlechteste Runde</string>
+    <string name="stats_record_round">%1$s Punkte, Runde %2$d (%3$s)</string>
+    <string name="stats_record_exact_streak">Längste Serie exakter Ansagen</string>
+    <string name="stats_record_win_streak">Längste Siegesserie</string>
+    <string name="stats_record_zero_streak">Längste Serie erfüllter Nullansagen</string>
+    <string name="stats_record_bonus">Höchster Bonus in einer Runde</string>
+    <string name="stats_trend_title">Entwicklung</string>
+    <string name="stats_trend_not_enough">Für einen Trend sind mindestens %1$d beendete Partien nötig.</string>
+    <string name="stats_trend_games">Punktzahl der Partie</string>
+    <string name="stats_trend_average">Durchschnitt</string>
+    <string name="stats_trend_legend">Durchgezogene Linie: Punktzahl jeder Partie. Gestrichelte Linie: Durchschnitt der letzten %1$d Partien.</string>
+    <string name="stats_trend_description">%1$s: von %2$s auf %3$s Punkte in %4$d Partien</string>
+    <string name="stats_size_title">Erfüllte Ansagen nach Rundengröße</string>
+    <string name="size_small">1–3 Karten</string>
+    <string name="size_medium">4–6 Karten</string>
+    <string name="size_large">7–10 Karten</string>
+    <string name="size_huge">11 Karten und mehr</string>
+    <string name="stats_bias">Ansagetendenz</string>
+    <string name="stats_bias_under">Zu niedrig angesagt (%1$s Stich pro Runde)</string>
+    <string name="stats_bias_over">Zu hoch angesagt (%1$s Stich pro Runde)</string>
+    <string name="stats_tricks_coverage">Stiche live erfasst in %1$d von %2$d Partien.</string>
+    <string name="stats_rascal_wagers">Gewonnene Rascal-Einsätze</string>
+    <string name="stats_harry_adjustments">Anpassungen durch Harry (Runde gewonnen)</string>
+    <string name="duel_title">Direktvergleich</string>
+    <string name="duel_first">Erster Spieler</string>
+    <string name="duel_second">Zweiter Spieler</string>
+    <string name="duel_choose">Wähle zwei Spieler zum Vergleichen.</string>
+    <string name="duel_not_enough">Zu wenige gemeinsame Partien.</string>
+    <string name="duel_common_games">%1$d gemeinsame Partien</string>
+    <string name="duel_versus">gegen</string>
+    <string name="duel_ties">%1$d Unentschieden</string>
+    <string name="duel_average_gap">Durchschnittlicher Vorsprung von %1$s</string>
+    <string name="duel_biggest_gap">Größter Abstand in einer Partie</string>
+
+    <!-- V2 : jalon 4, import -->
+    <string name="import_homonyms">Spieler mit demselben Namen</string>
+    <string name="import_merge">%1$s: mit dem vorhandenen Profil zusammenführen</string>
+    <string name="import_create">%1$s: neues Profil anlegen</string>
+    <string name="import_done_detail">%1$d Partie(n) importiert, %2$d übersprungen, %3$d Profil(e) zusammengeführt, %4$d angelegt.</string>
+    <string name="import_too_new">Diese Sicherung stammt aus einer neueren Version der App. Aktualisiere die App, um sie zu importieren.</string>
+
+    <!-- V2: accessibility -->
+    <string name="a11y_score_cell">%1$s, Runde %2$d, %3$s Punkte, Summe %4$s</string>
+    <string name="a11y_score_cell_pending">%1$s, Runde %2$d, noch nicht gewertet</string>
+    <string name="a11y_expanded">Ausgeklappt</string>
+    <string name="a11y_collapsed">Eingeklappt</string>
+    <string name="stats_more_filters">Weitere Filter</string>
+    <string name="setup_dealer_hint">Ordne die Spieler in Sitzreihenfolge an (zum Verschieben ≡ ziehen), dann lose aus oder wähle, wer zuerst gibt 🃏.</string>
+    <string name="share_curve">Punktekurve</string>
+    <string name="stats_bias_balanced">Ausgewogen</string>
+    <string name="stats_bias_help">Vergleicht die gewonnenen Stiche mit der Ansage, Runde für Runde: Zu niedrig angesagt heißt mehr Stiche als angesagt, zu hoch angesagt weniger.</string>
+    <string name="mode_classic_short">Klassisch</string>
+    <string name="mode_rascal_short">Rascal</string>
+    <string name="mode_cannonball_short">Rascal + Kanonenkugel</string>
+    <string name="stats_search">Spieler suchen</string>
+    <string name="stats_no_match">Kein Spieler passt zu deiner Suche.</string>
+    <string name="stats_share_player">Statistiken von %1$s teilen</string>
+    <string name="stats_image_legend_games">Punktzahl der Partie</string>
+    <string name="stats_image_legend_average">Durchschnitt der letzten %1$d Partien</string>
+
+    <!-- Card statistics -->
+    <string name="stats_tab_players">Spieler</string>
+    <string name="stats_tab_cards">Karten</string>
+    <string name="stats_favorite_card">Lieblingskarte</string>
+    <string name="cards_coverage">Stiche live erfasst in %1$d von %2$d Partien (%3$d Stiche).</string>
+    <string name="cards_no_tricks">Mit diesen Filtern wurde noch kein Stich live erfasst. Erfasse Stiche während des Spiels, um Statistiken zu den Karten zu sehen.</string>
+    <string name="cards_by_card_title">Gewonnene Stiche pro Karte</string>
+    <string name="cards_by_card_hint">Anteil der mit jeder Karte gewonnenen Stiche. Sie zeigt, wie oft eine Karte gewinnt, nicht wie stark sie ist: Gespielte und verlorene Karten werden nicht erfasst.</string>
+    <string name="cards_pirates_title">Gewonnene Stiche pro Pirat</string>
+    <string name="cards_pirates_hint">Ein Pirat, der öfter gewinnt, ist nicht unbedingt stärker: Das hängt von den Spielern und vom Spielmodus ab.</string>
+    <string name="cards_success_title">Erfüllte Ansagen, wenn eine Karte gewinnt</string>
+    <string name="cards_success_hint">Runden, in denen ein Spieler einen Stich mit der Karte gewonnen hat, und Anteil dieser Runden, die für diesen Spieler mit einer exakten Ansage endeten.</string>
+    <string name="cards_timing_title">Wann Karten gewinnen</string>
+    <string name="cards_timing_line">Anfang %1$s · Mitte %2$s · Ende %3$s</string>
+    <string name="cards_timing_hint">Position der gewonnenen Stiche in der Runde (erstes, mittleres und letztes Drittel), für Runden ab 3 Karten.</string>
+    <string name="cards_captures_title">Eroberte Boni</string>
+    <string name="cards_bonus_share">Spielerrunden mit Bonus</string>
+    <string name="cards_bonus_average">Bonuspunkte pro Spielerrunde</string>
+    <string name="cards_settings_title">Piratenkräfte</string>
+    <string name="cards_rascal_wager">Rascal-Einsatz von %1$d</string>
+    <string name="cards_wager_line">%1$d / %2$d erfüllt · %3$s</string>
+    <string name="cards_harry_adjustment">Harry-Anpassung %1$s</string>
+    <string name="cards_settings_hint">Der Erfolg wird an der ganzen Runde des Spielers gemessen, der den Stich gewonnen hat.</string>
+    <string name="cards_loots_title">Beuten</string>
+    <string name="cards_loots_played">Gespielte Beuten</string>
+    <string name="cards_loots_valid">Gültig (beide Spieler haben ihre Ansage erfüllt)</string>
+    <string name="cards_davy_title">Davy Jones’ Truhe</string>
+    <string name="cards_davy_points">Erzielte Punkte</string>
+    <string name="cards_kraken_title">Kraken</string>
+    <string name="cards_kraken_destroyed">Zerstörte Stiche</string>
+    <string name="cards_kraken_per_game">Pro Partie</string>
+    <string name="cards_kraken_success_with">Erfüllte Ansagen, wenn ein Stich zerstört wird</string>
+    <string name="cards_kraken_success_without">Erfüllte Ansagen sonst</string>
+    <string name="cards_expansion_title">Erweiterung</string>
+    <string name="cards_expansion_with">Mit der Erweiterung</string>
+    <string name="cards_expansion_without">Grundspiel</string>
+    <string name="cards_expansion_points">Punkte pro Spieler und Runde</string>
+    <string name="cards_expansion_wins">Mit Karten der Erweiterung gewonnene Stiche</string>
+    <string name="help_monsters_title">Seemonster: wie es weitergeht</string>
+    <string name="help_monsters_body">• **Ausspielen**: Ein Seemonster (🐙 Kraken, 🐳 Weißer Wal, {ray} Gefleckter Rochen) ist eine Sonderkarte: Es kann jederzeit gespielt werden, auch wenn du die Farbe bedienen könntest. Der Stich wird aufgelöst, sobald alle gespielt haben.\n!> Eröffnet ein Monster den Stich, ist keine Farbe festgelegt: Die nächsten Spieler spielen eine beliebige Karte. Wird es nach einer bereits angespielten Farbe gespielt, müssen die folgenden Spieler diese Farbe weiterhin bedienen, wenn sie können, oder eine Sonderkarte spielen. Die angespielte Farbe bleibt die angespielte Farbe: Das Monster entfaltet seine Wirkung erst bei der Auflösung des Stichs (offizielle FAQ).\n• 🐙 **Kraken**: Niemand gewinnt den Stich, seine Karten werden abgelegt und es gibt keinen Bonus (erfasse ihn als „zerstörten Stich“).\n!> Der Spieler, der den Stich ohne den Kraken gewonnen hätte, eröffnet den nächsten Stich (offizielle FAQ).\n• 🐳 **Weißer Wal**: Jede Sonderkarte im Stich (Skull King, Piraten, Meerjungfrauen, Kraken …) zählt als Flucht, und die Zahlenkarten verlieren ihre Farbe: Farben und schwarzer Trumpf spielen keine Rolle mehr, nur die Zahlen. Die höchste Zahl gewinnt (bei Gleichstand die zuerst gespielte), und ihr Spieler eröffnet den nächsten Stich.\n!> Gibt es keine Zahlenkarte, wird der Stich wie beim Kraken zerstört, und der Spieler, der ihn ohne das Monster gewonnen hätte, eröffnet den nächsten Stich (offizielle Spielregel). Dasselbe gilt für den Gefleckten Rochen.\n• {ray} **Gefleckter Rochen** (Erweiterung): Er funktioniert genau wie der Weiße Wal, nur gewinnt die niedrigste Zahl statt der höchsten.\n• 🐙 🐳 {ray} **Mehrere Monster im selben Stich**: Nur das zuletzt gespielte Monster wirkt.\n> Wer einen Stich gewinnt, eröffnet normalerweise den nächsten. Ausnahmen sind ein zerstörter Stich (niemand gewinnt ihn) und Rosie D’Laney, die bestimmt, wer eröffnet.</string>
+    <string name="help_pirates_title">Piratenkräfte</string>
+    <string name="help_pirates_body">• **Rosie D’Laney**: bestimmt, wer als Nächster eröffnet, auch sich selbst.\n• **Rascal von Roatan**: setzt 0, 10 oder 20 Punkte, die addiert werden, wenn die Ansage erfüllt ist, sonst abgezogen.\n• **Bendt der Bandit**: zieht 2 Karten vom Nachziehstapel und legt dann 2 Karten von der Hand ab.\n• **Juanita Jade**: sieht sich die nicht ausgeteilten Karten an, um zu erfahren, was nicht im Spiel ist.\n• **Harry der Riese**: ändert seine Ansage um +1 oder −1 oder lässt sie unverändert.\n• **Mary Thorne** (Erweiterung, optionale Kraft): Gewinnt sie den Stich, wählt ihr Spieler blind eine zufällige Karte aus der Hand eines beliebigen Spielers (auch der eigenen). Dieser Spieler muss sie im nächsten Stich spielen, unabhängig von der angespielten Farbe.\n> Harry der Riese ist der einzige Pirat, dessen Kraft auch im letzten Stich wirkt (er muss den Stich gewinnen, um sie zu aktivieren).</string>
+    <string name="help_note">Hinweis</string>
+    <string name="hier_skull_king">Skull King</string>
+    <string name="hier_skull_king_sub">Schlägt alle Karten außer den Meerjungfrauen.</string>
+    <string name="hier_con">Erster Maat Con (Erweiterung)</string>
+    <string name="hier_con_sub">Schlägt die Piraten. Verliert gegen den Skull King und die Meerjungfrauen.</string>
+    <string name="hier_pirates">Piraten</string>
+    <string name="hier_pirates_sub">Schlagen alle Karten außer dem Skull King und dem Ersten Maat Con.</string>
+    <string name="hier_mermaids">Meerjungfrauen</string>
+    <string name="hier_mermaids_sub">Schlagen alle Zahlenkarten, den Skull King und den Ersten Maat Con.</string>
+    <string name="hier_black">Schwarzer Trumpf</string>
+    <string name="hier_black_sub">Schlägt alle normalen Farben. Der höchste Trumpf gewinnt.</string>
+    <string name="hier_suits">Normale Farben</string>
+    <string name="hier_suits_sub">Gelb, Lila, Grün: Die höchste Zahl der angespielten Farbe gewinnt.</string>
+    <string name="hier_escape">Flucht</string>
+    <string name="hier_escape_sub">Verliert immer. Besteht der Stich nur aus Fluchtkarten, der Tigerin als Flucht oder Beuten, gewinnt die zuerst gespielte Karte.</string>
+    <string name="help_remark">Achtung</string>
+    <string name="play_bids_summary">Gesamtansage %1$d für %2$d Stiche</string>
+    <string name="play_bids_over">%1$d zu viel</string>
+    <string name="play_bids_under">%1$d zu wenig</string>
+    <string name="collapse">Einklappen</string>
+    <string name="expand">Ausklappen</string>
+    <string name="trick_destroyed_button">Zerstörter Stich</string>
+    <string name="trick_loot_by">💰 Beute gespielt von %1$s</string>
+    <string name="results_initial_bid">Ursprüngliche Ansage: %1$d (von Harry geändert)</string>
+    <string name="results_bid_made">Ansage erfüllt</string>
+    <string name="results_bid_missed_over">Ansage verfehlt: %1$d Stich(e) zu viel</string>
+    <string name="results_bid_missed_under">Ansage verfehlt: %1$d Stich(e) zu wenig</string>
+    <string name="detail_bonus_halved">Boni behalten (eine Abweichung: die Hälfte)</string>
+    <string name="tab_ranking">Rangliste</string>
+    <string name="ranking_gap">%1$s zurück</string>
+    <string name="ranking_last_round">letzte Runde %1$s</string>
+    <string name="setup_drag_handle">Zum Umsortieren ziehen</string>
+    <string name="trick_events">Stichereignisse</string>
+    <string name="settings_remember_setup">Spieleinstellungen merken</string>
+    <string name="settings_remember_setup_desc">Eine neue Partie startet mit dem Wertungsmodus und der Erweiterung der vorherigen.</string>
+    <string name="setup_choose_dealer">Geber wählen</string>
+    <string name="results_tap_trick">Tippe auf einen Stich, um ihn zu korrigieren: Gewinner, gewonnene Karten, Beute, Davy Jones …</string>
+    <string name="trick_choose_winner">Gewinner wählen</string>
+</resources>

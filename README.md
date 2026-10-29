@@ -30,7 +30,7 @@ points (bonuses included) for the chosen scoring mode, replacing the paper score
   bonuses, Rascal wagers and Harry adjustments, Loots, Davy Jones' Locker, Kraken, expansion versus base game
 - Sharing as images: podium, scoreboard, score curve, highlights, and per-player statistics
 - Backup: JSON / CSV export, import with merge of same-name profiles, optional automatic backup to a folder
-- English, French, Portuguese, Italian and Spanish (follows the Android language), light / dark theme, tablet and landscape layouts, TalkBack support
+- English, French, German, Portuguese, Italian and Spanish (follows the Android language), light / dark theme, tablet and landscape layouts, TalkBack support
 - Built-in help with search
 
 <p align="center">
