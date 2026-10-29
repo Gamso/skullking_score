@@ -36,6 +36,7 @@ import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -55,6 +56,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -119,6 +121,9 @@ private const val NOTE_PREFIX = "> "
 /** Lines starting with this prefix are sub-bullets, indented under the previous item. */
 private const val SUB_PREFIX = "-- "
 
+/** Publisher page with the official rules and FAQ. */
+private const val OFFICIAL_URL = "https://www.grandpabecksgames.com/pages/skull-king"
+
 /** Bold: **text**; icon: {ray}, {con}, {davy}. */
 private val TOKEN = Regex("""\*\*(.+?)\*\*|\{(ray|con|davy)\}""")
 
@@ -175,6 +180,12 @@ fun HelpScreen(onBack: () -> Unit) {
                                 HelpVisual.HIERARCHY -> HierarchyChart()
                                 null -> HelpBody(stringResource(section.body))
                             }
+                        }
+                    }
+                    if (selectedTab == TABS.lastIndex) {
+                        val uriHandler = LocalUriHandler.current
+                        TextButton(onClick = { uriHandler.openUri(OFFICIAL_URL) }) {
+                            Text(stringResource(R.string.help_official_link))
                         }
                     }
                 }
