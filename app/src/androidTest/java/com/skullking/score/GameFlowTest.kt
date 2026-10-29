@@ -1,7 +1,9 @@
 package com.skullking.score
 
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -10,6 +12,7 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -68,6 +71,7 @@ class GameFlowTest {
 
         // Trick 1: "winner" wins with a colored card; the one-card round is then complete.
         click(R.string.play_enter_trick, 1)
+        click(R.string.trick_choose_winner)
         rule.onAllNodesWithText(winner).onLast().performClick()
         rule.onAllNodesWithText(text(R.string.win_other)).onLast().performClick()
         click(R.string.trick_validate)
@@ -91,6 +95,7 @@ class GameFlowTest {
         click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
         click(R.string.play_enter_trick, 1)
+        click(R.string.trick_choose_winner)
         rule.onAllNodesWithText(winner).onLast().performClick()
         rule.onAllNodesWithText(text(R.string.win_other)).onLast().performClick()
         click(R.string.trick_validate)
@@ -141,6 +146,8 @@ class GameFlowTest {
             rule.activity.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
         rule.waitForIdle()
+        // The chosen players come after the available profiles: in landscape the list must scroll to them.
+        rule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(name))
         rule.onAllNodesWithText(name).onLast().assertExists()
         rule.activity.runOnUiThread {
             rule.activity.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
