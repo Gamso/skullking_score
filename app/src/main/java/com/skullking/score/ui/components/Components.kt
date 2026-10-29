@@ -1,6 +1,7 @@
 package com.skullking.score.ui.components
 
 import android.view.View
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -29,9 +28,9 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -40,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
@@ -218,6 +218,25 @@ fun Stepper(
 ) {
     val button = if (compact) 34.dp else 44.dp
     val valueWidth = if (compact) 30.dp else 44.dp
+    // Compact: no 48 dp touch padding around the buttons, the lines stay close together.
+    val touch = if (compact) Dp.Unspecified else LocalMinimumInteractiveComponentSize.current
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides touch) {
+        StepperRow(value, onValueChange, modifier, range, enabled, compact, button, valueWidth)
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun StepperRow(
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    modifier: Modifier,
+    range: IntRange,
+    enabled: Boolean,
+    compact: Boolean,
+    button: Dp,
+    valueWidth: Dp,
+) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         FilledTonalIconButton(
             onClick = { onValueChange((value - 1).coerceAtLeast(range.first)) },
@@ -243,31 +262,36 @@ fun Stepper(
     }
 }
 
-/** 0…max selector on a single row of chips, for the bids. */
+/**
+ * Selectable choice denser than a chip (36 dp high, no 48 dp touch padding): for screens and dialogs with many
+ * options, such as bids or trick entry.
+ */
 @Composable
-fun NumberSelector(
-    selected: Int,
-    max: Int,
-    onSelect: (Int) -> Unit,
+fun CompactChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    leading: (@Composable () -> Unit)? = null,
 ) {
-    LazyRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items((0..max).toList()) { n ->
-            FilterChip(
-                selected = n == selected,
-                onClick = { onSelect(n) },
-                enabled = enabled,
-                label = {
-                    Text(
-                        n.toString(),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.size(width = 24.dp, height = 32.dp).padding(top = 2.dp),
-                    )
-                },
-            )
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+        Surface(
+            selected = selected,
+            onClick = onClick,
+            shape = MaterialTheme.shapes.small,
+            color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+            contentColor = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+            border = if (selected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            modifier = modifier.height(36.dp).widthIn(min = 36.dp),
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+            ) {
+                leading?.invoke()
+                Text(text, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, maxLines = 1)
+            }
         }
     }
 }

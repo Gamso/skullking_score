@@ -97,7 +97,6 @@
 
     <string name="bids_validate">Confirm bids</string>
     <string name="bids_total">Total bid: %1$d (cards dealt: %2$d)</string>
-    <string name="bids_score_so_far">Current score: %1$d</string>
 
     <string name="play_bids_reminder">Bids</string>
     <string name="play_bid_chip">Bid %1$d</string>
@@ -131,6 +130,13 @@
     <string name="pirate_harry">Harry</string>
     <string name="pirate_tigress">Tigress</string>
     <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie D’Laney</string>
+    <string name="pirate_rascal_full">Rascal of Roatan</string>
+    <string name="pirate_will_full">Bendt the Bandit</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry the Giant</string>
+    <string name="pirate_tigress_full">Tigress</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
     <string name="stats_wins_with_title">Tricks won with</string>
     <string name="trick_validate">Confirm the trick</string>
     <string name="event_trick_prefix">"Trick %1$d · "</string>
@@ -162,7 +168,7 @@
     <string name="results_editing_hint">You are correcting a round that was already confirmed: scores are recalculated after every change.</string>
     <string name="results_summary">Bid %1$d · tricks %2$d</string>
     <string name="results_tricks">Tricks won</string>
-    <string name="results_final_bid">Final bid (Harry the Giant)</string>
+    <string name="results_final_bid">Bid</string>
     <string name="results_bonus_title">Cards won</string>
     <string name="results_bonus_ignored">Missed bid: the bonuses entered don’t count.</string>
     <string name="results_cannonball">Cannonball</string>
@@ -471,4 +477,26 @@
     <string name="hier_escape">Escape</string>
     <string name="hier_escape_sub">Always loses. If the trick holds only escapes, the Tigress as an escape or Loots, the first card played wins.</string>
     <string name="help_remark">Remark</string>
+    <string name="settings_trick_by_trick">Enter tricks one by one</string>
+    <string name="settings_trick_by_trick_desc">Otherwise, the results are entered at the end of the round.</string>
+    <string name="play_bids_summary">Total bid %1$d for %2$d tricks</string>
+    <string name="play_bids_over">%1$d over</string>
+    <string name="play_bids_under">%1$d under</string>
+    <string name="play_tricks_over_bid">tricks / bid</string>
+    <string name="collapse">Collapse</string>
+    <string name="expand">Expand</string>
+    <string name="trick_destroyed_button">Destroyed trick</string>
+    <string name="trick_loot_by">💰 Loot played by %1$s</string>
+    <string name="results_initial_bid">Initial bid: %1$d (changed by Harry)</string>
+    <string name="results_bid_made">Bid made</string>
+    <string name="results_bid_missed_over">Bid missed: %1$d trick(s) over</string>
+    <string name="results_bid_missed_under">Bid missed: %1$d trick(s) under</string>
+    <string name="detail_bonus_halved">Bonuses kept (off by one: half)</string>
+    <string name="tab_ranking">Ranking</string>
+    <string name="ranking_gap">%1$d behind</string>
+    <string name="ranking_last_round">last round %1$s</string>
+    <string name="setup_drag_handle">Drag to reorder</string>
+    <string name="trick_events">Trick events</string>
+    <string name="settings_remember_setup">Remember the game setup</string>
+    <string name="settings_remember_setup_desc">A new game starts with the scoring mode and expansion of the previous one.</string>
 </resources>

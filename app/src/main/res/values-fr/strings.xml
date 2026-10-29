@@ -97,7 +97,6 @@
 
     <string name="bids_validate">Valider les annonces</string>
     <string name="bids_total">Total annoncé : %1$d (cartes distribuées : %2$d)</string>
-    <string name="bids_score_so_far">Score actuel : %1$d</string>
 
     <string name="play_bids_reminder">Annonces</string>
     <string name="play_bid_chip">Annonce %1$d</string>
@@ -131,6 +130,13 @@
     <string name="pirate_harry">Harry</string>
     <string name="pirate_tigress">Tigresse</string>
     <string name="pirate_mary_thorne">Mary Thorne</string>
+    <string name="pirate_rosie_full">Rosie la Douce</string>
+    <string name="pirate_rascal_full">Rascal le Flambeur</string>
+    <string name="pirate_will_full">Will le Bandit</string>
+    <string name="pirate_juanita_full">Juanita Jade</string>
+    <string name="pirate_harry_full">Harry le Géant</string>
+    <string name="pirate_tigress_full">Tigresse</string>
+    <string name="pirate_mary_thorne_full">Mary Thorne</string>
     <string name="stats_wins_with_title">Plis gagnés avec</string>
     <string name="trick_validate">Valider le pli</string>
     <string name="event_trick_prefix">"Pli %1$d · "</string>
@@ -162,7 +168,7 @@
     <string name="results_editing_hint">Vous corrigez une manche déjà validée : les scores sont recalculés à chaque modification.</string>
     <string name="results_summary">Annonce %1$d · plis %2$d</string>
     <string name="results_tricks">Plis remportés</string>
-    <string name="results_final_bid">Annonce finale (Harry le Géant)</string>
+    <string name="results_final_bid">Annonce</string>
     <string name="results_bonus_title">Cartes gagnées</string>
     <string name="results_bonus_ignored">Annonce ratée : les bonus saisis ne comptent pas.</string>
     <string name="results_cannonball">Boulet de canon</string>
@@ -471,4 +477,26 @@
     <string name="hier_escape">Fuite</string>
     <string name="hier_escape_sub">Perd toujours. Si le pli n’est fait que de fuites, de la Tigresse jouée comme une fuite ou de Butins, la première carte jouée gagne.</string>
     <string name="help_remark">Remarque</string>
+    <string name="settings_trick_by_trick">Saisir les plis un par un</string>
+    <string name="settings_trick_by_trick_desc">Sinon, les résultats se saisissent à la fin de la manche.</string>
+    <string name="play_bids_summary">Total annoncé %1$d pour %2$d plis</string>
+    <string name="play_bids_over">%1$d de trop</string>
+    <string name="play_bids_under">%1$d de moins</string>
+    <string name="play_tricks_over_bid">plis / annonce</string>
+    <string name="collapse">Replier</string>
+    <string name="expand">Déplier</string>
+    <string name="trick_destroyed_button">Pli détruit</string>
+    <string name="trick_loot_by">💰 Butin joué par %1$s</string>
+    <string name="results_initial_bid">Annonce initiale : %1$d (modifiée par Harry)</string>
+    <string name="results_bid_made">Annonce réussie</string>
+    <string name="results_bid_missed_over">Annonce ratée : %1$d pli(s) de trop</string>
+    <string name="results_bid_missed_under">Annonce ratée : %1$d pli(s) de moins</string>
+    <string name="detail_bonus_halved">Bonus retenus (frappe à revers : la moitié)</string>
+    <string name="tab_ranking">Classement</string>
+    <string name="ranking_gap">%1$d pts du 1er</string>
+    <string name="ranking_last_round">dern. manche %1$s</string>
+    <string name="setup_drag_handle">Glisser pour déplacer</string>
+    <string name="trick_events">Événements du pli</string>
+    <string name="settings_remember_setup">Mémoriser le paramétrage des parties</string>
+    <string name="settings_remember_setup_desc">Une nouvelle partie reprend le mode de calcul et l’extension de la précédente.</string>
 </resources>

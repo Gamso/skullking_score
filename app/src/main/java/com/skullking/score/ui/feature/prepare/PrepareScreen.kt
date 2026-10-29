@@ -32,7 +32,6 @@ import com.skullking.score.domain.usecase.suggestedCards
 import com.skullking.score.ui.components.ActionBar
 import com.skullking.score.ui.components.DealerLine
 import com.skullking.score.ui.components.KeepScreenOn
-import com.skullking.score.ui.components.PlayerLabel
 import com.skullking.score.ui.components.SkullScaffold
 import com.skullking.score.ui.components.Stepper
 import com.skullking.score.ui.components.WarningCard
@@ -182,9 +181,6 @@ fun PrepareScreen(
             )
             if (current.exceedsDeck) {
                 WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
-            }
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                current.details.game.players.forEach { PlayerLabel(it) }
             }
         }
     }
