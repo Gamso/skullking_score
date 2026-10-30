@@ -16,10 +16,10 @@ android {
         applicationId = "com.skullking.score"
         minSdk = 26
         targetSdk = 37
-        // Overridden by the CI from the release tag (e.g. -PversionName=1.3.1 -PversionCode=10301).
+        // Overridden by the CI from the release tag (e.g. -PversionName=1.3.2 -PversionCode=10302).
         // versionCode = major * 10000 + minor * 100 + patch.
-        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(10301)
-        versionName = providers.gradleProperty("versionName").getOrElse("1.3.1")
+        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(10302)
+        versionName = providers.gradleProperty("versionName").getOrElse("1.3.2")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
