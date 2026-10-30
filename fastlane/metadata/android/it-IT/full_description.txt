@@ -1,0 +1,17 @@
+<p>Un segnapunti per il gioco di carte <b>Skull King</b>: inserisci le scommesse e le prese di ogni giocatore e l'app calcola i punti (bonus inclusi) secondo la modalità di punteggio scelta, al posto del foglio di carta.</p>
+
+<p><b>Funzionalità</b></p>
+<ul>
+<li>100% offline, senza account, senza pubblicità, senza tracciamento: un solo telefono sul tavolo, tenuto dallo «scriba»</li>
+<li>Gioco base (Balena bianca, Kraken, Bottini, Tigre Rossa) ed espansione 2026 (Primo Ufficiale Con, Mary Thorne, 15 jolly, Razza maculata, Forziere di Davy Jones, Cammina sulla tavola, Ultima salva)</li>
+<li>Da 2 a 8 giocatori (9 con l'espansione), round flessibili</li>
+<li>Modalità di punteggio: classica, Rascal e Rascal + Palla di cannone</li>
+<li>Inserimento presa per presa (vincitore, carta, carte catturate) con annulla / ripeti e avvisi di coerenza non bloccanti</li>
+<li>Gestione del mazziere, storico delle partite con ricerca e filtri</li>
+<li>Statistiche per giocatore e modalità: record, curva di andamento, riuscita delle scommesse, testa a testa, statistiche delle carte</li>
+<li>Condivisione come immagine: podio, tabellone, curva dei punteggi, statistiche per giocatore</li>
+<li>Backup: esportazione JSON / CSV, importazione, backup automatico opzionale in una cartella</li>
+<li>Italiano, inglese, francese, tedesco, portoghese e spagnolo, tema chiaro / scuro, layout per tablet, supporto TalkBack</li>
+</ul>
+
+<p>App non ufficiale realizzata da un fan, non affiliata a Grandpa Beck's Games. Per giocare serve il gioco di carte.</p>

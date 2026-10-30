@@ -75,6 +75,12 @@ android {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 
+    // No dependency metadata block (encrypted with a Google key) in the APK / AAB: F-Droid rejects it.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     // The exported database schemas, read by the migration tests.
     sourceSets {
         getByName("androidTest").assets.directories.add("$projectDir/schemas")

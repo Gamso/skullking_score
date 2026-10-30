@@ -1,0 +1,17 @@
+<p>Una hoja de puntuación para el juego de cartas <b>Skull King</b>: introduce las apuestas y las bazas de cada jugador y la aplicación calcula los puntos (bonificaciones incluidas) según el modo de puntuación elegido, en lugar de la hoja de papel.</p>
+
+<p><b>Funciones</b></p>
+<ul>
+<li>100 % sin conexión, sin cuenta, sin anuncios, sin rastreo: un solo teléfono en la mesa, en manos del «escriba»</li>
+<li>Juego base (Ballena Blanca, Kraken, Botines, Tigresa) y la expansión 2026 (Contramaestre Con, Mary Thorne, 15 comodín, Raya moteada, Cofre de Davy Jones, Paseo por la tabla, Última andanada)</li>
+<li>De 2 a 8 jugadores (9 con la expansión), rondas flexibles</li>
+<li>Modos de puntuación: clásico, Rascal y Rascal + Bala de cañón</li>
+<li>Registro baza a baza (ganador, carta, cartas capturadas) con deshacer / rehacer y avisos de coherencia no bloqueantes</li>
+<li>Seguimiento del repartidor, historial de partidas con búsqueda y filtros</li>
+<li>Estadísticas por jugador y modo: récords, curva de evolución, acierto de apuestas, cara a cara, estadísticas de cartas</li>
+<li>Compartir como imagen: podio, tabla de puntuaciones, curva, estadísticas por jugador</li>
+<li>Copia de seguridad: exportación JSON / CSV, importación, copia automática opcional en una carpeta</li>
+<li>Español, inglés, francés, alemán, portugués e italiano, tema claro / oscuro, diseño para tabletas, compatible con TalkBack</li>
+</ul>
+
+<p>Aplicación no oficial hecha por un fan, sin relación con Grandpa Beck's Games. Se necesita el juego de cartas para jugar.</p>

@@ -1,0 +1,27 @@
+Categories:
+  - Games
+License: MIT
+AuthorName: Gamso
+SourceCode: https://github.com/Gamso/skullking_score
+IssueTracker: https://github.com/Gamso/skullking_score/issues
+Changelog: https://github.com/Gamso/skullking_score/releases
+
+AutoName: Skull King Score
+
+RepoType: git
+Repo: https://github.com/Gamso/skullking_score.git
+
+Builds:
+  - versionName: 1.3.2
+    versionCode: 10302
+    commit: v1.3.2
+    subdir: app
+    gradle:
+      - yes
+    prebuild: rm ../gradle/gradle-daemon-jvm.properties
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^v[0-9.]+$
+UpdateCheckData: app/build.gradle.kts|getOrElse\((\d+)\)|app/build.gradle.kts|getOrElse\("([\d.]+)"\)
+CurrentVersion: 1.3.2
+CurrentVersionCode: 10302
