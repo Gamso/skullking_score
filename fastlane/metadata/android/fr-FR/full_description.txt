@@ -1,0 +1,17 @@
+<p>Une feuille de score pour le jeu de cartes <b>Skull King</b> : saisissez les paris et les plis de chaque joueur, l'application calcule les points (bonus compris) selon le mode de score choisi, à la place de la feuille papier.</p>
+
+<p><b>Fonctionnalités</b></p>
+<ul>
+<li>100 % hors ligne, sans compte, sans publicité, sans pistage : un seul téléphone sur la table, tenu par le « scribe »</li>
+<li>Jeu de base (Baleine Blanche, Kraken, Butins, Tigresse) et extension 2026 (Le Second, Mary Thorne, Wild 15, Raie tachetée, Casier de Davy Jones, Supplice de la planche, Dernière salve)</li>
+<li>2 à 8 joueurs (9 avec l'extension), manches modulables</li>
+<li>Modes de score : classique, Rascal, et Rascal + Boulet de canon</li>
+<li>Saisie des plis en direct (gagnant, carte, cartes capturées) avec annuler / rétablir et alertes de cohérence non bloquantes</li>
+<li>Suivi du donneur, historique des parties avec recherche et filtres</li>
+<li>Statistiques par joueur et mode de score : records, courbe d'évolution, réussite des paris, face-à-face, statistiques des cartes</li>
+<li>Partage en images : podium, tableau des scores, courbe, statistiques par joueur</li>
+<li>Sauvegarde : export JSON / CSV, import, sauvegarde automatique optionnelle dans un dossier</li>
+<li>Anglais, français, allemand, portugais, italien et espagnol, thème clair / sombre, mise en page tablette, compatible TalkBack</li>
+</ul>
+
+<p>Application non officielle, réalisée par un fan, sans lien avec Grandpa Beck's Games. Le jeu de cartes est nécessaire pour jouer.</p>

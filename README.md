@@ -6,11 +6,11 @@ An Android score pad for the **Skull King** card game: enter each player's bid a
 points (bonuses included) for the chosen scoring mode, replacing the paper score sheet.
 
 <p align="center">
-  <img src="docs/screenshots/home.png" width="19%" alt="Home screen" />
+  <img src="docs/screenshots/home.png" width="19%" alt="Home screen with a game in progress" />
   <img src="docs/screenshots/new-game.png" width="19%" alt="New game: players in table order and dealer" />
-  <img src="docs/screenshots/scoreboard.png" width="19%" alt="Scoreboard" />
-  <img src="docs/screenshots/score-curve.png" width="19%" alt="Score curve of a game" />
-  <img src="docs/screenshots/statistics.png" width="19%" alt="Player statistics" />
+  <img src="docs/screenshots/bids.png" width="19%" alt="Bids of a round" />
+  <img src="docs/screenshots/play.png" width="19%" alt="Round in progress, trick by trick" />
+  <img src="docs/screenshots/trick-entry.png" width="19%" alt="Trick entry: winner, card and captured cards" />
 </p>
 
 ## Features
@@ -34,9 +34,19 @@ points (bonuses included) for the chosen scoring mode, replacing the paper score
 - Built-in help with search
 
 <p align="center">
-  <img src="docs/screenshots/history.png" width="24%" alt="History with an expanded game" />
-  <img src="docs/screenshots/card-statistics.png" width="24%" alt="Card statistics" />
-  <img src="docs/screenshots/statistics-image.png" width="24%" alt="Shareable statistics image of a player" />
+  <img src="docs/screenshots/scoreboard.png" width="19%" alt="Scoreboard table" />
+  <img src="docs/screenshots/score-curve.png" width="19%" alt="Score curve of a game" />
+  <img src="docs/screenshots/podium.png" width="19%" alt="Podium at the end of a game" />
+  <img src="docs/screenshots/history.png" width="19%" alt="History with an expanded game" />
+  <img src="docs/screenshots/statistics.png" width="19%" alt="Player statistics" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/card-statistics.png" width="19%" alt="Card statistics" />
+  <img src="docs/screenshots/head-to-head.png" width="19%" alt="Head-to-head between two players" />
+  <img src="docs/screenshots/statistics-image.png" width="19%" alt="Shareable statistics image of a player" />
+  <img src="docs/screenshots/expansion.png" width="19%" alt="2026 expansion cards, enabled one by one" />
+  <img src="docs/screenshots/help.png" width="19%" alt="Built-in help" />
 </p>
 
 ## Architecture
@@ -108,6 +118,11 @@ it are described in [`demo/README.md`](demo/README.md).
 
 Third-party actions are pinned to a commit SHA; Dependabot keeps them up to date.
 The instrumented-tests job can be turned off by setting the repository variable `SKIP_INSTRUMENTED_TESTS` to `true`.
+
+## F-Droid
+
+The store listing lives in [`fastlane/metadata/android`](fastlane/metadata/android); the submission recipe and the
+release checklist are in [`docs/fdroid`](docs/fdroid/README.md).
 
 ## License
 

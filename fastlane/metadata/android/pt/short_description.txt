@@ -1,0 +1,1 @@
+Bloco de pontuação offline para o jogo Skull King, com estatísticas

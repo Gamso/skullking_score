@@ -1,0 +1,17 @@
+<p>Ein Punkteblock für das Kartenspiel <b>Skull King</b>: Gib die Ansagen und Stiche jedes Spielers ein, und die App berechnet die Punkte (Boni inbegriffen) im gewählten Wertungsmodus, statt des Papierblocks.</p>
+
+<p><b>Funktionen</b></p>
+<ul>
+<li>100 % offline, ohne Konto, ohne Werbung, ohne Tracking: ein einziges Handy auf dem Tisch, gehalten vom „Schreiber“</li>
+<li>Grundspiel (Weißer Wal, Kraken, Beute, Tigerin) und die Erweiterung 2026 (Erster Maat Con, Mary Thorne, Wilde 15, Gefleckter Rochen, Davy Jones’ Truhe, Über die Planke, Letzte Salve)</li>
+<li>2 bis 8 Spieler (9 mit der Erweiterung), flexible Runden</li>
+<li>Wertungsmodi: Klassisch, Rascal und Rascal + Kanonenkugel</li>
+<li>Stich-für-Stich-Eingabe (Gewinner, Karte, eroberte Karten) mit Rückgängig / Wiederholen und nicht blockierenden Hinweisen</li>
+<li>Geber-Verfolgung, Spielverlauf mit Suche und Filtern</li>
+<li>Statistiken pro Spieler und Wertungsmodus: Rekorde, Verlaufskurve, Ansage-Erfolg, Kopf-an-Kopf, Kartenstatistiken</li>
+<li>Teilen als Bild: Podium, Punktetabelle, Punktekurve, Spielerstatistiken</li>
+<li>Sicherung: JSON- / CSV-Export, Import, optionale automatische Sicherung in einen Ordner</li>
+<li>Deutsch, Englisch, Französisch, Portugiesisch, Italienisch und Spanisch, helles / dunkles Design, Tablet-Layout, TalkBack-Unterstützung</li>
+</ul>
+
+<p>Inoffizielle Fan-App, ohne Verbindung zu Grandpa Beck's Games. Zum Spielen wird das Kartenspiel benötigt.</p>

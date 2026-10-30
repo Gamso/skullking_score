@@ -1,0 +1,17 @@
+<p>A score pad for the <b>Skull King</b> card game: enter each player's bid and tricks, and the app computes the points (bonuses included) for the chosen scoring mode, replacing the paper score sheet.</p>
+
+<p><b>Features</b></p>
+<ul>
+<li>100% offline, no account, no ads, no tracking: a single phone on the table held by the "scribe"</li>
+<li>Base game (White Whale, Kraken, Loots, Tigress) and the 2026 expansion (First Mate, Mary Thorne, Wild 15, Spotted Ray, Davy Jones' Locker, Walk the Plank, Last Salvo)</li>
+<li>2 to 8 players (9 with the expansion), flexible rounds</li>
+<li>Scoring modes: classic, Rascal, and Rascal + Cannonball</li>
+<li>Live trick entry (winner, card, captured cards) with undo / redo and non-blocking consistency warnings</li>
+<li>Dealer tracking, game history with search and filters</li>
+<li>Statistics per player and scoring mode: records, trend chart, bid success, head-to-head, card statistics</li>
+<li>Sharing as images: podium, scoreboard, score curve, per-player statistics</li>
+<li>Backup: JSON / CSV export, import, optional automatic backup to a folder</li>
+<li>English, French, German, Portuguese, Italian and Spanish, light / dark theme, tablet layouts, TalkBack support</li>
+</ul>
+
+<p>This is an unofficial fan-made app, not affiliated with Grandpa Beck's Games. You need the card game to play.</p>

@@ -1,0 +1,17 @@
+<p>Um bloco de pontuação para o jogo de cartas <b>Skull King</b>: insira as apostas e as vazas de cada jogador e o app calcula os pontos (bônus incluídos) conforme o modo de pontuação escolhido, no lugar da folha de papel.</p>
+
+<p><b>Recursos</b></p>
+<ul>
+<li>100% offline, sem conta, sem anúncios, sem rastreamento: um único celular na mesa, nas mãos do "escriba"</li>
+<li>Jogo base (Baleia Branca, Kraken, Saques, Tigresa) e a expansão 2026 (Imediato Con, Mary Thorne, 15 curinga, Raia-pintada, Baú de Davy Jones, Caminhar na prancha, Última salva)</li>
+<li>De 2 a 8 jogadores (9 com a expansão), rodadas flexíveis</li>
+<li>Modos de pontuação: clássico, Rascal e Rascal + Bala de canhão</li>
+<li>Registro vaza a vaza (vencedor, carta, cartas capturadas) com desfazer / refazer e avisos de coerência não bloqueantes</li>
+<li>Controle do carteador, histórico de partidas com busca e filtros</li>
+<li>Estatísticas por jogador e modo: recordes, curva de evolução, acerto das apostas, confronto direto, estatísticas das cartas</li>
+<li>Compartilhamento como imagem: pódio, placar, curva de pontuação, estatísticas por jogador</li>
+<li>Backup: exportação JSON / CSV, importação, backup automático opcional em uma pasta</li>
+<li>Português, inglês, francês, alemão, italiano e espanhol, tema claro / escuro, layout para tablet, compatível com TalkBack</li>
+</ul>
+
+<p>App não oficial feito por um fã, sem vínculo com a Grandpa Beck's Games. É preciso ter o jogo de cartas para jogar.</p>
