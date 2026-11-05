@@ -95,6 +95,16 @@ jobs:
       - name: Coverage summary
         if: always()
         run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
+      # Codecov merges this report with the instrumented one. The token is missing on Dependabot and fork pull
+      # requests: the upload is then skipped without failing the job.
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6.0.2
+        if: ${{ !cancelled() }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: core-scoring/build/reports/jacoco/test/jacocoTestReport.xml,app/build/reports/coverage/test/debug/report.xml
+          flags: unit
+          fail_ci_if_error: false
       # Shows each failing test as a check in the pull request. The token of a Dependabot or fork pull request is
       # read-only, in which case the report cannot be published: that must not fail the job.
       - name: Test report
@@ -186,6 +196,14 @@ jobs:
       - name: Coverage summary
         if: always()
         run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6.0.2
+        if: ${{ !cancelled() }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: app/build/reports/coverage/androidTest/debug/connected/report.xml
+          flags: instrumented
+          fail_ci_if_error: false
       - name: Test report
         uses: dorny/test-reporter@d1b5dff021aa968b288b02285a8bf47471c5928a # v3.2.0
         if: ${{ !cancelled() }}
