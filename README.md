@@ -16,7 +16,7 @@ Your games stay on your phone.
   <img src="docs/screenshots/home.png" width="19%" alt="Home screen with a game in progress" />
   <img src="docs/screenshots/new-game.png" width="19%" alt="New game: players in table order and dealer" />
   <img src="docs/screenshots/bids.png" width="19%" alt="Bids of a round" />
-  <img src="docs/screenshots/play.png" width="19%" alt="Round in progress, trick by trick" />
+  <img src="docs/screenshots/play.png" width="19%" alt="Round state: bids against tricks won, tricks and events" />
   <img src="docs/screenshots/trick-entry.png" width="19%" alt="Trick entry: winner, card and captured cards" />
 </p>
 
@@ -82,7 +82,7 @@ A mistake? Undo the last trick, or correct any past round: the whole game is rec
 - Built-in help with search: card hierarchy, scoring, expansion and FAQ, aligned with the official rules
 
 <p align="center">
-  <img src="docs/screenshots/scoreboard.png" width="19%" alt="Scoreboard table" />
+  <img src="docs/screenshots/scoreboard.png" width="19%" alt="Scoreboard ranking with the points of the last round" />
   <img src="docs/screenshots/score-curve.png" width="19%" alt="Score curve of a game" />
   <img src="docs/screenshots/podium.png" width="19%" alt="Podium at the end of a game" />
   <img src="docs/screenshots/history.png" width="19%" alt="History with an expanded game" />
@@ -168,7 +168,8 @@ global coverage shown by the badge above and comments on each pull request (`uni
 
 [`demo/skullking-demo.json`](demo/README.md) contains 12 players and 40 finished games (3 to 8 players, with or
 without the expansion, in the three modes). Import it from **History → Import**. The procedure and how to regenerate
-it are described in [`demo/README.md`](demo/README.md). The screenshots above are taken with it.
+it are described in [`demo/README.md`](demo/README.md). The screenshots above are taken with it, following
+[`docs/screenshots/README.md`](docs/screenshots/README.md).
 
 ## Continuous integration
 
