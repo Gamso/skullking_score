@@ -1,6 +1,7 @@
 # Skull King Score
 
 [![CI](https://github.com/Gamso/skullking_score/actions/workflows/ci.yml/badge.svg)](https://github.com/Gamso/skullking_score/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/Gamso/skullking_score/graph/badge.svg)](https://codecov.io/gh/Gamso/skullking_score)
 [![Release](https://img.shields.io/github/v/release/Gamso/skullking_score)](https://github.com/Gamso/skullking_score/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 ![Android 8.0+](https://img.shields.io/badge/Android-8.0%2B-3DDC84)
@@ -160,6 +161,9 @@ JaCoCo reports are generated for the unit tests and for the instrumented tests:
 ./gradlew :app:createDebugAndroidTestCoverageReport      # needs an emulator or a phone
 ```
 
+The CI sends these reports to [Codecov](https://codecov.io/gh/Gamso/skullking_score), which merges them into the
+global coverage shown by the badge above and comments on each pull request (`unit` and `instrumented` flags).
+
 ## Demo data
 
 [`demo/skullking-demo.json`](demo/README.md) contains 12 players and 40 finished games (3 to 8 players, with or
@@ -170,7 +174,7 @@ it are described in [`demo/README.md`](demo/README.md). The screenshots above ar
 
 | Workflow                                                           | Trigger         | Content                                                                         |
 | ------------------------------------------------------------------ | --------------- | ------------------------------------------------------------------------------- |
-| [`ci.yml`](.github/workflows/ci.yml)                               | push `main`, PR | Ktlint, Detekt, Android Lint, unit tests with coverage, instrumented tests (emulator, cached AVD), test reports as checks, then debug APK as an artifact |
+| [`ci.yml`](.github/workflows/ci.yml)                               | push `main`, PR | Ktlint, Detekt, Android Lint, unit tests with coverage, instrumented tests (emulator, cached AVD), coverage sent to Codecov, test reports as checks, then debug APK as an artifact |
 | [`dependency-review.yml`](.github/workflows/dependency-review.yml) | PR              | Flags newly added dependencies that have known vulnerabilities                  |
 | [`release.yml`](.github/workflows/release.yml)                     | tag `v*`        | Checks, release APK + AAB, GitHub release publication                          |
 
