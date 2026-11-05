@@ -90,7 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Manche %1$d</string>
     <string name="round_title_extra">Manche %1$d (supplémentaire)</string>
-    <string name="round_title_cards">Manche %1$d · cartes : %2$d</string>
     <string name="prepare_cards_question">Nombre de cartes distribuées</string>
     <string name="prepare_cards_hint">Proposé : manche précédente + 1. Modifiable d’un toucher.</string>
     <string name="prepare_start_bids">Commencer les annonces</string>
@@ -497,4 +496,8 @@
     <string name="setup_choose_dealer">Choisir le donneur</string>
     <string name="results_tap_trick">Touchez un pli pour le corriger : gagnant, cartes gagnées, Butin, Davy Jones…</string>
     <string name="trick_choose_winner">Choisir le gagnant</string>
+    <string name="trick_round_state">État de la manche</string>
+    <string name="trick_con_powers">Pouvoirs des pirates capturés par le Second (facultatif)</string>
+    <string name="stepper_decrease">Diminuer</string>
+    <string name="stepper_increase">Augmenter</string>
 </resources>

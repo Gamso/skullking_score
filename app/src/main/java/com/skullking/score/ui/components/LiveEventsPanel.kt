@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -29,8 +30,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.skullking.score.R
+import com.skullking.score.core.DeckRules
 import com.skullking.score.core.ExpansionCard
 import com.skullking.score.core.SeaMonster
 import com.skullking.score.domain.model.Game
@@ -84,6 +87,8 @@ fun LiveEventsPanel(
     askWinner: Boolean = true,
     /** False when the events are entered elsewhere (trick dialog): only the log is shown. */
     showButtons: Boolean = true,
+    /** When set, only the log scrolls, within this height. */
+    logMaxHeight: Dp? = null,
 ) {
     var dialog by remember { mutableStateOf<EventDialog?>(null) }
     val hasChest = ExpansionCard.DAVY_JONES_CHEST in game.expansionCards
@@ -96,12 +101,15 @@ fun LiveEventsPanel(
                     text = "💰 " + stringResource(R.string.event_loot_button),
                     selected = false,
                     onClick = { dialog = EventDialog.LootWho },
+                    // The deck holds only two Loot cards.
+                    enabled = round.activeLoots.size < DeckRules.MAX_LOOT,
                 )
                 if (hasChest) {
                     CompactChip(
                         text = stringResource(R.string.event_davy_jones_button),
                         selected = false,
                         onClick = { dialog = EventDialog.ChestWho },
+                        enabled = round.activeCaptures.size < DeckRules.MAX_DAVY_JONES,
                     )
                 }
             }
@@ -142,30 +150,13 @@ fun LiveEventsPanel(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        items.forEach { item ->
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = if (item.cancelled) "${item.text} ($cancelledLabel)" else item.text,
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium,
-                    textDecoration = if (item.cancelled) TextDecoration.LineThrough else null,
-                    color = if (item.cancelled) {
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
-                    },
-                )
-                if (!item.cancelled) {
-                    TextButton(
-                        onClick = {
-                            when (item) {
-                                is LogItem.Loot -> onCancelLoot(item.id)
-                                is LogItem.Chest -> onCancelDavyJones(item.id)
-                            }
-                        },
-                    ) { Text(stringResource(R.string.cancel_event)) }
-                }
-            }
+        val logModifier = if (logMaxHeight != null) {
+            Modifier.heightIn(max = logMaxHeight).verticalScroll(rememberScrollState())
+        } else {
+            Modifier
+        }
+        Column(modifier = logModifier) {
+            items.forEach { item -> LogLine(item, cancelledLabel, onCancelLoot, onCancelDavyJones) }
         }
     }
 
@@ -297,5 +288,37 @@ fun MonsterIcon(monster: SeaMonster, modifier: Modifier = Modifier) {
             contentDescription = null,
             modifier = modifier.size(28.dp),
         )
+    }
+}
+
+@Composable
+private fun LogLine(
+    item: LogItem,
+    cancelledLabel: String,
+    onCancelLoot: (Long) -> Unit,
+    onCancelDavyJones: (Long) -> Unit,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = if (item.cancelled) "${item.text} ($cancelledLabel)" else item.text,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodyMedium,
+            textDecoration = if (item.cancelled) TextDecoration.LineThrough else null,
+            color = if (item.cancelled) {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
+        )
+        if (!item.cancelled) {
+            TextButton(
+                onClick = {
+                    when (item) {
+                        is LogItem.Loot -> onCancelLoot(item.id)
+                        is LogItem.Chest -> onCancelDavyJones(item.id)
+                    }
+                },
+            ) { Text(stringResource(R.string.cancel_event)) }
+        }
     }
 }

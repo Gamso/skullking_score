@@ -90,7 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Ronda %1$d</string>
     <string name="round_title_extra">Ronda %1$d (extra)</string>
-    <string name="round_title_cards">Ronda %1$d · cartas: %2$d</string>
     <string name="prepare_cards_question">Cartas repartidas</string>
     <string name="prepare_cards_hint">Sugerencia: ronda anterior + 1. Cámbialo con un toque.</string>
     <string name="prepare_start_bids">Empezar los envites</string>
@@ -498,4 +497,8 @@
     <string name="setup_choose_dealer">Elegir quién reparte</string>
     <string name="results_tap_trick">Toca una baza para corregirla: ganador, cartas ganadas, Botín, Davy Jones…</string>
     <string name="trick_choose_winner">Elige al ganador</string>
+    <string name="trick_round_state">Estado de la ronda</string>
+    <string name="trick_con_powers">Poderes de los piratas capturados por el Contramaestre Con (opcional)</string>
+    <string name="stepper_decrease">Disminuir</string>
+    <string name="stepper_increase">Aumentar</string>
 </resources>

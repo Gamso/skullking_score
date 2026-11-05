@@ -90,7 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Round %1$d</string>
     <string name="round_title_extra">Round %1$d (extra)</string>
-    <string name="round_title_cards">Round %1$d · cards: %2$d</string>
     <string name="prepare_cards_question">Cards dealt</string>
     <string name="prepare_cards_hint">Suggested: previous round + 1. Change it with a tap.</string>
     <string name="prepare_start_bids">Start the bids</string>
@@ -497,4 +496,8 @@
     <string name="setup_choose_dealer">Choose the dealer</string>
     <string name="results_tap_trick">Tap a trick to correct it: winner, cards won, Loot, Davy Jones…</string>
     <string name="trick_choose_winner">Choose the winner</string>
+    <string name="trick_round_state">Round state</string>
+    <string name="trick_con_powers">Powers of the pirates captured by the First Mate Con (optional)</string>
+    <string name="stepper_decrease">Decrease</string>
+    <string name="stepper_increase">Increase</string>
 </resources>

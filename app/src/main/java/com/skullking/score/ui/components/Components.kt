@@ -56,6 +56,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -217,6 +219,9 @@ fun PlayerLabel(player: Player, modifier: Modifier = Modifier, subtitle: String?
     }
 }
 
+/** Opacity of a disabled choice, as in Material. */
+private const val DISABLED_ALPHA = 0.38f
+
 /** Counter with big - / + buttons: usable with one hand without aiming. */
 @Composable
 fun Stepper(
@@ -250,10 +255,11 @@ private fun StepperRow(
     valueWidth: Dp,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        val decrease = stringResource(R.string.stepper_decrease)
         FilledTonalIconButton(
             onClick = { onValueChange((value - 1).coerceAtLeast(range.first)) },
             enabled = enabled && value > range.first,
-            modifier = Modifier.size(button),
+            modifier = Modifier.size(button).semantics { contentDescription = decrease },
         ) {
             Text("−", fontSize = if (compact) 18.sp else 22.sp)
         }
@@ -269,7 +275,7 @@ private fun StepperRow(
             enabled = enabled && value < range.last,
             modifier = Modifier.size(button),
         ) {
-            Icon(Icons.Filled.Add, contentDescription = null)
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase))
         }
     }
 }
@@ -285,15 +291,26 @@ fun CompactChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leading: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true,
 ) {
+    val colors = MaterialTheme.colorScheme
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
         Surface(
             selected = selected,
             onClick = onClick,
+            enabled = enabled,
             shape = MaterialTheme.shapes.small,
-            color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
-            contentColor = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
-            border = if (selected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            color = if (selected) colors.primary else Color.Transparent,
+            contentColor = when {
+                selected -> colors.onPrimary
+                enabled -> colors.onSurface
+                else -> colors.onSurface.copy(alpha = DISABLED_ALPHA)
+            },
+            border = when {
+                selected -> null
+                enabled -> BorderStroke(1.dp, colors.outline)
+                else -> BorderStroke(1.dp, colors.outline.copy(alpha = DISABLED_ALPHA))
+            },
             modifier = modifier.height(36.dp).widthIn(min = 36.dp),
         ) {
             Row(

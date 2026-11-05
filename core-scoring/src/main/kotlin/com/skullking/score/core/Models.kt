@@ -145,7 +145,7 @@ object DeckRules {
         }
     }
 
-    /** Pirates pouvant exister : 5 + Tigresse + Mary Thorne (extension). */
+    /** Pirates that can be in play: 5 + Tigress + Mary Thorne (expansion). */
     fun maxPirates(expansion: Set<ExpansionCard>): Int = 5 + 1 + if (ExpansionCard.MARY_THORNE in expansion) 1 else 0
 
     const val MAX_MERMAIDS = 2
@@ -156,4 +156,41 @@ object DeckRules {
     const val MAX_SEVENS = 4
     const val MAX_EIGHTS = 4
     const val MAX_LOOT = 2
+    const val MAX_DAVY_JONES = 1
+
+    /** Sea monsters a Davy Jones' Locker can destroy: Kraken, White Whale, Spotted Ray. */
+    const val MAX_SEA_MONSTERS = 3
+
+    /** Most cards of a bonus type that the deck holds, hence that can be captured in a trick or a round. */
+    fun maxCaptured(type: BonusType, expansion: Set<ExpansionCard>): Int = when (type) {
+        BonusType.COLORED_14 -> MAX_COLORED_14
+        BonusType.BLACK_14 -> MAX_BLACK_14
+        BonusType.MERMAID_BY_PIRATE -> MAX_MERMAIDS
+        BonusType.PIRATE_BY_SKULL_KING -> maxPirates(expansion)
+        BonusType.SKULL_KING_BY_MERMAID -> MAX_SKULL_KING
+        BonusType.CON_CAPTURED -> MAX_CON
+        BonusType.EIGHT -> MAX_EIGHTS
+        BonusType.SEVEN -> MAX_SEVENS
+        BonusType.LOOT -> MAX_LOOT
+        BonusType.DAVY_JONES -> MAX_SEA_MONSTERS
+    }
+}
+
+/** Which captured cards can score a bonus, depending on the card that won the trick. */
+object CaptureRules {
+    private val NUMBERED = setOf(BonusType.COLORED_14, BonusType.BLACK_14, BonusType.EIGHT, BonusType.SEVEN)
+
+    /**
+     * Bonuses possible in a trick won with [card]. A pirate captures mermaids, the Skull King captures pirates
+     * and the First Mate Con, a mermaid captures the Skull King and the First Mate Con. The First Mate Con scores
+     * nothing for the pirates he captures, and a numbered card (or a White Whale / Spotted Ray trick) captures
+     * no character. Numbered cards (14s, 7s, 8s) can be captured by any winner.
+     */
+    fun allowed(card: WinningCard?): Set<BonusType> = NUMBERED + when (card) {
+        WinningCard.PIRATE -> setOf(BonusType.MERMAID_BY_PIRATE)
+        WinningCard.SKULL_KING -> setOf(BonusType.PIRATE_BY_SKULL_KING, BonusType.CON_CAPTURED)
+        WinningCard.MERMAID -> setOf(BonusType.SKULL_KING_BY_MERMAID, BonusType.CON_CAPTURED)
+        WinningCard.FIRST_MATE, WinningCard.OTHER -> emptySet()
+        null -> BonusType.entries.toSet()
+    }
 }

@@ -131,6 +131,14 @@ data class RoundDetails(
     val currentTrickNumber: Int get() = tricks.size + 1
 
     val activeLoots: List<LootLink> get() = loots.filter { it.isActive }
+
+    /** Players who played a Loot or a Davy Jones' Locker in trick [number]. */
+    fun eventPlayerIds(number: Int): Set<Long> =
+        activeLoots.filter { it.trickNumber == number }.map { it.lootPlayerId }.toSet() + chestPlayerIds(number)
+
+    /** Players who played a Davy Jones' Locker in trick [number]. */
+    fun chestPlayerIds(number: Int): Set<Long> =
+        activeCaptures.filter { it.trickNumber == number }.map { it.playerId }.toSet()
     val activeCaptures: List<DavyJonesCapture> get() = captures.filter { it.isActive }
 
     fun entry(playerId: Long): PlayerRound? = entries.firstOrNull { it.playerId == playerId }

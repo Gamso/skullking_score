@@ -90,7 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Runde %1$d</string>
     <string name="round_title_extra">Runde %1$d (extra)</string>
-    <string name="round_title_cards">Runde %1$d · Karten: %2$d</string>
     <string name="prepare_cards_question">Ausgeteilte Karten</string>
     <string name="prepare_cards_hint">Vorschlag: vorherige Runde + 1. Mit einem Tipp änderbar.</string>
     <string name="prepare_start_bids">Ansagen beginnen</string>
@@ -497,4 +496,8 @@
     <string name="setup_choose_dealer">Geber wählen</string>
     <string name="results_tap_trick">Tippe auf einen Stich, um ihn zu korrigieren: Gewinner, gewonnene Karten, Beute, Davy Jones …</string>
     <string name="trick_choose_winner">Gewinner wählen</string>
+    <string name="trick_round_state">Stand der Runde</string>
+    <string name="trick_con_powers">Kräfte der vom Ersten Maat Con eroberten Piraten (optional)</string>
+    <string name="stepper_decrease">Verringern</string>
+    <string name="stepper_increase">Erhöhen</string>
 </resources>

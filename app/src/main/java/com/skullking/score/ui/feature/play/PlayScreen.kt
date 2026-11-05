@@ -30,7 +30,9 @@ import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -65,6 +67,7 @@ import com.skullking.score.domain.undo.UndoKind
 import com.skullking.score.domain.undo.UndoState
 import com.skullking.score.domain.usecase.EditRoundUseCase
 import com.skullking.score.ui.components.ActionBar
+import com.skullking.score.ui.components.BidsReminder
 import com.skullking.score.ui.components.DealerLine
 import com.skullking.score.ui.components.KeepScreenOn
 import com.skullking.score.ui.components.LiveEventsPanel
@@ -239,6 +242,15 @@ fun PlayScreen(
     // Number of the trick open in the entry dialog (new trick or correction); null = closed.
     var editing by remember { mutableStateOf<Int?>(null) }
     val snackbar = remember { SnackbarHostState() }
+    // Once the bids are confirmed, the entry of the first trick opens right away.
+    var firstTrickOpened by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(current != null) {
+        val tricks = current?.round?.details?.tricks ?: return@LaunchedEffect
+        if (!firstTrickOpened) {
+            firstTrickOpened = true
+            if (tricks.isEmpty()) editing = 1
+        }
+    }
     KeepScreenOn()
     UndoNotices(viewModel.notices, snackbar)
 
@@ -246,7 +258,7 @@ fun PlayScreen(
         title = if (current == null) {
             stringResource(R.string.app_name)
         } else {
-            stringResource(R.string.round_title_cards, current.round.round.number, current.round.round.cardsDealt)
+            stringResource(R.string.round_title_plain, current.round.round.number)
         },
         onBack = onBack,
         maxContentWidth = Dp.Unspecified,
@@ -290,18 +302,38 @@ fun PlayScreen(
     if (current != null && details != null && number != null) {
         val game = current.scored.game
         val existing = details.tricks.firstOrNull { it.number == number }
-        TrickDialog(
-            trickNumber = number,
-            players = game.players,
-            expansion = game.expansionCards,
-            initial = existing?.toDraft(),
-            recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
-            onConfirm = { draft, events ->
-                viewModel.recordTrick(number, draft, events)
-                editing = null
-            },
-            onDismiss = { editing = null },
-        )
+        val cards = details.round.cardsDealt
+        // One screen per trick: validating goes straight to the next one, back returns to the previous one.
+        key(number) {
+            TrickDialog(
+                trickNumber = number,
+                players = game.players,
+                expansion = game.expansionCards,
+                initial = existing?.toDraft(),
+                isLastTrick = number == cards,
+                lootsPlayed = details.activeLoots.size,
+                chestsPlayed = details.activeCaptures.size,
+                eventPlayerIds = details.eventPlayerIds(number),
+                chestPlayerIds = details.chestPlayerIds(number),
+                recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
+                roundState = {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        BidsReminder(game.players, details)
+                        RoundProgress(current, viewModel, onEditTrick = { editing = it }, inDialog = true)
+                    }
+                },
+                onConfirm = { draft, events ->
+                    viewModel.recordTrick(number, draft, events)
+                    editing = (number + 1).takeIf { it <= cards }
+                },
+                onPrevious = if (number > 1) {
+                    { editing = number - 1 }
+                } else {
+                    null
+                },
+                onDismiss = { editing = null },
+            )
+        }
     }
 
     if (confirmWarnings && current != null) {
@@ -326,7 +358,6 @@ fun PlayScreen(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PlayContent(
     state: PlayUiState,
@@ -336,58 +367,14 @@ private fun PlayContent(
 ) {
     val game = state.scored.game
     val details = state.round.details
-    val totalTricks = details.round.cardsDealt
-    val allRecorded = details.tricks.size >= totalTricks
-    val hasEvents = details.loots.isNotEmpty() || details.captures.isNotEmpty()
 
     val wide = rememberWidthClass() != WidthClass.COMPACT
     val reminder: @Composable ColumnScope.() -> Unit = {
         DealerLine(game, details.round.number, onChoose = viewModel::setDealer)
-        BidsReminder(state)
+        BidsReminder(game.players, details)
     }
     val tricksAndEvents: @Composable ColumnScope.() -> Unit = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = if (allRecorded) {
-                    stringResource(R.string.play_all_tricks_done)
-                } else {
-                    stringResource(R.string.play_trick_progress, details.currentTrickNumber, totalTricks)
-                },
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-            )
-            if (details.tricks.isNotEmpty()) {
-                TextButton(onClick = viewModel::deleteLastTrick) {
-                    Text(stringResource(R.string.play_undo_last_trick))
-                }
-            }
-        }
-        if (details.tricks.isNotEmpty()) {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                details.tricks.forEach { trick ->
-                    SuggestionChip(
-                        onClick = { onEditTrick(trick.number) },
-                        label = { Text(trickLabel(trick, game.players.associate { it.id to it.name })) },
-                    )
-                }
-            }
-        }
-
-        // Loot and Davy Jones are entered in the trick dialog: only the log stays here.
-        if (hasEvents) {
-            SectionTitle(stringResource(R.string.play_live_events))
-            LiveEventsPanel(
-                game = game,
-                round = details,
-                onAddLoot = viewModel::addLoot,
-                onAddDavyJones = viewModel::addDavyJones,
-                onCancelLoot = viewModel::cancelLoot,
-                onCancelDavyJones = viewModel::cancelDavyJones,
-                askWinner = false,
-                showButtons = false,
-            )
-        }
+        RoundProgress(state, viewModel, onEditTrick)
     }
     if (wide) {
         Row(
@@ -421,95 +408,66 @@ private fun PlayContent(
     }
 }
 
-/**
- * Bids of the round, collapsible. The header recalls the total bid against the number of tricks; each
- * player shows "tricks / bid", colored once the bid is made or exceeded.
- */
+/** Progress of the round: tricks entered (tap one to correct it) and the log of the events played. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun BidsReminder(state: PlayUiState) {
+private fun RoundProgress(
+    state: PlayUiState,
+    viewModel: PlayViewModel,
+    onEditTrick: (Int) -> Unit,
+    /** In the round state dialog: only the event log scrolls. */
+    inDialog: Boolean = false,
+) {
     val game = state.scored.game
     val details = state.round.details
-    var expanded by rememberSaveable { mutableStateOf(true) }
-    val totalBid = details.entries.sumOf { it.effectiveBid }
-    val cards = details.round.cardsDealt
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = !expanded }
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    stringResource(R.string.play_bids_reminder),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    stringResource(R.string.play_bids_summary, totalBid, cards) + bidBalance(totalBid - cards),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Icon(
-                if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                contentDescription = stringResource(if (expanded) R.string.collapse else R.string.expand),
+    val totalTricks = details.round.cardsDealt
+    val allRecorded = details.tricks.size >= totalTricks
+    val hasEvents = details.loots.isNotEmpty() || details.captures.isNotEmpty()
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = if (allRecorded) {
+                    stringResource(R.string.play_all_tricks_done)
+                } else {
+                    stringResource(R.string.play_trick_progress, details.currentTrickNumber, totalTricks)
+                },
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
             )
-        }
-        AnimatedVisibility(visible = expanded) {
-            // Two players per line: the whole table fits in a few lines.
-            Column(
-                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                game.players.chunked(2).forEach { pair ->
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        pair.forEach { player ->
-                            val entry = details.entry(player.id)
-                            BidCell(
-                                player = player,
-                                bid = entry?.effectiveBid ?: 0,
-                                tricks = entry?.tricks ?: 0,
-                                modifier = Modifier.weight(1f),
-                            )
-                        }
-                        if (pair.size == 1) Spacer(Modifier.weight(1f))
-                    }
+            if (details.tricks.isNotEmpty()) {
+                TextButton(onClick = viewModel::deleteLastTrick) {
+                    Text(stringResource(R.string.play_undo_last_trick))
                 }
             }
         }
+        if (details.tricks.isNotEmpty()) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                details.tricks.forEach { trick ->
+                    SuggestionChip(
+                        onClick = { onEditTrick(trick.number) },
+                        label = { Text(trickLabel(trick, game.players.associate { it.id to it.name })) },
+                    )
+                }
+            }
+        }
+
+        // Loot and Davy Jones are entered in the trick screen: only the log stays here.
+        if (hasEvents) {
+            if (!inDialog) SectionTitle(stringResource(R.string.play_live_events))
+            LiveEventsPanel(
+                game = game,
+                round = details,
+                onAddLoot = viewModel::addLoot,
+                onAddDavyJones = viewModel::addDavyJones,
+                onCancelLoot = viewModel::cancelLoot,
+                onCancelDavyJones = viewModel::cancelDavyJones,
+                askWinner = false,
+                showButtons = false,
+                logMaxHeight = if (inDialog) LOG_MAX_HEIGHT else null,
+            )
+        }
     }
 }
 
-@Composable
-private fun bidBalance(delta: Int): String = when {
-    delta > 0 -> " · " + stringResource(R.string.play_bids_over, delta)
-    delta < 0 -> " · " + stringResource(R.string.play_bids_under, -delta)
-    else -> ""
-}
-
-@Composable
-private fun BidCell(player: Player, bid: Int, tricks: Int, modifier: Modifier = Modifier) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        PlayerAvatar(player, size = 24.dp)
-        Text(
-            player.name,
-            modifier = Modifier.weight(1f).padding(horizontal = 6.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        Text(
-            text = "$tricks / $bid",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = when {
-                tricks > bid -> ScoreNegative
-                tricks == bid -> MaterialTheme.colorScheme.primary
-                else -> MaterialTheme.colorScheme.onSurface
-            },
-        )
-    }
-}
+private val LOG_MAX_HEIGHT = 200.dp

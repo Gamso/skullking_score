@@ -97,6 +97,11 @@ jobs:
         run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
       # Codecov merges this report with the instrumented one. The token is missing on Dependabot and fork pull
       # requests: the upload is then skipped without failing the job.
+      - name: Failing tests
+        if: failure()
+        run: >-
+          python3 scripts/test_failures.py "core-scoring/build/test-results/test/*.xml"
+          "app/build/test-results/testDebugUnitTest/*.xml"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6.0.2
         if: ${{ !cancelled() }}
@@ -196,6 +201,10 @@ jobs:
       - name: Coverage summary
         if: always()
         run: python3 scripts/coverage_summary.py >> "$GITHUB_STEP_SUMMARY"
+      # Failing tests as annotations: readable on the pull request without downloading the report artifact.
+      - name: Failing tests
+        if: failure()
+        run: python3 scripts/test_failures.py "app/build/outputs/androidTest-results/connected/**/*.xml"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6.0.2
         if: ${{ !cancelled() }}

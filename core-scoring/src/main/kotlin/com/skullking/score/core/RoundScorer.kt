@@ -58,9 +58,12 @@ object RoundScorer {
         ruleSet: RuleSet = RuleSet(),
     ): Map<Long, ScoreBreakdown> {
         val byId = inputs.associateBy { it.playerId }
-        // A Loot is only valid if both linked players make their bid (exactly).
+        // A Loot is only valid if both linked players make their bid (exactly). A Loot won by its own player
+        // forms no alliance (official rules): it scores nothing.
         val validLoots = loots.filter { loot ->
-            byId[loot.lootPlayerId]?.isExact == true && byId[loot.trickWinnerId]?.isExact == true
+            loot.lootPlayerId != loot.trickWinnerId &&
+                byId[loot.lootPlayerId]?.isExact == true &&
+                byId[loot.trickWinnerId]?.isExact == true
         }
         return inputs.associate { input ->
             val lootCount = validLoots.count {
