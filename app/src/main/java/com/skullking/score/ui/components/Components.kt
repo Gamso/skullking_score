@@ -56,6 +56,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -253,10 +255,11 @@ private fun StepperRow(
     valueWidth: Dp,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        val decrease = stringResource(R.string.stepper_decrease)
         FilledTonalIconButton(
             onClick = { onValueChange((value - 1).coerceAtLeast(range.first)) },
             enabled = enabled && value > range.first,
-            modifier = Modifier.size(button),
+            modifier = Modifier.size(button).semantics { contentDescription = decrease },
         ) {
             Text("−", fontSize = if (compact) 18.sp else 22.sp)
         }
@@ -272,7 +275,7 @@ private fun StepperRow(
             enabled = enabled && value < range.last,
             modifier = Modifier.size(button),
         ) {
-            Icon(Icons.Filled.Add, contentDescription = null)
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase))
         }
     }
 }

@@ -499,4 +499,6 @@
     <string name="trick_choose_winner">Escolha o vencedor</string>
     <string name="trick_round_state">Situação da rodada</string>
     <string name="trick_con_powers">Poderes dos piratas capturados pelo Imediato Con (opcional)</string>
+    <string name="stepper_decrease">Diminuir</string>
+    <string name="stepper_increase">Aumentar</string>
 </resources>

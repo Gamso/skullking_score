@@ -498,4 +498,6 @@
     <string name="trick_choose_winner">Choisir le gagnant</string>
     <string name="trick_round_state">État de la manche</string>
     <string name="trick_con_powers">Pouvoirs des pirates capturés par le Second (facultatif)</string>
+    <string name="stepper_decrease">Diminuer</string>
+    <string name="stepper_increase">Augmenter</string>
 </resources>

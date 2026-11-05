@@ -185,7 +185,7 @@ private fun CapturesSection(cards: CardStats, locale: Locale) {
             )
             ValueRow(
                 stringResource(R.string.cards_bonus_average),
-                "%.1f".format(locale, cards.bonusPoints.toDouble() / cards.playerRounds),
+                "%.1f".format(locale, cards.bonusPoints / cards.playerRounds),
             )
         }
     }

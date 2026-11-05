@@ -498,4 +498,6 @@
     <string name="trick_choose_winner">Gewinner wählen</string>
     <string name="trick_round_state">Stand der Runde</string>
     <string name="trick_con_powers">Kräfte der vom Ersten Maat Con eroberten Piraten (optional)</string>
+    <string name="stepper_decrease">Verringern</string>
+    <string name="stepper_increase">Erhöhen</string>
 </resources>

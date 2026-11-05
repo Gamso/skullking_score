@@ -498,4 +498,6 @@
     <string name="trick_choose_winner">Choose the winner</string>
     <string name="trick_round_state">Round state</string>
     <string name="trick_con_powers">Powers of the pirates captured by the First Mate Con (optional)</string>
+    <string name="stepper_decrease">Decrease</string>
+    <string name="stepper_increase">Increase</string>
 </resources>
