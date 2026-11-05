@@ -2,14 +2,11 @@ package com.skullking.score.ui.feature.bids
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
@@ -51,11 +48,11 @@ import com.skullking.score.domain.undo.UndoKind
 import com.skullking.score.domain.undo.UndoState
 import com.skullking.score.domain.usecase.EditRoundUseCase
 import com.skullking.score.ui.components.ActionBar
-import com.skullking.score.ui.components.CompactChip
 import com.skullking.score.ui.components.DealerLine
 import com.skullking.score.ui.components.KeepScreenOn
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SkullScaffold
+import com.skullking.score.ui.components.Stepper
 import com.skullking.score.ui.components.UndoNotice
 import com.skullking.score.ui.components.UndoNotices
 import com.skullking.score.ui.components.UndoRedoActions
@@ -71,8 +68,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-
-private val BID_NAME_WIDTH = 88.dp
 
 data class BidsUiState(val scored: ScoredGame, val round: ScoredRound) {
     val players: List<Player> get() = scored.game.players
@@ -186,7 +181,7 @@ fun BidsScreen(
         title = if (current == null) {
             stringResource(R.string.app_name)
         } else {
-            stringResource(R.string.round_title_cards, current.round.round.number, current.cards)
+            stringResource(R.string.round_title_plain, current.round.round.number)
         },
         onBack = onBack,
         snackbarHost = { SnackbarHost(snackbar) },
@@ -235,8 +230,7 @@ fun BidsScreen(
     }
 }
 
-/** One thin line per player: name on the left, bid choices on the right (wrapping when there are many). */
-@OptIn(ExperimentalLayoutApi::class)
+/** One line per player: name on the left, bid adjusted with − / + on the right (fits every round size). */
 @Composable
 private fun BidRow(state: BidsUiState, player: Player, viewModel: BidsViewModel) {
     val entry = state.round.details.entry(player.id)
@@ -246,20 +240,16 @@ private fun BidRow(state: BidsUiState, player: Player, viewModel: BidsViewModel)
             PlayerAvatar(player, size = 24.dp)
             Text(
                 player.name,
-                modifier = Modifier.padding(start = 8.dp).width(BID_NAME_WIDTH),
+                modifier = Modifier.padding(start = 8.dp).weight(1f),
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            FlowRow(
-                modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                for (n in 0..state.cards) {
-                    CompactChip(n.toString(), selected = n == selected, onClick = { viewModel.setBid(player.id, n) })
-                }
-            }
+            Stepper(
+                value = selected,
+                onValueChange = { viewModel.setBid(player.id, it) },
+                range = 0..state.cards,
+            )
         }
         // Rascal + Cannonball mode: each player can wager "all or nothing" along with their bid.
         if (state.scored.game.mode == ScoringMode.CANNONBALL) {

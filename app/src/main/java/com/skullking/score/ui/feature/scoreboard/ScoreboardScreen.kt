@@ -307,11 +307,12 @@ private fun RankingTab(scored: ScoredGame) {
         scored.ranking.forEach { entry ->
             val gap = leader - entry.total
             val lastPoints = last?.breakdowns?.get(entry.player.id)?.total
-            val subtitle = listOfNotNull(
-                stringResource(R.string.ranking_gap, formatScore(gap)).takeIf { gap > 0 },
-                lastPoints?.let { stringResource(R.string.ranking_last_round, formatPoints(it)) },
-            ).joinToString(" · ").ifEmpty { null }
-            RankRow(entry, subtitle = subtitle, dense = true)
+            RankRow(
+                entry,
+                subtitle = stringResource(R.string.ranking_gap, formatScore(gap)).takeIf { gap > 0 },
+                dense = true,
+                lastRoundPoints = lastPoints,
+            )
         }
     }
 }

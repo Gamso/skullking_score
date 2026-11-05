@@ -217,6 +217,9 @@ fun PlayerLabel(player: Player, modifier: Modifier = Modifier, subtitle: String?
     }
 }
 
+/** Opacity of a disabled choice, as in Material. */
+private const val DISABLED_ALPHA = 0.38f
+
 /** Counter with big - / + buttons: usable with one hand without aiming. */
 @Composable
 fun Stepper(
@@ -285,15 +288,26 @@ fun CompactChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leading: (@Composable () -> Unit)? = null,
+    enabled: Boolean = true,
 ) {
+    val colors = MaterialTheme.colorScheme
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
         Surface(
             selected = selected,
             onClick = onClick,
+            enabled = enabled,
             shape = MaterialTheme.shapes.small,
-            color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
-            contentColor = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
-            border = if (selected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            color = if (selected) colors.primary else Color.Transparent,
+            contentColor = when {
+                selected -> colors.onPrimary
+                enabled -> colors.onSurface
+                else -> colors.onSurface.copy(alpha = DISABLED_ALPHA)
+            },
+            border = when {
+                selected -> null
+                enabled -> BorderStroke(1.dp, colors.outline)
+                else -> BorderStroke(1.dp, colors.outline.copy(alpha = DISABLED_ALPHA))
+            },
             modifier = modifier.height(36.dp).widthIn(min = 36.dp),
         ) {
             Row(

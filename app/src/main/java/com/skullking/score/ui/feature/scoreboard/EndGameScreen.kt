@@ -31,6 +31,7 @@ import com.skullking.score.domain.model.RankedPlayer
 import com.skullking.score.ui.components.ActionBar
 import com.skullking.score.ui.components.PlayerAvatar
 import com.skullking.score.ui.components.SkullScaffold
+import com.skullking.score.ui.components.formatPoints
 import com.skullking.score.ui.components.formatScore
 
 private fun medalFor(rank: Int): String = when (rank) {
@@ -86,7 +87,13 @@ fun EndGameScreen(
 
 /** @param dense thin line for the scoreboard, where the whole ranking must fit without scrolling */
 @Composable
-internal fun RankRow(entry: RankedPlayer, subtitle: String? = null, dense: Boolean = false) {
+internal fun RankRow(
+    entry: RankedPlayer,
+    subtitle: String? = null,
+    dense: Boolean = false,
+    /** Points scored in the round that just ended, shown under the total. */
+    lastRoundPoints: Double? = null,
+) {
     val podium = entry.rank <= 3 && !dense
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -151,11 +158,20 @@ internal fun RankRow(entry: RankedPlayer, subtitle: String? = null, dense: Boole
                     )
                 }
             }
-            Text(
-                formatScore(entry.total),
-                style = if (podium) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-            )
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    formatScore(entry.total),
+                    style = if (podium) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+                if (lastRoundPoints != null) {
+                    Text(
+                        stringResource(R.string.ranking_last_round, formatPoints(lastRoundPoints)),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
         }
     }
 }

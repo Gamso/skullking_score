@@ -355,6 +355,9 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
                 existing.winningPirate,
             ),
             recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
+            isLastTrick = number == details.round.cardsDealt,
+            lootsPlayed = details.activeLoots.size,
+            chestsPlayed = details.activeCaptures.size,
             onConfirm = { draft, events ->
                 viewModel.recordTrick(number, draft, events)
                 editing = null

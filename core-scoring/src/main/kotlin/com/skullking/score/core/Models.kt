@@ -145,7 +145,7 @@ object DeckRules {
         }
     }
 
-    /** Pirates pouvant exister : 5 + Tigresse + Mary Thorne (extension). */
+    /** Pirates that can be in play: 5 + Tigress + Mary Thorne (expansion). */
     fun maxPirates(expansion: Set<ExpansionCard>): Int = 5 + 1 + if (ExpansionCard.MARY_THORNE in expansion) 1 else 0
 
     const val MAX_MERMAIDS = 2
@@ -156,4 +156,5 @@ object DeckRules {
     const val MAX_SEVENS = 4
     const val MAX_EIGHTS = 4
     const val MAX_LOOT = 2
+    const val MAX_DAVY_JONES = 1
 }

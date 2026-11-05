@@ -90,7 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Giro %1$d</string>
     <string name="round_title_extra">Giro %1$d (extra)</string>
-    <string name="round_title_cards">Giro %1$d · carte: %2$d</string>
     <string name="prepare_cards_question">Carte distribuite</string>
     <string name="prepare_cards_hint">Suggerimento: giro precedente + 1. Cambialo con un tocco.</string>
     <string name="prepare_start_bids">Inizia le previsioni</string>
@@ -498,4 +497,6 @@
     <string name="setup_choose_dealer">Scegli il mazziere</string>
     <string name="results_tap_trick">Tocca una presa per correggerla: vincitore, carte vinte, Bottino, Davy Jones…</string>
     <string name="trick_choose_winner">Scegli il vincitore</string>
+    <string name="trick_round_state">Stato del giro</string>
+    <string name="trick_con_powers">Poteri dei Pirati catturati dal Primo Ufficiale Con (facoltativo)</string>
 </resources>

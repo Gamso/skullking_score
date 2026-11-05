@@ -1,6 +1,7 @@
 package com.skullking.score.ui.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,24 +12,34 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.DialogWindowProvider
+import androidx.core.view.WindowCompat
 import com.skullking.score.R
 import com.skullking.score.core.Bonus
+import com.skullking.score.core.DeckRules
 import com.skullking.score.core.ExpansionCard
 import com.skullking.score.core.Pirate
 import com.skullking.score.core.SeaMonster
@@ -65,10 +76,16 @@ private sealed interface TrickEventDialog {
  * Live trick entry: who won it (or destroyed trick), the cards won, the card it was won with, and the
  * Loots / Davy Jones' Lockers played in it. Everything is shown at once: the user does not have to pick
  * the winner first. Pirate-specific settings (Rascal wager, Harry adjustment) only appear when they make
- * sense for the chosen pirate.
+ * sense for the chosen pirate, or for the First Mate Con, who may use the powers of the pirates he captures.
+ * On the last trick of the round, only Harry the Giant's power can be used.
  *
  * @param initial trick to correct, or `null` for a new trick
  * @param recordedEvents events already recorded for this trick, shown as a reminder
+ * @param onPrevious back goes to the previous trick when set, otherwise it closes the screen
+ * @param lootsPlayed Loots already recorded in the round: the deck holds only two
+ * @param chestsPlayed Davy Jones' Lockers already recorded in the round: the deck holds only one
+ * @param header shown above the entry, such as the bids against the tricks won
+ * @param roundState content of the round state dialog, opened from the top bar
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "CyclomaticComplexMethod")
@@ -81,6 +98,12 @@ fun TrickDialog(
     onConfirm: (TrickDraft, TrickEvents) -> Unit,
     onDismiss: () -> Unit,
     recordedEvents: List<String> = emptyList(),
+    isLastTrick: Boolean = false,
+    lootsPlayed: Int = 0,
+    chestsPlayed: Int = 0,
+    onPrevious: (() -> Unit)? = null,
+    header: (@Composable () -> Unit)? = null,
+    roundState: (@Composable () -> Unit)? = null,
 ) {
     var choice by remember {
         mutableStateOf(if (initial != null && initial.winnerId == null) DESTROYED else initial?.winnerId)
@@ -95,12 +118,15 @@ fun TrickDialog(
 
     var pirateMenu by remember { mutableStateOf(false) }
     var eventDialog by remember { mutableStateOf<TrickEventDialog?>(null) }
+    var showRoundState by remember { mutableStateOf(false) }
 
     val destroyed = choice == DESTROYED
     val hasWinner = choice != null && !destroyed
-    // The Rascal wager and Harry adjustment only exist if that specific pirate won the trick.
-    val showWager = !destroyed && pirate == Pirate.RASCAL
-    val showHarry = !destroyed && pirate == Pirate.HARRY
+    // The Rascal wager and Harry adjustment only exist if that pirate won the trick, or if the First Mate Con
+    // won it and chooses to use the powers of the pirates he captured. Only Harry's power works on the last trick.
+    val firstMate = !destroyed && card == WinningCard.FIRST_MATE
+    val showWager = !destroyed && !isLastTrick && (pirate == Pirate.RASCAL || firstMate)
+    val showHarry = !destroyed && (pirate == Pirate.HARRY || firstMate)
     // "Won with" is mandatory for a won trick, and for a pirate the user must say which one.
     val complete = destroyed || (hasWinner && card != null && (card != WinningCard.PIRATE || pirate != null))
     val names = players.associate { it.id to it.name }
@@ -110,8 +136,8 @@ fun TrickDialog(
             TrickDraft(
                 winnerId = choice.takeIf { it != DESTROYED },
                 bonus = bonus,
-                rascalWager = wager,
-                bidAdjustment = bidAdjustment,
+                rascalWager = if (showWager) wager else 0,
+                bidAdjustment = if (showHarry) bidAdjustment else 0,
                 winningCard = card.takeIf { hasWinner },
                 winningPirate = pirate.takeIf { hasWinner },
             ),
@@ -120,16 +146,35 @@ fun TrickDialog(
     }
 
     // Full screen rather than a dialog: the whole width is used, and the validation stays in sight at the bottom.
+    val back = onPrevious ?: onDismiss
     Dialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = back,
         properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
     ) {
+        // The dialog has its own window: its status bar icons must follow the theme, like the activity's.
+        val view = LocalView.current
+        val lightBars = !isSystemInDarkTheme()
+        SideEffect {
+            (view.parent as? DialogWindowProvider)?.window?.let { window ->
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = lightBars
+            }
+        }
         SkullScaffold(
             title = stringResource(
                 if (initial != null) R.string.trick_dialog_edit else R.string.trick_dialog_new,
                 trickNumber,
             ),
-            onBack = onDismiss,
+            onBack = back,
+            actions = {
+                if (roundState != null) {
+                    IconButton(onClick = { showRoundState = true }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.List,
+                            contentDescription = stringResource(R.string.trick_round_state),
+                        )
+                    }
+                }
+            },
             bottomBar = {
                 ActionBar(
                     primaryText = stringResource(R.string.trick_validate),
@@ -146,6 +191,7 @@ fun TrickDialog(
                     .padding(horizontal = 16.dp, vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
+                header?.invoke()
                 SubTitle(R.string.trick_who_won)
                 FlowRow(horizontalArrangement = CHIP_SPACING, verticalArrangement = CHIP_SPACING) {
                     // One button opens the list of players: the screen does not grow with the table.
@@ -193,12 +239,14 @@ fun TrickDialog(
                             text = "💰 " + stringResource(R.string.event_loot_button),
                             selected = false,
                             onClick = { eventDialog = TrickEventDialog.LootWho },
+                            enabled = lootsPlayed + events.lootPlayerIds.size < DeckRules.MAX_LOOT,
                         )
                         if (ExpansionCard.DAVY_JONES_CHEST in expansion) {
                             CompactChip(
                                 text = stringResource(R.string.event_davy_jones_button),
                                 selected = false,
                                 onClick = { eventDialog = TrickEventDialog.ChestWho },
+                                enabled = chestsPlayed + events.chests.size < DeckRules.MAX_DAVY_JONES,
                             )
                         }
                     }
@@ -263,6 +311,13 @@ fun TrickDialog(
                             }
                     }
 
+                    if (firstMate && (showWager || showHarry)) {
+                        Text(
+                            stringResource(R.string.trick_con_powers),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                     if (showWager) {
                         OptionRow(R.string.trick_rascal_wager) {
                             WAGERS.forEach { value ->
@@ -295,6 +350,17 @@ fun TrickDialog(
                 }
             }
         }
+    }
+
+    if (showRoundState && roundState != null) {
+        AlertDialog(
+            onDismissRequest = { showRoundState = false },
+            title = { Text(stringResource(R.string.trick_round_state)) },
+            text = { roundState() },
+            confirmButton = {
+                TextButton(onClick = { showRoundState = false }) { Text(stringResource(R.string.close)) }
+            },
+        )
     }
 
     when (val d = eventDialog) {

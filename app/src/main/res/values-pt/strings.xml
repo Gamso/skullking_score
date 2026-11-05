@@ -90,7 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Rodada %1$d</string>
     <string name="round_title_extra">Rodada %1$d (extra)</string>
-    <string name="round_title_cards">Rodada %1$d · cartas: %2$d</string>
     <string name="prepare_cards_question">Cartas distribuídas</string>
     <string name="prepare_cards_hint">Sugestão: rodada anterior + 1. Altere com um toque.</string>
     <string name="prepare_start_bids">Começar os lances</string>
@@ -498,4 +497,6 @@
     <string name="setup_choose_dealer">Escolher o carteador</string>
     <string name="results_tap_trick">Toque numa vaza para corrigi-la: vencedor, cartas ganhas, Saque, Davy Jones…</string>
     <string name="trick_choose_winner">Escolha o vencedor</string>
+    <string name="trick_round_state">Situação da rodada</string>
+    <string name="trick_con_powers">Poderes dos piratas capturados pelo Imediato Con (opcional)</string>
 </resources>
