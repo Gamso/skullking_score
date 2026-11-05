@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.skullking.score.R
 import com.skullking.score.core.Bonus
 import com.skullking.score.core.BonusType
+import com.skullking.score.core.DeckRules
 import com.skullking.score.core.ExpansionCard
 import com.skullking.score.core.RuleSet
 
@@ -103,9 +104,16 @@ fun bonusCounters(expansion: Set<ExpansionCard>): List<BonusCounter> = buildList
     }
 }
 
-private const val MAX_COUNT = 20
+/** Keeps only the captured cards of [allowed]: the others are set back to 0. */
+fun Bonus.keepOnly(allowed: Set<BonusType>, expansion: Set<ExpansionCard>): Bonus =
+    bonusCounters(expansion).fold(this) { acc, counter ->
+        if (counter.type in allowed) acc else counter.write(acc, 0)
+    }
 
-/** List of captured-card counters, one stepper per line. */
+/**
+ * List of captured-card counters, one stepper per line. Each counter stops at the number of such cards in the
+ * deck; [allowed], when set, keeps only the counters that the winning card can capture.
+ */
 @Composable
 fun BonusCounterList(
     bonus: Bonus,
@@ -113,10 +121,11 @@ fun BonusCounterList(
     onChange: (Bonus) -> Unit,
     modifier: Modifier = Modifier,
     compact: Boolean = false,
+    allowed: Set<BonusType>? = null,
 ) {
     val rules = remember { RuleSet() }
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 6.dp)) {
-        bonusCounters(expansion).forEach { counter ->
+        bonusCounters(expansion).filter { allowed == null || it.type in allowed }.forEach { counter ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -131,7 +140,7 @@ fun BonusCounterList(
                 Stepper(
                     value = counter.read(bonus),
                     onValueChange = { onChange(counter.write(bonus, it)) },
-                    range = 0..MAX_COUNT,
+                    range = 0..DeckRules.maxCaptured(counter.type, expansion),
                     compact = compact,
                 )
             }

@@ -130,17 +130,17 @@ class RoundScorerTest {
     }
 
     @Test
-    fun lootBetweenSamePlayerCountsOnce() {
+    fun lootWonByItsOwnPlayerFormsNoAlliance() {
         val s = RoundScorer.scoreRound(
             ScoringMode.CLASSIC,
             5,
             listOf(player(1, 1, 1)),
             loots = listOf(LootPair(1, 1)),
         )
-        assertEquals(40, s.getValue(1).total)
+        assertEquals(20, s.getValue(1).total)
     }
 
-    // --- Coffre de Davy Jones ---
+    // --- Davy Jones' Locker ---
 
     @Test
     fun davyJonesCountsOnlyWithSuccess() {

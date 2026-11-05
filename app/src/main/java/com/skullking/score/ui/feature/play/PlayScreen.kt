@@ -313,6 +313,8 @@ fun PlayScreen(
                 isLastTrick = number == cards,
                 lootsPlayed = details.activeLoots.size,
                 chestsPlayed = details.activeCaptures.size,
+                eventPlayerIds = details.eventPlayerIds(number),
+                chestPlayerIds = details.chestPlayerIds(number),
                 recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
                 roundState = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {

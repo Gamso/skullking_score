@@ -39,6 +39,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.view.WindowCompat
 import com.skullking.score.R
 import com.skullking.score.core.Bonus
+import com.skullking.score.core.CaptureRules
 import com.skullking.score.core.DeckRules
 import com.skullking.score.core.ExpansionCard
 import com.skullking.score.core.Pirate
@@ -84,6 +85,8 @@ private sealed interface TrickEventDialog {
  * @param onPrevious back goes to the previous trick when set, otherwise it closes the screen
  * @param lootsPlayed Loots already recorded in the round: the deck holds only two
  * @param chestsPlayed Davy Jones' Lockers already recorded in the round: the deck holds only one
+ * @param eventPlayerIds players who already played a Loot or a Locker in this trick: one card per player
+ * @param chestPlayerIds players who already played a Locker in this trick: a Locker never wins the trick
  * @param header shown above the entry, such as the bids against the tricks won
  * @param roundState content of the round state dialog, opened from the top bar
  */
@@ -101,6 +104,8 @@ fun TrickDialog(
     isLastTrick: Boolean = false,
     lootsPlayed: Int = 0,
     chestsPlayed: Int = 0,
+    eventPlayerIds: Set<Long> = emptySet(),
+    chestPlayerIds: Set<Long> = emptySet(),
     onPrevious: (() -> Unit)? = null,
     header: (@Composable () -> Unit)? = null,
     roundState: (@Composable () -> Unit)? = null,
@@ -130,12 +135,17 @@ fun TrickDialog(
     // "Won with" is mandatory for a won trick, and for a pirate the user must say which one.
     val complete = destroyed || (hasWinner && card != null && (card != WinningCard.PIRATE || pirate != null))
     val names = players.associate { it.id to it.name }
+    // The cards won are limited to those the winning card can capture.
+    val allowedBonus = CaptureRules.allowed(card.takeIf { hasWinner })
+    // One card per player in a trick: whoever played a Loot or a Locker plays nothing else, and the Locker never wins.
+    val busy = eventPlayerIds + events.lootPlayerIds + events.chests.map { it.first }
+    val chestPlayers = chestPlayerIds + events.chests.map { it.first }
 
     val confirm = {
         onConfirm(
             TrickDraft(
                 winnerId = choice.takeIf { it != DESTROYED },
-                bonus = bonus,
+                bonus = bonus.keepOnly(allowedBonus, expansion),
                 rascalWager = if (showWager) wager else 0,
                 bidAdjustment = if (showHarry) bidAdjustment else 0,
                 winningCard = card.takeIf { hasWinner },
@@ -346,7 +356,13 @@ fun TrickDialog(
                     }
 
                     SubTitle(R.string.trick_captured)
-                    BonusCounterList(bonus = bonus, expansion = expansion, onChange = { bonus = it }, compact = true)
+                    BonusCounterList(
+                        bonus = bonus,
+                        expansion = expansion,
+                        onChange = { bonus = it },
+                        compact = true,
+                        allowed = allowedBonus,
+                    )
                 }
             }
         }
@@ -368,7 +384,7 @@ fun TrickDialog(
 
         TrickEventDialog.Winner -> PlayerPickerDialog(
             title = stringResource(R.string.trick_who_won),
-            players = players,
+            players = players.filter { it.id !in chestPlayers },
             onPick = {
                 choice = it.id
                 if (card == null) card = WinningCard.OTHER
@@ -379,7 +395,7 @@ fun TrickDialog(
 
         TrickEventDialog.LootWho -> PlayerPickerDialog(
             title = stringResource(R.string.loot_who_played),
-            players = players,
+            players = players.filter { it.id !in busy },
             onPick = {
                 events = events.copy(lootPlayerIds = events.lootPlayerIds + it.id)
                 eventDialog = null
@@ -389,7 +405,7 @@ fun TrickDialog(
 
         TrickEventDialog.ChestWho -> PlayerPickerDialog(
             title = stringResource(R.string.chest_who_played),
-            players = players,
+            players = players.filter { it.id !in busy && it.id != choice },
             onPick = { eventDialog = TrickEventDialog.ChestCreatures(it.id) },
             onDismiss = { eventDialog = null },
         )
