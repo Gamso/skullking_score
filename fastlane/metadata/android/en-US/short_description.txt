@@ -1,1 +1,0 @@
-Offline score pad for the Skull King card game, with statistics and backups

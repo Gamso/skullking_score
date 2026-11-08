@@ -75,7 +75,7 @@ android {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 
-    // No dependency metadata block (encrypted with a Google key) in the APK / AAB: F-Droid rejects it.
+    // No dependency metadata block in the APK / AAB: it is encrypted with a Google key, nobody else can read it.
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
