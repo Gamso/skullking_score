@@ -26,10 +26,10 @@ F-Droid then picks up the new tag on its own (`AutoUpdateMode: Version`), usuall
 
 1. Release `v1.3.2` (the first tag that contains the F-Droid changes)
 2. Fork [fdroiddata](https://gitlab.com/fdroid/fdroiddata) on GitLab, create a branch, and copy
-   [`com.skullking.score.yml`](com.skullking.score.yml) to `metadata/com.skullking.score.yml`
+   [`com.gamso.skullkingscore.yml`](com.gamso.skullkingscore.yml) to `metadata/com.gamso.skullkingscore.yml`
 3. Optional, with the [`fdroidserver`](https://f-droid.org/docs/Installing_the_Server_and_Repo_Tools/) tools:
-   `fdroid readmeta`, `fdroid rewritemeta com.skullking.score`, `fdroid lint com.skullking.score`,
-   `fdroid build -v -l com.skullking.score`
+   `fdroid readmeta`, `fdroid rewritemeta com.gamso.skullkingscore`, `fdroid lint com.gamso.skullkingscore`,
+   `fdroid build -v -l com.gamso.skullkingscore`
 4. Open a merge request on fdroiddata with the "App inclusion" template, and answer the reviewers
 
 The recipe deletes `gradle/gradle-daemon-jvm.properties` before the build: it would otherwise make Gradle download a

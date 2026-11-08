@@ -11,7 +11,7 @@ changes, so that the README always shows the current app.
    ```bash
    ./gradlew :app:assembleDebug
    adb install -r app/build/outputs/apk/debug/app-debug.apk
-   adb shell cmd locale set-app-locales com.skullking.score --locales en
+   adb shell cmd locale set-app-locales com.gamso.skullkingscore --locales en
    adb shell cmd uimode night no
    ```
 
@@ -69,8 +69,8 @@ classic scoring, expansion enabled with every card. Play rounds 1 to 4 with any 
 the share sheet, then copy the image from the app's cache:
 
 ```bash
-adb exec-out run-as com.skullking.score cat cache/exports/skullking-stats-7.png > docs/screenshots/statistics-image.png
+adb exec-out run-as com.gamso.skullkingscore cat cache/exports/skullking-stats-7.png > docs/screenshots/statistics-image.png
 ```
 
-The number in the file name is the player's id: list `cache/exports` with `adb shell run-as com.skullking.score ls
+The number in the file name is the player's id: list `cache/exports` with `adb shell run-as com.gamso.skullkingscore ls
 cache/exports` if it differs.

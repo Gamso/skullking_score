@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.skullking.score"
+    namespace = "com.gamso.skullkingscore"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.skullking.score"
+        applicationId = "com.gamso.skullkingscore"
         minSdk = 26
         targetSdk = 37
         // Overridden by the CI from the release tag (e.g. -PversionName=1.4.0 -PversionCode=10400).
