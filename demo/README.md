@@ -54,12 +54,12 @@ scoreboards (tap a cell to see the calculation).
 - The demo players are ordinary profiles: you can rename them or **archive** them (Home → Players) so that they no
   longer get in the way when creating games.
 - To start from scratch: delete the games one by one in the history, or clear the app data
-  (`adb shell pm clear com.skullking.score`, or Android Settings → Apps → Skull King Score → Storage).
+  (`adb shell pm clear com.gamso.skullkingscore`, or Android Settings → Apps → Skull King Score → Storage).
 
 ## Regenerating the demo database
 
 The database is produced by a deterministic generator (fixed seeds, same results on every run) that uses the app's
-real calculations: `app/src/test/java/com/skullking/score/demo/DemoData.kt`. To change it (other players, other
+real calculations: `app/src/test/java/com/gamso/skullkingscore/demo/DemoData.kt`. To change it (other players, other
 games…), edit that file then run:
 
 ```bash

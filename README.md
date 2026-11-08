@@ -22,8 +22,7 @@ Your games stay on your phone.
 
 ## Download
 
-- **GitHub**: the signed APK of every version is attached to the [releases](https://github.com/Gamso/skullking_score/releases/latest)
-- **F-Droid**: submission in progress
+The signed APK of every version is attached to the [releases](https://github.com/Gamso/skullking_score/releases/latest).
 
 Android 8.0 or later. The interface is in English, French, German, Spanish, Italian and Portuguese, and follows the
 language of the phone.
@@ -185,17 +184,12 @@ The instrumented-tests job can be turned off by setting the repository variable 
 ## Releasing
 
 1. Set the default `versionName` / `versionCode` in [`app/build.gradle.kts`](app/build.gradle.kts)
-   (`versionCode = major * 10000 + minor * 100 + patch`): F-Droid builds without the CI properties and reads them
-2. Add `fastlane/metadata/android/<locale>/changelogs/<versionCode>.txt` for every language (500 characters max)
-3. Merge into `main`, then tag: `git tag vX.Y.Z && git push origin vX.Y.Z`
+   (`versionCode = major * 10000 + minor * 100 + patch`): they are used by local builds, the CI overrides them from
+   the tag
+2. Merge into `main`, then tag: `git tag vX.Y.Z && git push origin vX.Y.Z`
 
-The [`release.yml`](.github/workflows/release.yml) workflow publishes the GitHub release; F-Droid picks up the new tag
-on its own.
-
-## F-Droid
-
-The store listing lives in [`fastlane/metadata/android`](fastlane/metadata/android); the submission recipe is in
-[`docs/fdroid`](docs/fdroid/README.md).
+The [`release.yml`](.github/workflows/release.yml) workflow publishes the GitHub release, with notes generated from the
+merged pull requests: edit them on GitHub to add the highlights.
 
 ## License and disclaimer
 

@@ -1,0 +1,177 @@
+package com.gamso.skullkingscore.ui.feature.scoreboard
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gamso.skullkingscore.R
+import com.gamso.skullkingscore.domain.model.RankedPlayer
+import com.gamso.skullkingscore.ui.components.ActionBar
+import com.gamso.skullkingscore.ui.components.PlayerAvatar
+import com.gamso.skullkingscore.ui.components.SkullScaffold
+import com.gamso.skullkingscore.ui.components.formatPoints
+import com.gamso.skullkingscore.ui.components.formatScore
+
+private fun medalFor(rank: Int): String = when (rank) {
+    1 -> "🥇"
+    2 -> "🥈"
+    3 -> "🥉"
+    else -> ""
+}
+
+/** End of game: podium (ties share their rank) then the full ranking. */
+@Composable
+fun EndGameScreen(
+    onBack: () -> Unit,
+    onScoreboard: () -> Unit,
+    onShare: () -> Unit,
+    viewModel: ScoreboardViewModel = hiltViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val scored = state
+
+    SkullScaffold(
+        title = stringResource(R.string.end_title),
+        onBack = onBack,
+        actions = {
+            IconButton(onClick = onShare) {
+                Icon(Icons.Filled.Share, contentDescription = stringResource(R.string.share_action))
+            }
+        },
+        bottomBar = {
+            ActionBar(primaryText = stringResource(R.string.end_see_scoreboard), onPrimary = onScoreboard)
+        },
+    ) { padding ->
+        if (scored == null) return@SkullScaffold
+        val ranking = scored.ranking
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            val winners = ranking.filter { it.rank == 1 }
+            Text(
+                stringResource(R.string.end_winner, winners.joinToString(" & ") { it.player.name }),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+            ranking.forEach { RankRow(it) }
+        }
+    }
+}
+
+/** @param dense thin line for the scoreboard, where the whole ranking must fit without scrolling */
+@Composable
+internal fun RankRow(
+    entry: RankedPlayer,
+    subtitle: String? = null,
+    dense: Boolean = false,
+    /** Points scored in the round that just ended, shown under the total. */
+    lastRoundPoints: Double? = null,
+) {
+    val podium = entry.rank <= 3 && !dense
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (entry.rank ==
+                1
+            ) {
+                MaterialTheme.colorScheme.secondary
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            },
+            contentColor = if (entry.rank ==
+                1
+            ) {
+                MaterialTheme.colorScheme.onSecondary
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
+        ),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = if (dense) 12.dp else 16.dp,
+                    vertical = when {
+                        podium -> 16.dp
+                        dense -> 6.dp
+                        else -> 10.dp
+                    },
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = medalFor(entry.rank).ifEmpty { "${entry.rank}." },
+                style = if (podium) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(end = 12.dp),
+            )
+            PlayerAvatar(
+                entry.player,
+                size = when {
+                    podium -> 48.dp
+                    dense -> 28.dp
+                    else -> 36.dp
+                },
+            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 12.dp),
+            ) {
+                Text(
+                    entry.player.name,
+                    style = if (podium) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium,
+                )
+                if (subtitle != null) {
+                    Text(
+                        subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    formatScore(entry.total),
+                    style = if (podium) MaterialTheme.typography.headlineSmall else MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                )
+                if (lastRoundPoints != null) {
+                    Text(
+                        stringResource(R.string.ranking_last_round, formatPoints(lastRoundPoints)),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+        }
+    }
+}
