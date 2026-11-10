@@ -1,3 +1,4 @@
+import java.util.regex.Pattern
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.aboutlibraries)
 }
 
 android {
@@ -87,6 +89,39 @@ android {
     }
 }
 
+// Open source licenses screen: the list and the license texts (SPDX) are generated from the dependencies at build
+// time. Nothing is fetched from GitHub, and the app itself never uses the network.
+aboutLibraries {
+    collect {
+        fetchRemoteLicense = false
+        fetchRemoteFunding = false
+    }
+    // Only what ships in the app is listed. A new dependency shows up by itself; these are left out because the
+    // release build does not contain them. To check one, look for its package in
+    // app/build/outputs/mapping/release/mapping.txt (R8 lists every class it kept).
+    library {
+        exclusionPatterns.addAll(
+            listOf(
+                // Annotations only: the optimizer removes them all from the release build.
+                "javax\\.inject:.*",
+                "jakarta\\.inject:.*",
+                "com\\.google\\.code\\.findbugs:.*",
+                "org\\.jspecify:.*",
+                "org\\.jetbrains:annotations",
+                "com\\.google\\.guava:listenablefuture",
+                // AndroidX modules that nothing uses: no class left in the release build.
+                "androidx\\.(autofill|fragment|loader|viewpager):.*",
+                // Bills of materials only fix versions, they hold no code.
+                ".*:.*-bom",
+                // Debug builds only: coverage agent, Compose tooling, Dagger lint rules.
+                "org\\.jacoco:.*",
+                "androidx\\.compose\\.ui:ui-(tooling|tooling-data|test-manifest)",
+                "com\\.google\\.dagger:dagger-lint-aar",
+            ).map { Pattern.compile(it) },
+        )
+    }
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -105,6 +140,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.aboutlibraries.core)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

@@ -303,6 +303,9 @@
     <string name="settings_restore">Aus einer Sicherung wiederherstellen</string>
     <string name="settings_about">Über</string>
     <string name="settings_about_text">Punktezähler für Skull King. MIT-Lizenz.</string>
+    <string name="settings_developed_by">Entwickelt von Gamso</string>
+    <string name="settings_view_license">Lizenz von Skull King Score anzeigen</string>
+    <string name="license_mit_title">MIT-Lizenz</string>
     <string name="undo_bid">Ansage von %1$s</string>
     <string name="undo_cannonball">Kanonenkugel von %1$s</string>
     <string name="undo_trick">Stich %1$s</string>
@@ -500,4 +503,10 @@
     <string name="trick_con_powers">Kräfte der vom Ersten Maat Con eroberten Piraten (optional)</string>
     <string name="stepper_decrease">Verringern</string>
     <string name="stepper_increase">Erhöhen</string>
+    <string name="licenses_title">Open-Source-Lizenzen</string>
+    <string name="licenses_intro">Skull King Score verwendet die folgenden Open-Source-Projekte. Tippe auf ein Projekt, um seine Lizenz zu lesen oder seine Komponenten zu sehen.</string>
+    <plurals name="licenses_components">
+        <item quantity="one">%d Komponente</item>
+        <item quantity="other">%d Komponenten</item>
+    </plurals>
 </resources>

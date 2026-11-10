@@ -303,6 +303,9 @@
     <string name="settings_restore">Restaurar a partir de um backup</string>
     <string name="settings_about">Sobre</string>
     <string name="settings_about_text">Contador de pontos de Skull King. Licença MIT.</string>
+    <string name="settings_developed_by">Desenvolvido por Gamso</string>
+    <string name="settings_view_license">Ver a licença do Skull King Score</string>
+    <string name="license_mit_title">Licença MIT</string>
     <string name="undo_bid">lance de %1$s</string>
     <string name="undo_cannonball">bala de canhão de %1$s</string>
     <string name="undo_trick">vaza %1$s</string>
@@ -501,4 +504,11 @@
     <string name="trick_con_powers">Poderes dos piratas capturados pelo Imediato Con (opcional)</string>
     <string name="stepper_decrease">Diminuir</string>
     <string name="stepper_increase">Aumentar</string>
+    <string name="licenses_title">Licenças de código aberto</string>
+    <string name="licenses_intro">O Skull King Score usa os projetos de código aberto abaixo. Toque em um projeto para ler a licença ou ver os componentes.</string>
+    <plurals name="licenses_components">
+        <item quantity="one">%d componente</item>
+        <item quantity="many">%d componentes</item>
+        <item quantity="other">%d componentes</item>
+    </plurals>
 </resources>
