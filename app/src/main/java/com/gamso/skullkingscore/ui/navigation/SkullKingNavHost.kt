@@ -12,6 +12,7 @@ import com.gamso.skullkingscore.ui.feature.bids.BidsScreen
 import com.gamso.skullkingscore.ui.feature.help.HelpScreen
 import com.gamso.skullkingscore.ui.feature.history.HistoryScreen
 import com.gamso.skullkingscore.ui.feature.home.HomeScreen
+import com.gamso.skullkingscore.ui.feature.licenses.LicensesScreen
 import com.gamso.skullkingscore.ui.feature.play.PlayScreen
 import com.gamso.skullkingscore.ui.feature.players.PlayersScreen
 import com.gamso.skullkingscore.ui.feature.prepare.PrepareScreen
@@ -89,8 +90,10 @@ fun SkullKingNavHost() {
             SettingsScreen(
                 onBack = { navController.safeBack() },
                 onRestore = { navController.navigate(Routes.history(import = true)) },
+                onLicenses = { navController.navigate(Routes.LICENSES) },
             )
         }
+        composable(Routes.LICENSES) { LicensesScreen(onBack = { navController.safeBack() }) }
 
         composable(Routes.PREPARE, arguments = listOf(gameArg)) { entry ->
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable

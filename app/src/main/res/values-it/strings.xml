@@ -303,6 +303,9 @@
     <string name="settings_restore">Ripristina da un backup</string>
     <string name="settings_about">Informazioni</string>
     <string name="settings_about_text">Segnapunti per Skull King. Licenza MIT.</string>
+    <string name="settings_developed_by">Sviluppato da Gamso</string>
+    <string name="settings_view_license">Vedi la licenza di Skull King Score</string>
+    <string name="license_mit_title">Licenza MIT</string>
     <string name="undo_bid">previsione di %1$s</string>
     <string name="undo_cannonball">palla di cannone di %1$s</string>
     <string name="undo_trick">presa %1$s</string>
@@ -501,4 +504,11 @@
     <string name="trick_con_powers">Poteri dei Pirati catturati dal Primo Ufficiale Con (facoltativo)</string>
     <string name="stepper_decrease">Diminuisci</string>
     <string name="stepper_increase">Aumenta</string>
+    <string name="licenses_title">Licenze open source</string>
+    <string name="licenses_intro">Skull King Score usa i progetti open source qui sotto. Tocca un progetto per leggere la sua licenza o vedere i suoi componenti.</string>
+    <plurals name="licenses_components">
+        <item quantity="one">%d componente</item>
+        <item quantity="many">%d componenti</item>
+        <item quantity="other">%d componenti</item>
+    </plurals>
 </resources>

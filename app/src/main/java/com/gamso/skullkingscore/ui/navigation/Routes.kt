@@ -15,6 +15,7 @@ object Routes {
     const val DUEL = "duel"
     const val HELP = "help"
     const val SETTINGS = "settings"
+    const val LICENSES = "licenses"
 
     const val PREPARE = "prepare/{$ARG_GAME_ID}"
     const val BIDS = "bids/{$ARG_GAME_ID}/{$ARG_ROUND_ID}"

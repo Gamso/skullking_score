@@ -303,6 +303,9 @@
     <string name="settings_restore">Restaurer depuis une sauvegarde</string>
     <string name="settings_about">À propos</string>
     <string name="settings_about_text">Compteur de points pour le Skull King. Licence MIT.</string>
+    <string name="settings_developed_by">Développé par Gamso</string>
+    <string name="settings_view_license">Voir la licence de Skull King Score</string>
+    <string name="license_mit_title">Licence MIT</string>
     <string name="undo_bid">annonce de %1$s</string>
     <string name="undo_cannonball">boulet de canon de %1$s</string>
     <string name="undo_trick">pli %1$s</string>
@@ -500,4 +503,10 @@
     <string name="trick_con_powers">Pouvoirs des pirates capturés par le Second (facultatif)</string>
     <string name="stepper_decrease">Diminuer</string>
     <string name="stepper_increase">Augmenter</string>
+    <string name="licenses_title">Licences open source</string>
+    <string name="licenses_intro">Skull King Score repose sur les projets open source ci-dessous. Touchez un projet pour lire sa licence, ou pour voir ses composants.</string>
+    <plurals name="licenses_components">
+        <item quantity="one">%d composant</item>
+        <item quantity="other">%d composants</item>
+    </plurals>
 </resources>

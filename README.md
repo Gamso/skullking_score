@@ -78,6 +78,8 @@ A mistake? Undo the last trick, or correct any past round: the whole game is rec
 **Everywhere**
 
 - Light / dark theme, tablet and landscape layouts, TalkBack support
+- Open source licenses of the components the app is built with (Settings → About), generated from the dependencies at
+  build time by [AboutLibraries](https://github.com/mikepenz/AboutLibraries) and read offline
 - Built-in help with search: card hierarchy, scoring, expansion and FAQ, aligned with the official rules
 
 <p align="center">

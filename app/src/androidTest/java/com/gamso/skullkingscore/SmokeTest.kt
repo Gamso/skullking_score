@@ -148,6 +148,14 @@ class SmokeTest {
     }
 
     @Test
+    fun theOpenSourceLicensesOpenFromAbout() {
+        rule.onNodeWithContentDescription(text(R.string.settings_title)).performClick()
+        // About is at the bottom of the settings: scroll to the entry.
+        rule.onNodeWithText(text(R.string.licenses_title)).performScrollTo().performClick()
+        rule.onNodeWithText(text(R.string.licenses_intro)).assertExists()
+    }
+
+    @Test
     fun everyHelpTabOpensAndTheSearchFindsTheKraken() {
         rule.onNodeWithContentDescription(text(R.string.help)).performClick()
         rule.onNodeWithText(text(R.string.help_hierarchy_title)).assertExists()
@@ -178,6 +186,7 @@ class SmokeTest {
     private companion object {
         const val TEN_THOUSAND = 10_000L
         const val MAX_BACK = 6
+
         const val IMAGE_TIMEOUT_MS = 20_000L
     }
 }

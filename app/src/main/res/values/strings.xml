@@ -303,6 +303,9 @@
     <string name="settings_restore">Restore from a backup</string>
     <string name="settings_about">About</string>
     <string name="settings_about_text">Skull King score counter. MIT licence.</string>
+    <string name="settings_developed_by">Developed by Gamso</string>
+    <string name="settings_view_license">View the license of Skull King Score</string>
+    <string name="license_mit_title">MIT License</string>
     <string name="undo_bid">bid of %1$s</string>
     <string name="undo_cannonball">cannonball of %1$s</string>
     <string name="undo_trick">trick %1$s</string>
@@ -500,4 +503,10 @@
     <string name="trick_con_powers">Powers of the pirates captured by the First Mate Con (optional)</string>
     <string name="stepper_decrease">Decrease</string>
     <string name="stepper_increase">Increase</string>
+    <string name="licenses_title">Open source licenses</string>
+    <string name="licenses_intro">Skull King Score is built with the open source projects below. Tap a project to read its license, or to see its components.</string>
+    <plurals name="licenses_components">
+        <item quantity="one">%d component</item>
+        <item quantity="other">%d components</item>
+    </plurals>
 </resources>
