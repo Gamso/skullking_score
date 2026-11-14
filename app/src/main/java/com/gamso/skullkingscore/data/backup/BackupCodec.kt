@@ -36,6 +36,7 @@ object BackupCodec {
             throw InvalidBackupException("Unreadable file", e)
         }
         checkSupported(dto.formatVersion)
+        BackupValidator.validate(dto)
         return dto
     }
 
