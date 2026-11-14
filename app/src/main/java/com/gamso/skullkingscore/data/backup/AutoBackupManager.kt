@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
 import com.gamso.skullkingscore.di.ApplicationScope
+import com.gamso.skullkingscore.domain.repository.AppSettings
 import com.gamso.skullkingscore.domain.repository.BackupRepository
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.SettingsRepository
@@ -42,10 +43,7 @@ class AutoBackupManager @Inject constructor(
     }
 
     suspend fun runIfDue(now: Long = System.currentTimeMillis()) {
-        val current = settings.settings.value
-        val last = current.lastBackupAt
-        val due = last == null || current.lastBackupFailed || now - last >= ONE_DAY_MS
-        if (current.autoBackup && due) run()
+        if (isBackupDue(settings.settings.value, now)) run()
     }
 
     /** Writes a backup now if the feature is enabled; returns `false` on failure. */
@@ -78,17 +76,13 @@ class AutoBackupManager @Inject constructor(
     private fun write(tree: Uri, json: String) {
         val resolver = context.contentResolver
         val parent = DocumentsContract.buildDocumentUriUsingTree(tree, DocumentsContract.getTreeDocumentId(tree))
-        val existing = listBackups(tree)
-        val name = "$PREFIX${LocalDate.now()}.json"
-        existing.filter { it.second == name }.forEach { DocumentsContract.deleteDocument(resolver, it.first) }
-        val target = DocumentsContract.createDocument(resolver, parent, "application/json", name)
+        val rotation = planBackupRotation(listBackups(tree), LocalDate.now())
+        rotation.replaced.forEach { DocumentsContract.deleteDocument(resolver, it) }
+        val target = DocumentsContract.createDocument(resolver, parent, "application/json", rotation.fileName)
             ?: throw IOException("Could not create the file")
         resolver.openOutputStream(target)?.use { it.write(json.toByteArray(Charsets.UTF_8)) }
             ?: throw IOException("Could not write the file")
-        existing.filter { it.second != name }
-            .sortedByDescending { it.second }
-            .drop(KEPT_BACKUPS - 1)
-            .forEach { DocumentsContract.deleteDocument(resolver, it.first) }
+        rotation.obsolete.forEach { DocumentsContract.deleteDocument(resolver, it) }
     }
 
     /** Backup files in the folder: (document URI, display name). */
@@ -110,11 +104,39 @@ class AutoBackupManager @Inject constructor(
         }
         return result
     }
+}
 
-    private companion object {
-        const val PREFIX = "skullking-"
-        const val KEPT_BACKUPS = 10
-        const val ONE_DAY_MS = 24 * 60 * 60 * 1000L
-        val BACKUP_NAME = Regex("""skullking-\d{4}-\d{2}-\d{2}\.json""")
-    }
+private const val PREFIX = "skullking-"
+private const val KEPT_BACKUPS = 10
+private const val ONE_DAY_MS = 24 * 60 * 60 * 1000L
+private val BACKUP_NAME = Regex("""skullking-\d{4}-\d{2}-\d{2}\.json""")
+
+/**
+ * A backup is due when the feature is on and the last one is missing, failed or more than a day old ([now] and
+ * the last backup time in milliseconds).
+ */
+internal fun isBackupDue(settings: AppSettings, now: Long): Boolean {
+    val last = settings.lastBackupAt
+    val due = last == null || settings.lastBackupFailed || now - last >= ONE_DAY_MS
+    return settings.autoBackup && due
+}
+
+/**
+ * Files to delete around the backup of [today]: [replaced] holds the files of the same day (overwritten by the new
+ * one), [obsolete] the oldest ones beyond the [KEPT_BACKUPS] kept with the new one. [T] identifies a file (a
+ * document URI in the app).
+ */
+internal data class BackupRotation<T>(val fileName: String, val replaced: List<T>, val obsolete: List<T>)
+
+/** Plans the rotation from the backups already in the folder: (identifier, display name), in any order. */
+internal fun <T> planBackupRotation(existing: List<Pair<T, String>>, today: LocalDate): BackupRotation<T> {
+    val name = "$PREFIX$today.json"
+    return BackupRotation(
+        fileName = name,
+        replaced = existing.filter { it.second == name }.map { it.first },
+        obsolete = existing.filter { it.second != name }
+            .sortedByDescending { it.second }
+            .drop(KEPT_BACKUPS - 1)
+            .map { it.first },
+    )
 }
