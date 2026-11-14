@@ -477,7 +477,12 @@ private fun PlayerPage(
             .filter { it.type == BonusType.LOOT || it.type == BonusType.DAVY_JONES }
             .forEach {
                 Text(
-                    "${stringResource(it.type.labelRes())} : ${it.count} (${formatPoints(it.points)})",
+                    stringResource(
+                        R.string.results_bonus_count,
+                        stringResource(it.type.labelRes()),
+                        it.count,
+                        formatPoints(it.points),
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
