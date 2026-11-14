@@ -54,7 +54,8 @@ enum class RoundSize(val cards: IntRange) {
     ;
 
     companion object {
-        fun of(cards: Int): RoundSize = entries.first { cards in it.cards }
+        /** Never fails: fewer than one card (inconsistent data) counts as a small round. */
+        fun of(cards: Int): RoundSize = entries.firstOrNull { cards in it.cards } ?: SMALL
     }
 }
 

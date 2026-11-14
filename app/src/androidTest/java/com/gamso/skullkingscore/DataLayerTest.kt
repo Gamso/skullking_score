@@ -18,6 +18,7 @@ import com.gamso.skullkingscore.domain.model.GameStatus
 import com.gamso.skullkingscore.domain.model.RoundPhase
 import com.gamso.skullkingscore.domain.model.TrickDraft
 import com.gamso.skullkingscore.domain.repository.ImportOptions
+import com.gamso.skullkingscore.domain.repository.InvalidBackupException
 import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
 import com.gamso.skullkingscore.domain.usecase.FinishGameUseCase
 import com.gamso.skullkingscore.domain.usecase.RecalculateScoresUseCase
@@ -42,7 +43,7 @@ class DataLayerTest {
     private class Env(val db: SkullKingDatabase) {
         val players = PlayerRepositoryImpl(db.playerDao())
         val games = GameRepositoryImpl(db, db.gameDao(), db.playerDao())
-        val backup = BackupRepositoryImpl(db, db.gameDao(), db.playerDao())
+        val backup = BackupRepositoryImpl(db, db.gameDao(), db.playerDao(), RecalculateScoresUseCase(games))
         val edit = EditRoundUseCase(games, RecalculateScoresUseCase(games))
         val start = StartRoundUseCase(games)
     }
@@ -193,6 +194,58 @@ class DataLayerTest {
         val resultSeparate = separate.backup.importJson(json)
         assertEquals(0, resultSeparate.mergedPlayers)
         assertEquals(listOf("Ana", "Ana", "Bob"), separate.players.getAllPlayers().map { it.name }.sorted())
+    }
+
+    @Test
+    fun reImportingAMergedBackupCreatesNoProfile() = runBlocking {
+        val source = env()
+        source.playOneRound()
+        val json = source.backup.exportJson(source.games.getAllGames())
+
+        val target = env().also { it.players.createPlayer("Ana") }
+        val conflicts = target.backup.previewImport(json).nameConflicts
+        target.backup.importJson(json, ImportOptions(conflicts.map { it.importedUuid }.toSet()))
+        val preview = target.backup.previewImport(json)
+        assertEquals(0, preview.newGames)
+        assertEquals(0, preview.newPlayers)
+        assertTrue(preview.nameConflicts.isEmpty())
+
+        val again = target.backup.importJson(json)
+        assertEquals(0, again.createdPlayers)
+        assertEquals(listOf("Ana", "Bob"), target.players.getAllPlayers().map { it.name }.sorted())
+    }
+
+    @Test
+    fun theCachedScoresOfABackupAreRecomputed() = runBlocking {
+        val source = env()
+        source.playOneRound()
+        val json = source.backup.exportJson(source.games.getAllGames())
+            .replace("\"score\":-10.0", "\"score\":999.0")
+
+        val target = env()
+        target.backup.importJson(json)
+        val round = target.games.getAllGames().single().rounds.single()
+        assertEquals(listOf(-10.0, 10.0), round.entries.map { it.score }.sorted())
+    }
+
+    @Test
+    fun twoPlayersMergedIntoTheSameProfileMakeTheBackupInvalid() = runBlocking {
+        val source = env()
+        val ana = source.players.createPlayer("Ana")
+        val other = source.players.createPlayer("ana")
+        val gameId = source.games.createGame(listOf(ana, other), ScoringMode.CLASSIC, emptySet(), 0)
+        source.start(gameId, 1)
+        val json = source.backup.exportJson(source.games.getAllGames())
+
+        val target = env().also { it.players.createPlayer("Ana") }
+        val conflicts = target.backup.previewImport(json).nameConflicts
+        assertEquals(2, conflicts.size)
+        val result = runCatching {
+            target.backup.importJson(json, ImportOptions(conflicts.map { it.importedUuid }.toSet()))
+        }
+        assertTrue(result.exceptionOrNull() is InvalidBackupException)
+        assertTrue(target.games.getAllGames().isEmpty())
+        assertEquals(1, target.players.getAllPlayers().size)
     }
 
     @Test

@@ -167,6 +167,7 @@
     <string name="results_final_bid">Lance</string>
     <string name="results_bonus_title">Cartas ganhas</string>
     <string name="results_bonus_ignored">Lance errado: os bônus registrados não contam.</string>
+    <string name="results_bonus_count">%1$s: %2$d (%3$s)</string>
     <string name="results_cannonball">Bala de canhão</string>
     <string name="results_cannonball_hint">Tudo ou nada: 15 × cartas se o lance for exato, senão 0</string>
     <string name="results_rascal_wager">Aposta do Patife de Roatan</string>
@@ -213,6 +214,7 @@
     <!-- End of game -->
     <string name="end_title">Fim de jogo</string>
     <string name="end_winner">%1$s vence!</string>
+    <string name="end_winners_separator">" e "</string>
     <string name="end_see_scoreboard">Ver o placar</string>
 
     <!-- History, export, import -->
@@ -322,6 +324,7 @@
     <string name="share_save">Salvar na galeria</string>
     <string name="share_saved">Imagem salva em Pictures/SkullKing.</string>
     <string name="share_save_failed">Não foi possível salvar a imagem.</string>
+    <string name="share_file_failed">Não foi possível preparar o arquivo para compartilhar.</string>
     <string name="share_preview">Prévia da imagem a compartilhar</string>
     <string name="share_nothing">Escolha o que incluir na imagem.</string>
     <string name="share_podium">Pódio</string>

@@ -167,6 +167,7 @@
     <string name="results_final_bid">Bid</string>
     <string name="results_bonus_title">Cards won</string>
     <string name="results_bonus_ignored">Missed bid: the bonuses entered don’t count.</string>
+    <string name="results_bonus_count">%1$s: %2$d (%3$s)</string>
     <string name="results_cannonball">Cannonball</string>
     <string name="results_cannonball_hint">All or nothing: 15 × cards if the bid is exact, otherwise 0</string>
     <string name="results_rascal_wager">Rascal of Roatan’s wager</string>
@@ -213,6 +214,7 @@
     <!-- End of game -->
     <string name="end_title">Game over</string>
     <string name="end_winner">%1$s wins!</string>
+    <string name="end_winners_separator">" &amp; "</string>
     <string name="end_see_scoreboard">See the scoreboard</string>
 
     <!-- History, export, import -->
@@ -322,6 +324,7 @@
     <string name="share_save">Save to gallery</string>
     <string name="share_saved">Image saved to Pictures/SkullKing.</string>
     <string name="share_save_failed">Could not save the image.</string>
+    <string name="share_file_failed">Could not prepare the file to share.</string>
     <string name="share_preview">Preview of the image to share</string>
     <string name="share_nothing">Choose what to include in the image.</string>
     <string name="share_podium">Podium</string>

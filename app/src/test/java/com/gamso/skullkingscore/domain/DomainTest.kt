@@ -293,6 +293,27 @@ class DomainTest {
     }
 
     @Test
+    fun csvQuotesCarriageReturnsAndNeutralizesFormulaNames() {
+        val formula = Player(1, "u1", "=1+1", 0xFFE57373, 0)
+        val minus = Player(2, "u2", "-Tom", 0xFF4FC3F7, 0)
+        val crlf = Player(3, "u3", "Inès\r", 0xFFAED581, 0)
+        val renamed = sampleGame().let { details ->
+            details.copy(game = details.game.copy(players = listOf(formula, minus, crlf)))
+        }
+        val lines = CsvExporter.export(listOf(renamed)).split('\n')
+
+        val formulaRound2 = lines.first { it.contains("CLASSIC;2;non;2;'=1+1;") }
+        // Numeric columns keep their sign: a negative score stays a number.
+        assertTrue(formulaRound2.endsWith(";-10;10"))
+        assertTrue(lines.any { it.contains(";'-Tom;") })
+        assertTrue(lines.any { it.contains(";\"Inès\r\";") })
+        assertEquals("'@x", CsvExporter.textCell("@x"))
+        assertEquals("'+x", CsvExporter.textCell("+x"))
+        assertEquals("'\tx", CsvExporter.textCell("\tx"))
+        assertEquals("Léa", CsvExporter.textCell("Léa"))
+    }
+
+    @Test
     fun exportFilterKeepsGamesByPlayerAndPeriod() {
         val old = sampleGame()
         val filter = ExportFilter(StatsPeriod.ALL, playerId = 99)
