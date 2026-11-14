@@ -65,6 +65,8 @@ data class PrepareUiState(
     val exceedsDeck: Boolean get() = needed > deckSize
 }
 
+private const val KEY_CHOSEN_CARDS = "prepare.chosenCards"
+
 @HiltViewModel
 class PrepareViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -73,7 +75,9 @@ class PrepareViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val gameId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_GAME_ID))
-    private val chosenCards = MutableStateFlow<Int?>(null)
+
+    // In the saved state: the chosen number of cards survives a process death.
+    private val chosenCards = savedStateHandle.getMutableStateFlow<Int?>(KEY_CHOSEN_CARDS, null)
 
     /**
      * Set by the first tap on "Start" and kept after success: the screen is being left and this ViewModel is

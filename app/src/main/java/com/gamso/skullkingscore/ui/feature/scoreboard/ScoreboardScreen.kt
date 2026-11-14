@@ -39,7 +39,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -129,6 +128,14 @@ private val TOTAL_COLUMN_WIDTH = 52.dp
 private val ROUND_COLUMN_WIDTH = 48.dp
 private val DETAIL_PANEL_WIDTH = 340.dp
 
+/** Round and player of a cell, found from their [ids], or null when there is no such cell. */
+private fun ScoredGame.cell(ids: Pair<Long, Long>?): Pair<ScoredRound, Player>? {
+    val (roundId, playerId) = ids ?: return null
+    val round = rounds.firstOrNull { it.round.id == roundId } ?: return null
+    val player = game.players.firstOrNull { it.id == playerId } ?: return null
+    return round to player
+}
+
 @Composable
 fun ScoreboardScreen(
     onBack: () -> Unit,
@@ -141,9 +148,11 @@ fun ScoreboardScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scored = state
-    var selected by remember { mutableStateOf<Pair<ScoredRound, Player>?>(null) }
-    var menuOpen by remember { mutableStateOf(false) }
-    var confirmFinish by remember { mutableStateOf(false) }
+    // Round and player ids of the cell shown in detail, saveable: the detail survives a rotation.
+    var selectedIds by rememberSaveable { mutableStateOf<Pair<Long, Long>?>(null) }
+    val selected = scored?.cell(selectedIds)
+    var menuOpen by rememberSaveable { mutableStateOf(false) }
+    var confirmFinish by rememberSaveable { mutableStateOf(false) }
     // Ranking first: it is what the players look for between two rounds.
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val sidePanel = rememberWidthClass() == WidthClass.EXPANDED
@@ -231,7 +240,7 @@ fun ScoreboardScreen(
                         Tab(selected = tab == index, onClick = { tab = index }, text = { Text(stringResource(label)) })
                     }
                 }
-                ScoreboardTab(tab, scored, onCell = { round, player -> selected = round to player })
+                ScoreboardTab(tab, scored, onCell = { round, player -> selectedIds = round.round.id to player.id })
             }
             val detail = selected
             if (sidePanel && detail != null) {
@@ -240,10 +249,10 @@ fun ScoreboardScreen(
                     player = detail.second,
                     canEdit = game?.status == GameStatus.IN_PROGRESS,
                     onCorrect = {
-                        selected = null
+                        selectedIds = null
                         onEditRound(detail.first.round.id)
                     },
-                    onDismiss = { selected = null },
+                    onDismiss = { selectedIds = null },
                     modifier = Modifier
                         .width(DETAIL_PANEL_WIDTH)
                         .padding(8.dp)
@@ -259,10 +268,10 @@ fun ScoreboardScreen(
             player = player,
             canEdit = game?.status == GameStatus.IN_PROGRESS,
             onCorrect = {
-                selected = null
+                selectedIds = null
                 onEditRound(round.round.id)
             },
-            onDismiss = { selected = null },
+            onDismiss = { selectedIds = null },
         )
     }
 

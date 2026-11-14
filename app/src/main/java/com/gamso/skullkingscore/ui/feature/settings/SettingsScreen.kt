@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -182,7 +183,7 @@ fun SettingsScreen(
                 stringResource(R.string.settings_developed_by) + " · © 2026 Gamso",
                 style = MaterialTheme.typography.bodySmall,
             )
-            var showLicense by remember { mutableStateOf(false) }
+            var showLicense by rememberSaveable { mutableStateOf(false) }
             OutlinedButton(onClick = { showLicense = true }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.settings_view_license))
             }
