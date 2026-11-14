@@ -13,10 +13,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/** Settings stored in the preferences file [fileName]: the tests use their own file, not the app's one. */
 @Singleton
-class SettingsRepositoryImpl @Inject constructor(@ApplicationContext context: Context) : SettingsRepository {
+class SettingsRepositoryImpl(context: Context, fileName: String) : SettingsRepository {
 
-    private val prefs = context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
+    @Inject
+    constructor(@ApplicationContext context: Context) : this(context, FILE)
+
+    private val prefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
     private val state = MutableStateFlow(read())
 
     override val settings: StateFlow<AppSettings> = state.asStateFlow()

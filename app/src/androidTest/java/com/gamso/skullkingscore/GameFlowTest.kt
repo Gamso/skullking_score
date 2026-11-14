@@ -1,6 +1,11 @@
 package com.gamso.skullkingscore
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
@@ -15,40 +20,43 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 /**
- * End-to-end flows on the real app (the test device's database): player names are unique so that the tests do not
- * depend on the state left behind by a previous run.
+ * End-to-end flows on the app, each one on its own empty in-memory database and settings ([TestDataModule]).
+ * The writes are made on a background thread: the checks wait for the screen to show their result.
  */
-@RunWith(AndroidJUnit4::class)
+@OptIn(ExperimentalTestApi::class)
+@HiltAndroidTest
 class GameFlowTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
+    val hilt = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
     val rule = createAndroidComposeRule<MainActivity>()
 
     private fun text(id: Int, vararg args: Any): String = rule.activity.getString(id, *args)
 
+    /** Waits for the button (it may come with a screen opened after a write), then taps it. */
     private fun click(id: Int, vararg args: Any) {
+        rule.waitUntilExactlyOneExists(hasText(text(id, *args)), TIMEOUT_MS)
         rule.onNodeWithText(text(id, *args)).performClick()
     }
 
-    /**
-     * Creates a profile. In the new game screen, the "New profile" button comes after the available profiles, which
-     * grow with every test run: on a small screen it is below the visible part, so the list scrolls to it first.
-     */
-    private fun createPlayer(name: String, inSetup: Boolean = true) {
-        if (inSetup) rule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(text(R.string.player_new)))
+    /** Waits until exactly one node matches [matcher]: the screen shows the result of a write. */
+    private fun expect(matcher: SemanticsMatcher) = rule.waitUntilExactlyOneExists(matcher, TIMEOUT_MS)
+
+    /** Creates a profile and waits until it is listed (outside the creation dialog, whose field holds the name). */
+    private fun createPlayer(name: String) {
         click(R.string.player_new)
         rule.onNode(hasSetTextAction() and hasAnyAncestor(isDialog())).performTextInput(name)
         click(R.string.save)
-        rule.waitForIdle()
+        expect(hasText(name) and !hasSetTextAction())
     }
-
-    private fun uniqueName(prefix: String) = prefix + (System.currentTimeMillis() % TEN_THOUSAND)
 
     @Test
     fun homeShowsTheMainActions() {
@@ -66,58 +74,55 @@ class GameFlowTest {
 
     @Test
     fun aFirstRoundCanBePlayedFromSetupToScoreboard() {
-        val winner = uniqueName("Ana")
-        val other = uniqueName("Bea")
         click(R.string.home_new_game)
-        createPlayer(winner)
-        createPlayer(other)
+        createPlayer(ANA)
+        createPlayer(BEA)
         click(R.string.setup_start)
         click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
 
-        // Trick 1 opens by itself: "winner" wins with a colored card; the one-card round is then complete.
-        click(R.string.trick_choose_winner)
-        rule.onAllNodesWithText(winner).onLast().performClick()
+        // Trick 1 opens by itself: Ana wins with a colored card; the one-card round is then complete.
+        chooseWinner(ANA)
+        // The trick screen sits over the round screen: its buttons are the last ones.
         rule.onAllNodesWithText(text(R.string.win_other)).onLast().performClick()
         click(R.string.trick_validate)
         click(R.string.play_validate_round)
 
-        // Both bids were 0: "other" succeeds (+10), "winner" misses (-10). The scoreboard opens on the ranking.
+        // Both bids were 0: Bea succeeds (+10), Ana misses (-10). The scoreboard opens on the ranking.
         click(R.string.tab_table)
-        rule.onNodeWithContentDescription(text(R.string.a11y_score_cell, other, 1, "+10", 10)).assertExists()
-        rule.onNodeWithContentDescription(text(R.string.a11y_score_cell, winner, 1, "-10", -10)).assertExists()
+        expect(hasContentDescription(text(R.string.a11y_score_cell, BEA, 1, "+10", 10)))
+        expect(hasContentDescription(text(R.string.a11y_score_cell, ANA, 1, "-10", -10)))
         rule.onNodeWithText(text(R.string.tab_curve)).assertExists()
     }
 
     @Test
     fun finishingAGameShowsThePodium() {
-        val winner = uniqueName("Cleo")
-        val other = uniqueName("Dan")
         click(R.string.home_new_game)
-        createPlayer(winner)
-        createPlayer(other)
+        createPlayer(ANA)
+        createPlayer(BEA)
         click(R.string.setup_start)
         click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
-        click(R.string.trick_choose_winner)
-        rule.onAllNodesWithText(winner).onLast().performClick()
+        chooseWinner(ANA)
         rule.onAllNodesWithText(text(R.string.win_other)).onLast().performClick()
         click(R.string.trick_validate)
         click(R.string.play_validate_round)
 
+        rule.waitUntilExactlyOneExists(hasContentDescription(text(R.string.more)), TIMEOUT_MS)
         rule.onNodeWithContentDescription(text(R.string.more)).performClick()
         click(R.string.scoreboard_finish)
         click(R.string.scoreboard_finish)
-        // "other" made their bid of 0: they win.
-        rule.onNodeWithText(text(R.string.end_winner, other)).assertExists()
+        // Bea made her bid of 0: she wins.
+        expect(hasText(text(R.string.end_winner, BEA)))
     }
 
     /** New game with two fresh players, up to the first trick, with [cards] cards dealt. */
-    private fun startRound(cards: Int, first: String, second: String) {
+    private fun startRound(cards: Int) {
         click(R.string.home_new_game)
-        createPlayer(first)
-        createPlayer(second)
+        createPlayer(ANA)
+        createPlayer(BEA)
         click(R.string.setup_start)
+        rule.waitUntilAtLeastOneExists(hasContentDescription(text(R.string.stepper_increase)), TIMEOUT_MS)
         repeat(cards - 1) {
             rule.onAllNodesWithContentDescription(text(R.string.stepper_increase)).onFirst().performClick()
         }
@@ -125,6 +130,7 @@ class GameFlowTest {
         click(R.string.bids_validate)
     }
 
+    /** In the trick screen, which sits over the round screen: the player buttons of the trick come last. */
     private fun chooseWinner(name: String) {
         click(R.string.trick_choose_winner)
         rule.onAllNodesWithText(name).onLast().performClick()
@@ -132,35 +138,34 @@ class GameFlowTest {
 
     @Test
     fun theFirstTrickOpensRightAfterTheBids() {
-        startRound(cards = 1, first = uniqueName("Gil"), second = uniqueName("Hal"))
-        rule.onNodeWithText(text(R.string.trick_dialog_new, 1)).assertExists()
+        startRound(cards = 1)
+        expect(hasText(text(R.string.trick_dialog_new, 1)))
     }
 
     @Test
     fun validatingATrickOpensTheNextOneAndBackReturnsToThePreviousOne() {
-        val first = uniqueName("Ida")
-        startRound(cards = 2, first = first, second = uniqueName("Jon"))
-        chooseWinner(first)
+        startRound(cards = 2)
+        chooseWinner(ANA)
         click(R.string.trick_validate)
-        rule.onNodeWithText(text(R.string.trick_dialog_new, 2)).assertExists()
+        expect(hasText(text(R.string.trick_dialog_new, 2)))
         // Back: trick 1 opens again, to be corrected.
         // The trick screen sits over the round screen: its own back arrow is the last one.
         rule.onAllNodesWithContentDescription(text(R.string.back)).onLast().performClick()
-        rule.onNodeWithText(text(R.string.trick_dialog_edit, 1)).assertExists()
+        expect(hasText(text(R.string.trick_dialog_edit, 1)))
     }
 
     @Test
     fun rascalWagersOnlyBeforeTheLastTrick() {
-        val first = uniqueName("Kim")
-        startRound(cards = 2, first = first, second = uniqueName("Lou"))
-        chooseWinner(first)
+        startRound(cards = 2)
+        chooseWinner(ANA)
         click(R.string.win_pirate)
         click(R.string.pirate_rascal_full)
         rule.onNodeWithText(text(R.string.trick_rascal_wager)).assertExists()
         click(R.string.trick_validate)
 
         // Trick 2 is the last one: only Harry's power can be used.
-        chooseWinner(first)
+        expect(hasText(text(R.string.trick_dialog_new, 2)))
+        chooseWinner(ANA)
         click(R.string.win_pirate)
         click(R.string.pirate_rascal_full)
         rule.onNodeWithText(text(R.string.trick_rascal_wager)).assertDoesNotExist()
@@ -168,9 +173,8 @@ class GameFlowTest {
 
     @Test
     fun theCardsWonFollowTheWinningCard() {
-        val first = uniqueName("Max")
-        startRound(cards = 1, first = first, second = uniqueName("Ned"))
-        chooseWinner(first)
+        startRound(cards = 1)
+        chooseWinner(ANA)
         val pirateBySkullKing = hasText(text(R.string.bonus_pirate_by_skull_king), substring = true)
         val skullKingByMermaid = hasText(text(R.string.bonus_skull_king_by_mermaid), substring = true)
         // A numbered card captures no character.
@@ -185,22 +189,20 @@ class GameFlowTest {
 
     @Test
     fun aBidChangeCanBeUndoneAndRedone() {
-        val first = uniqueName("Eva")
-        val second = uniqueName("Fay")
         click(R.string.home_new_game)
-        createPlayer(first)
-        createPlayer(second)
+        createPlayer(ANA)
+        createPlayer(BEA)
         click(R.string.setup_start)
-        // Change a bid and undo it, then redo it.
+        // Change a bid and undo it, then redo it: each change is written to the database first.
         click(R.string.prepare_start_bids)
-        rule.onNodeWithText(text(R.string.bids_total, 0, 1)).assertExists()
+        expect(hasText(text(R.string.bids_total, 0, 1)))
         // Each bid is set with - / +: raise the first player's bid.
         rule.onAllNodesWithContentDescription(text(R.string.stepper_increase)).onFirst().performClick()
-        rule.onNodeWithText(text(R.string.bids_total, 1, 1)).assertExists()
+        expect(hasText(text(R.string.bids_total, 1, 1)))
         rule.onNodeWithText("↶").performClick()
-        rule.onNodeWithText(text(R.string.bids_total, 0, 1)).assertExists()
+        expect(hasText(text(R.string.bids_total, 0, 1)))
         rule.onNodeWithText("↷").performClick()
-        rule.onNodeWithText(text(R.string.bids_total, 1, 1)).assertExists()
+        expect(hasText(text(R.string.bids_total, 1, 1)))
     }
 
     @Test
@@ -214,24 +216,30 @@ class GameFlowTest {
 
     @Test
     fun selectedPlayersSurviveARotation() {
-        val name = uniqueName("Rot")
         click(R.string.home_new_game)
-        createPlayer(name)
-        // The chosen players come after the available profiles, which grow with every test run: scroll to them.
-        rule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(name))
-        rule.onAllNodesWithText(name).onLast().assertExists()
-        rule.activity.runOnUiThread {
-            rule.activity.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
-        rule.waitForIdle()
-        rule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(name))
-        rule.onAllNodesWithText(name).onLast().assertExists()
-        rule.activity.runOnUiThread {
-            rule.activity.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        createPlayer(ANA)
+        try {
+            rule.activity.runOnUiThread {
+                rule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
+            rule.waitUntil(TIMEOUT_MS) { orientation() == Configuration.ORIENTATION_LANDSCAPE }
+            // The screen is short in landscape: the chosen players may be below the visible part.
+            rule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText(ANA))
+            expect(hasText(ANA))
+        } finally {
+            // The orientation must not outlive the test: the next tests expect the device in portrait.
+            rule.activity.runOnUiThread {
+                rule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            rule.waitUntil(TIMEOUT_MS) { orientation() == Configuration.ORIENTATION_PORTRAIT }
         }
     }
 
+    private fun orientation(): Int = rule.activity.resources.configuration.orientation
+
     private companion object {
-        const val TEN_THOUSAND = 10_000L
+        const val ANA = "Ana"
+        const val BEA = "Bea"
+        const val TIMEOUT_MS = 5_000L
     }
 }

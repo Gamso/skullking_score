@@ -10,9 +10,12 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gamso.skullkingscore.data.local.SkullKingDatabase
+import java.io.File
 import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,6 +34,14 @@ class MigrationTest {
         driver = AndroidSQLiteDriver(),
         databaseClass = SkullKingDatabase::class,
     )
+
+    /** The file of a previous run would be migrated instead of created: each run starts without it. */
+    @Before
+    @After
+    fun deleteDatabaseFile() {
+        context.deleteDatabase(file.name)
+        File(file.path + ".lck").delete()
+    }
 
     @Test
     fun version1ScoresSurviveTheMoveToDecimalScores() = runBlocking {
