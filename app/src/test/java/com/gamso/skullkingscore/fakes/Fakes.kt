@@ -14,6 +14,7 @@ import com.gamso.skullkingscore.domain.model.RoundDetails
 import com.gamso.skullkingscore.domain.model.RoundPhase
 import com.gamso.skullkingscore.domain.model.TrickDraft
 import com.gamso.skullkingscore.domain.repository.AppSettings
+import com.gamso.skullkingscore.domain.repository.EntryChange
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.PlayerRepository
 import com.gamso.skullkingscore.domain.repository.ScoreUpdate
@@ -97,9 +98,16 @@ class FakeGameRepository(private val players: List<Player> = emptyList()) : Game
         }
     }
 
-    override suspend fun updateEntry(roundId: Long, playerId: Long, transform: (PlayerRound) -> PlayerRound) = Unit
+    override suspend fun <R> inTransaction(block: suspend () -> R): R = block()
 
-    override suspend fun addLoot(roundId: Long, lootPlayerId: Long, trickWinnerId: Long?, trickNumber: Int?) = Unit
+    override suspend fun updateEntry(
+        roundId: Long,
+        playerId: Long,
+        transform: (PlayerRound) -> PlayerRound,
+    ): EntryChange? = null
+
+    override suspend fun addLoot(roundId: Long, lootPlayerId: Long, trickWinnerId: Long?, trickNumber: Int?): Long =
+        nextId++
 
     override suspend fun upsertTrick(roundId: Long, number: Int, draft: TrickDraft) = Unit
 
@@ -107,8 +115,12 @@ class FakeGameRepository(private val players: List<Player> = emptyList()) : Game
 
     override suspend fun setLootWinner(roundId: Long, trickNumber: Int, winnerId: Long?) = Unit
 
-    override suspend fun addDavyJones(roundId: Long, playerId: Long, creatures: Set<SeaMonster>, trickNumber: Int?) =
-        Unit
+    override suspend fun addDavyJones(
+        roundId: Long,
+        playerId: Long,
+        creatures: Set<SeaMonster>,
+        trickNumber: Int?,
+    ): Long = nextId++
 
     override suspend fun cancelLoot(lootId: Long) = Unit
 
