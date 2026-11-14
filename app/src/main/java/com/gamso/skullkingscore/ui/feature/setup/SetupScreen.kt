@@ -99,6 +99,8 @@ data class SetupUiState(
     val chosenCards: Set<ExpansionCard> = emptySet(),
     /** Seat of the dealer of the first round within [selected]. */
     val firstDealerSeat: Int = 0,
+    /** The game is being created: the start button is disabled. */
+    val starting: Boolean = false,
 ) {
     /** Cards actually used: some are removed with 2 players. */
     val effectiveCards: Set<ExpansionCard>
@@ -142,7 +144,13 @@ class SetupViewModel @Inject constructor(
         } ?: SetupInput(),
     )
 
-    val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input) { all, input ->
+    /**
+     * Set by the first tap on "Start" and kept after success: the screen is being left and this ViewModel is
+     * cleared with it, so a second tap during the transition must not create another game.
+     */
+    private val starting = MutableStateFlow(false)
+
+    val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input, starting) { all, input, starting ->
         val active = all.filter { !it.archived }
         val byId = active.associateBy { it.id }
         val selected = input.selectedIds.mapNotNull { byId[it] }
@@ -153,6 +161,7 @@ class SetupViewModel @Inject constructor(
             expansionEnabled = input.expansionEnabled,
             chosenCards = input.chosenCards,
             firstDealerSeat = input.firstDealerSeat.coerceIn(0, maxOf(selected.size - 1, 0)),
+            starting = starting,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SetupUiState())
 
@@ -210,7 +219,8 @@ class SetupViewModel @Inject constructor(
 
     fun start(onCreated: (Long) -> Unit) {
         val current = state.value
-        if (!current.canStart) return
+        if (!current.canStart || starting.value) return
+        starting.value = true
         val chosen = input.value
         settings.update {
             it.copy(
@@ -222,13 +232,20 @@ class SetupViewModel @Inject constructor(
             )
         }
         viewModelScope.launch {
-            val id = games.createGame(
-                playerIds = current.selected.map { it.id },
-                mode = current.mode,
-                expansionCards = current.effectiveCards,
-                firstDealerSeat = current.firstDealerSeat,
-            )
-            onCreated(id)
+            var created = false
+            try {
+                val id = games.createGame(
+                    playerIds = current.selected.map { it.id },
+                    mode = current.mode,
+                    expansionCards = current.effectiveCards,
+                    firstDealerSeat = current.firstDealerSeat,
+                )
+                created = true
+                onCreated(id)
+            } finally {
+                // Only a failure allows a new attempt. After success the guard holds until the screen is left.
+                if (!created) starting.value = false
+            }
         }
     }
 }
@@ -254,7 +271,7 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
                 }
                 ActionBar(
                     primaryText = stringResource(R.string.setup_start),
-                    primaryEnabled = state.canStart,
+                    primaryEnabled = state.canStart && !state.starting,
                     onPrimary = { viewModel.start(onGameCreated) },
                 )
             }

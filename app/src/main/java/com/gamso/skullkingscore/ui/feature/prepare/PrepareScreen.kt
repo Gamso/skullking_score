@@ -53,6 +53,8 @@ data class PrepareUiState(
     val cards: Int,
     val maxCards: Int,
     val deckSize: Int,
+    /** The round is being created: the start button is disabled. */
+    val starting: Boolean = false,
 ) {
     val needed: Int get() = cards * details.game.players.size
     val exceedsDeck: Boolean get() = needed > deckSize
@@ -67,12 +69,18 @@ class PrepareViewModel @Inject constructor(
 
     private val gameId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_GAME_ID))
     private val chosenCards = MutableStateFlow<Int?>(null)
-    private var starting = false
 
-    val state: StateFlow<PrepareUiState?> = combine(games.observeGame(gameId).filterNotNull(), chosenCards) {
-            details,
-            chosen,
-        ->
+    /**
+     * Set by the first tap on "Start" and kept after success: the screen is being left and this ViewModel is
+     * cleared with it, so a second tap during the transition must not start another round.
+     */
+    private val starting = MutableStateFlow(false)
+
+    val state: StateFlow<PrepareUiState?> = combine(
+        games.observeGame(gameId).filterNotNull(),
+        chosenCards,
+        starting,
+    ) { details, chosen, starting ->
         val number = details.rounds.size + 1
         PrepareUiState(
             details = details,
@@ -81,6 +89,7 @@ class PrepareViewModel @Inject constructor(
             cards = chosen ?: details.suggestedCards(),
             maxCards = DeckRules.MAX_CARDS_PER_ROUND,
             deckSize = DeckRules.deckSize(details.game.expansionCards),
+            starting = starting,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
@@ -99,13 +108,17 @@ class PrepareViewModel @Inject constructor(
 
     fun start(onStarted: (roundId: Long) -> Unit) {
         val current = state.value ?: return
-        if (starting) return
-        starting = true
+        if (starting.value) return
+        starting.value = true
         viewModelScope.launch {
+            var started = false
             try {
-                onStarted(startRound(gameId, current.cards))
+                val roundId = startRound(gameId, current.cards)
+                started = true
+                onStarted(roundId)
             } finally {
-                starting = false
+                // Only a failure allows a new attempt. After success the guard holds until the screen is left.
+                if (!started) starting.value = false
             }
         }
     }
@@ -139,7 +152,7 @@ fun PrepareScreen(
         bottomBar = {
             ActionBar(
                 primaryText = stringResource(R.string.prepare_start_bids),
-                primaryEnabled = current != null,
+                primaryEnabled = current != null && !current.starting,
                 onPrimary = { viewModel.start(onRoundStarted) },
             )
         },
