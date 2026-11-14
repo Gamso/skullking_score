@@ -110,7 +110,8 @@ class ScoreboardViewModel @Inject constructor(
     fun finish(onDone: () -> Unit) {
         viewModelScope.launch {
             finishGame(gameId)
-            autoBackup.run()
+            // The end screen opens right away. The backup (slow on a cloud folder) goes on in the background.
+            autoBackup.runInBackground()
             onDone()
         }
     }

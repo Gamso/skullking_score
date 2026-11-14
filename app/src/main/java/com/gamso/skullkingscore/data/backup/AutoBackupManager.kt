@@ -3,6 +3,7 @@ package com.gamso.skullkingscore.data.backup
 import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
+import com.gamso.skullkingscore.di.ApplicationScope
 import com.gamso.skullkingscore.domain.repository.BackupRepository
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.SettingsRepository
@@ -11,7 +12,9 @@ import java.io.IOException
 import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -26,8 +29,17 @@ class AutoBackupManager @Inject constructor(
     private val games: GameRepository,
     private val backup: BackupRepository,
     private val settings: SettingsRepository,
+    @ApplicationScope private val scope: CoroutineScope,
 ) {
     private val mutex = Mutex()
+
+    /**
+     * Starts [run] without waiting for it, in the application scope: the caller can leave its screen right away
+     * and the backup is not cancelled with it.
+     */
+    fun runInBackground() {
+        scope.launch { run() }
+    }
 
     suspend fun runIfDue(now: Long = System.currentTimeMillis()) {
         val current = settings.settings.value
