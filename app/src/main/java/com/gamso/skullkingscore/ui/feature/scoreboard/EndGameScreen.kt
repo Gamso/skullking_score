@@ -75,8 +75,9 @@ fun EndGameScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             val winners = ranking.filter { it.rank == 1 }
+            val separator = stringResource(R.string.end_winners_separator)
             Text(
-                stringResource(R.string.end_winner, winners.joinToString(" & ") { it.player.name }),
+                stringResource(R.string.end_winner, winners.joinToString(separator) { it.player.name }),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )

@@ -49,7 +49,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -94,15 +93,19 @@ import com.gamso.skullkingscore.ui.labelRes
 import com.gamso.skullkingscore.ui.navigation.Routes
 import com.gamso.skullkingscore.ui.normalizeForSearch
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.IOException
 import java.text.DateFormat
 import java.time.LocalDate
 import java.util.Date
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -134,6 +137,10 @@ class HistoryViewModel @Inject constructor(
     private val _messages = MutableSharedFlow<UiMessage>(extraBufferCapacity = 4)
     val messages: SharedFlow<UiMessage> = _messages
 
+    /** One-shot events: an exported file ready for the Android share sheet. */
+    private val _exports = Channel<ExportFile>(Channel.BUFFERED)
+    val exports: Flow<ExportFile> = _exports.receiveAsFlow()
+
     fun open(gameId: Long, onRoute: (String) -> Unit) {
         viewModelScope.launch {
             val details = games.getGame(gameId) ?: return@launch
@@ -145,8 +152,25 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch { games.deleteGame(gameId) }
     }
 
+    /**
+     * Writes the export in the ViewModel scope (it survives a rotation) and emits the file on [exports].
+     * A file error (full or unavailable cache) shows a message instead of crashing.
+     */
+    fun export(format: ExportFormat, filter: ExportFilter) {
+        viewModelScope.launch {
+            try {
+                prepareExport(format, filter)?.let { _exports.send(it) }
+            } catch (ignored: IOException) {
+                _messages.emit(UiMessage(R.string.share_file_failed))
+            } catch (ignored: IllegalArgumentException) {
+                // Thrown by FileProvider when the file is outside the configured paths.
+                _messages.emit(UiMessage(R.string.share_file_failed))
+            }
+        }
+    }
+
     /** Prepares the file to share; `null` if the filter keeps no game. */
-    suspend fun prepareExport(format: ExportFormat, filter: ExportFilter): ExportFile? {
+    private suspend fun prepareExport(format: ExportFormat, filter: ExportFilter): ExportFile? {
         val selected = filter.apply(games.getAllGames())
         if (selected.isEmpty()) {
             _messages.emit(UiMessage(R.string.export_nothing))
@@ -179,7 +203,7 @@ class HistoryViewModel @Inject constructor(
                 _messages.emit(UiMessage(R.string.import_too_new))
             } catch (e: InvalidBackupException) {
                 _messages.emit(UiMessage(R.string.import_invalid))
-            } catch (e: java.io.IOException) {
+            } catch (e: IOException) {
                 _messages.emit(UiMessage(R.string.import_invalid))
             }
         }
@@ -223,7 +247,6 @@ fun HistoryScreen(
     val pendingImport by viewModel.pendingImport.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val resources = LocalResources.current
-    val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
     var exporting by remember { mutableStateOf(false) }
     var deleting by remember { mutableStateOf<GameSummary?>(null) }
@@ -242,6 +265,10 @@ fun HistoryScreen(
         viewModel.messages.collect { message ->
             snackbar.showSnackbar(resources.getString(message.res, *message.args.toTypedArray()))
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.exports.collect { file -> share(context, file) }
     }
 
     SkullScaffold(
@@ -327,9 +354,7 @@ fun HistoryScreen(
             onDismiss = { exporting = false },
             onExport = { format, filter ->
                 exporting = false
-                scope.launch {
-                    viewModel.prepareExport(format, filter)?.let { share(context, it) }
-                }
+                viewModel.export(format, filter)
             },
         )
     }

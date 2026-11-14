@@ -167,6 +167,7 @@
     <string name="results_final_bid">Previsione</string>
     <string name="results_bonus_title">Carte vinte</string>
     <string name="results_bonus_ignored">Previsione sbagliata: i bonus inseriti non contano.</string>
+    <string name="results_bonus_count">%1$s: %2$d (%3$s)</string>
     <string name="results_cannonball">Palla di cannone</string>
     <string name="results_cannonball_hint">Tutto o niente: 15 × carte se la previsione è esatta, altrimenti 0</string>
     <string name="results_rascal_wager">Puntata di Farrell il Farabutto</string>
@@ -213,6 +214,7 @@
     <!-- End of game -->
     <string name="end_title">Partita finita</string>
     <string name="end_winner">%1$s vince!</string>
+    <string name="end_winners_separator">" e "</string>
     <string name="end_see_scoreboard">Vedi il tabellone</string>
 
     <!-- History, export, import -->
@@ -322,6 +324,7 @@
     <string name="share_save">Salva nella galleria</string>
     <string name="share_saved">Immagine salvata in Pictures/SkullKing.</string>
     <string name="share_save_failed">Impossibile salvare l’immagine.</string>
+    <string name="share_file_failed">Impossibile preparare il file da condividere.</string>
     <string name="share_preview">Anteprima dell’immagine da condividere</string>
     <string name="share_nothing">Scegli cosa includere nell’immagine.</string>
     <string name="share_podium">Podio</string>

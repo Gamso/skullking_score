@@ -33,6 +33,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -91,13 +93,17 @@ import com.gamso.skullkingscore.ui.shortLabelRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.text.DateFormat
+import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -127,8 +133,11 @@ class StatsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
-    private val _events = Channel<Uri>(Channel.BUFFERED)
+    private val _events = Channel<StatsEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
+
+    /** Share in progress: repeated taps do not render several images in parallel. */
+    private var shareJob: Job? = null
 
     private val filter = MutableStateFlow(StatsFilter())
 
@@ -156,8 +165,9 @@ class StatsViewModel @Inject constructor(
 
     /** Generates a player's statistics image (with the current filters) and sends it to the Android share sheet. */
     fun sharePlayer(stats: PlayerStats) {
+        if (shareJob?.isActive == true) return
         val current = state.value
-        viewModelScope.launch {
+        shareJob = viewModelScope.launch {
             val bitmap = withContext(Dispatchers.Default) {
                 StatsImageRenderer.render(
                     stats.player,
@@ -170,7 +180,15 @@ class StatsViewModel @Inject constructor(
                     bitmap.compress(Bitmap.CompressFormat.PNG, PNG_QUALITY, it)
                 }.toByteArray()
             }
-            _events.send(files.writeShareableBytes("skullking-stats-${stats.player.id}.png", bytes))
+            val event = try {
+                StatsEvent.Send(files.writeShareableBytes("skullking-stats-${stats.player.id}.png", bytes))
+            } catch (ignored: IOException) {
+                StatsEvent.ShareFailed
+            } catch (ignored: IllegalArgumentException) {
+                // Thrown by FileProvider when the file is outside the configured paths.
+                StatsEvent.ShareFailed
+            }
+            _events.send(event)
         }
     }
 
@@ -190,7 +208,14 @@ class StatsViewModel @Inject constructor(
     }
 }
 
-internal fun Double.percent(): String = "${(this * 100).roundToInt()} %"
+sealed interface StatsEvent {
+    data class Send(val uri: Uri) : StatsEvent
+    data object ShareFailed : StatsEvent
+}
+
+/** A rate between 0 and 1 as a whole percentage in the locale's format ("12 %" in French, "12%" in English). */
+internal fun Double.percent(locale: Locale = Locale.getDefault()): String =
+    NumberFormat.getPercentInstance(locale).apply { maximumFractionDigits = 0 }.format(this)
 
 private const val PNG_QUALITY = 100
 
@@ -206,19 +231,27 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val context = LocalContext.current
     val chooserTitle = stringResource(R.string.share_action)
+    val shareFailed = stringResource(R.string.share_file_failed)
+    val snackbar = remember { SnackbarHostState() }
     val visible = remember(state.stats, query) {
         val needle = normalizeForSearch(query.trim())
         state.stats.filter { normalizeForSearch(it.player.name).contains(needle) }
     }
 
     LaunchedEffect(Unit) {
-        viewModel.events.collect { uri ->
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "image/png"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        viewModel.events.collect { event ->
+            when (event) {
+                is StatsEvent.Send -> {
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "image/png"
+                        putExtra(Intent.EXTRA_STREAM, event.uri)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    context.startActivity(Intent.createChooser(intent, chooserTitle))
+                }
+
+                StatsEvent.ShareFailed -> snackbar.showSnackbar(shareFailed)
             }
-            context.startActivity(Intent.createChooser(intent, chooserTitle))
         }
     }
 
@@ -226,6 +259,7 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
         title = stringResource(R.string.home_stats),
         onBack = onBack,
         maxContentWidth = Dp.Unspecified,
+        snackbarHost = { SnackbarHost(snackbar) },
     ) { padding ->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(STATS_MIN_WIDTH),

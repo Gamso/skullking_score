@@ -3,8 +3,10 @@ package com.gamso.skullkingscore.ui
 import com.gamso.skullkingscore.domain.export.csvNumber
 import com.gamso.skullkingscore.ui.components.formatPoints
 import com.gamso.skullkingscore.ui.components.formatScore
+import com.gamso.skullkingscore.ui.feature.stats.percent
 import java.util.Locale
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import org.junit.After
 import org.junit.Test
 
@@ -43,5 +45,15 @@ class ScoreFormatTest {
         assertEquals("10", csvNumber(10.0))
         assertEquals("-2.5", csvNumber(-2.5))
         assertEquals("47.5", csvNumber(47.5))
+    }
+
+    @Test
+    fun percentagesFollowTheLocale() {
+        // French puts a (narrow) no-break space before "%", English none.
+        assertEquals("12%", 0.123.percent(Locale.US))
+        assertEquals("100%", 1.0.percent(Locale.US))
+        val french = 0.123.percent(Locale.FRANCE)
+        assertEquals("12%", french.filterNot { Character.isSpaceChar(it) })
+        assertTrue(french.length > "12%".length)
     }
 }
