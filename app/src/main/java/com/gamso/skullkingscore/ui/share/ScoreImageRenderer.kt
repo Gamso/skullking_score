@@ -30,6 +30,8 @@ data class ShareTexts(
     val roundHeader: String,
     val totalLabel: String,
     val statsLines: List<String>,
+    /** Short number of cards dealt in a round ("8 c."). */
+    val cardsShort: (Int) -> String,
 )
 
 /**
@@ -198,7 +200,7 @@ object ScoreImageRenderer {
             if (rowIndex % 2 == 1) canvas.drawRect(MARGIN, y, WIDTH - MARGIN, y + ROUND_ROW, stripe)
             canvas.drawText(round.round.number.toString(), MARGIN + 8f, y + 40f, paint(34f, INK, bold = true))
             canvas.drawText(
-                "${round.round.cardsDealt} c." + if (round.round.isExtra) " +" else "",
+                texts.cardsShort(round.round.cardsDealt) + if (round.round.isExtra) " +" else "",
                 MARGIN + 8f,
                 y + 70f,
                 paint(22f, MUTED),
@@ -213,7 +215,7 @@ object ScoreImageRenderer {
                     paint(32f, if (breakdown.success) INK else NEGATIVE, bold = true, align = Paint.Align.CENTER),
                 )
                 canvas.drawText(
-                    (round.cumulative[player.id] ?: 0).toString(),
+                    formatScore(round.cumulative[player.id] ?: 0.0),
                     columnCenter(index),
                     y + 70f,
                     paint(22f, MUTED, align = Paint.Align.CENTER),

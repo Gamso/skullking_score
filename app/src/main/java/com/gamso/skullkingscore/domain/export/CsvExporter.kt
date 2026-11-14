@@ -56,7 +56,7 @@ object CsvExporter {
                         round.round.number.toString(),
                         if (round.round.isExtra) "oui" else "non",
                         round.round.cardsDealt.toString(),
-                        player.name,
+                        textCell(player.name),
                         entry.bid.toString(),
                         entry.effectiveBid.toString(),
                         entry.tricks.toString(),
@@ -83,8 +83,23 @@ object CsvExporter {
 
     private const val SEPARATOR = ";"
 
-    private fun escape(value: String): String =
-        if (value.any { it == ';' || it == '"' || it == '\n' }) "\"" + value.replace("\"", "\"\"") + "\"" else value
+    /** Characters that make a spreadsheet read a cell as a formula when they start it. */
+    private val FORMULA_STARTS = setOf('=', '+', '-', '@', '\t', '\r')
+
+    /** Characters that force a value to be quoted. */
+    private val QUOTED = setOf(';', '"', '\n', '\r')
+
+    private fun escape(value: String): String = if (value.any { it in QUOTED }) {
+        "\"" + value.replace("\"", "\"\"") + "\""
+    } else {
+        value
+    }
+
+    /**
+     * A free-text cell (player name): prefixed with a single quote when it starts with a formula
+     * character, so that spreadsheets show it as text. Not for numeric columns, where "-10" must stay a number.
+     */
+    internal fun textCell(value: String): String = if (value.firstOrNull() in FORMULA_STARTS) "'$value" else value
 }
 
 /** A score in the CSV: whole numbers without decimals, half points with a dot ("2.5"), whatever the locale. */

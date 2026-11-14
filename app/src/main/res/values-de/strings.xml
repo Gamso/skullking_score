@@ -167,6 +167,7 @@
     <string name="results_final_bid">Ansage</string>
     <string name="results_bonus_title">Gewonnene Karten</string>
     <string name="results_bonus_ignored">Ansage verfehlt: Die erfassten Boni zählen nicht.</string>
+    <string name="results_bonus_count">%1$s: %2$d (%3$s)</string>
     <string name="results_cannonball">Kanonenkugel</string>
     <string name="results_cannonball_hint">Alles oder nichts: 15 × Karten bei exakter Ansage, sonst 0</string>
     <string name="results_rascal_wager">Einsatz von Rascal von Roatan</string>
@@ -213,6 +214,7 @@
     <!-- End of game -->
     <string name="end_title">Spielende</string>
     <string name="end_winner">%1$s gewinnt!</string>
+    <string name="end_winners_separator">" und "</string>
     <string name="end_see_scoreboard">Spielstand ansehen</string>
 
     <!-- History, export, import -->
@@ -322,6 +324,7 @@
     <string name="share_save">In der Galerie speichern</string>
     <string name="share_saved">Bild in Pictures/SkullKing gespeichert.</string>
     <string name="share_save_failed">Das Bild konnte nicht gespeichert werden.</string>
+    <string name="share_file_failed">Die Datei zum Teilen konnte nicht erstellt werden.</string>
     <string name="share_preview">Vorschau des zu teilenden Bildes</string>
     <string name="share_nothing">Wähle, was im Bild enthalten sein soll.</string>
     <string name="share_podium">Siegerpodest</string>
