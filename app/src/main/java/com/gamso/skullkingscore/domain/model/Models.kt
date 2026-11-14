@@ -107,7 +107,10 @@ data class Trick(
     val bidAdjustment: Int = 0,
     val winningCard: WinningCard? = null,
     val winningPirate: Pirate? = null,
-)
+) {
+    /** The entry this trick was recorded from: opens it again for a correction. */
+    fun toDraft() = TrickDraft(winnerId, bonus, rascalWager, bidAdjustment, winningCard, winningPirate)
+}
 
 /** What entering a trick provides: winner (`null` = destroyed trick), captured cards and optional settings. */
 data class TrickDraft(

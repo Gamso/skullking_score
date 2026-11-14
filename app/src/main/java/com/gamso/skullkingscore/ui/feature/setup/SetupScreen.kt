@@ -58,6 +58,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -76,6 +77,7 @@ import com.gamso.skullkingscore.ui.components.PlayerEditDialog
 import com.gamso.skullkingscore.ui.components.PlayerLabel
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
+import com.gamso.skullkingscore.ui.components.enumByName
 import com.gamso.skullkingscore.ui.descriptionRes
 import com.gamso.skullkingscore.ui.labelRes
 import com.gamso.skullkingscore.ui.normalizeForSearch
@@ -99,6 +101,8 @@ data class SetupUiState(
     val chosenCards: Set<ExpansionCard> = emptySet(),
     /** Seat of the dealer of the first round within [selected]. */
     val firstDealerSeat: Int = 0,
+    /** The game is being created: the start button is disabled. */
+    val starting: Boolean = false,
 ) {
     /** Cards actually used: some are removed with 2 players. */
     val effectiveCards: Set<ExpansionCard>
@@ -116,7 +120,7 @@ data class SetupUiState(
     val canStart: Boolean get() = hint == null
 }
 
-private data class SetupInput(
+internal data class SetupInput(
     val selectedIds: List<Long> = emptyList(),
     val mode: ScoringMode = ScoringMode.CLASSIC,
     val expansionEnabled: Boolean = false,
@@ -124,25 +128,66 @@ private data class SetupInput(
     val firstDealerSeat: Int = 0,
 )
 
+private const val KEY_PLAYERS = "setup.players"
+private const val KEY_MODE = "setup.mode"
+private const val KEY_EXPANSION = "setup.expansion"
+private const val KEY_CARDS = "setup.cards"
+private const val KEY_DEALER = "setup.dealer"
+
+/** Copies [input] to the saved state in Bundle-compatible types: ids as a LongArray, enums as their names. */
+internal fun SavedStateHandle.saveSetupInput(input: SetupInput) {
+    this[KEY_PLAYERS] = input.selectedIds.toLongArray()
+    this[KEY_MODE] = input.mode.name
+    this[KEY_EXPANSION] = input.expansionEnabled
+    this[KEY_CARDS] = ArrayList(input.chosenCards.map { it.name })
+    this[KEY_DEALER] = input.firstDealerSeat
+}
+
+/** The input saved by [saveSetupInput], or null when nothing was saved yet. */
+internal fun SavedStateHandle.restoreSetupInput(): SetupInput? {
+    val ids = get<LongArray>(KEY_PLAYERS) ?: return null
+    return SetupInput(
+        selectedIds = ids.toList(),
+        mode = enumByName<ScoringMode>(get<String>(KEY_MODE)) ?: ScoringMode.CLASSIC,
+        expansionEnabled = get<Boolean>(KEY_EXPANSION) ?: false,
+        chosenCards = get<List<String>>(KEY_CARDS).orEmpty().mapNotNull { enumByName<ExpansionCard>(it) }.toSet(),
+        firstDealerSeat = get<Int>(KEY_DEALER) ?: 0,
+    )
+}
+
 @HiltViewModel
 class SetupViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val players: PlayerRepository,
     private val games: GameRepository,
     private val settings: SettingsRepository,
 ) : ViewModel() {
 
-    // Starts from the previous game's mode and expansion if the setting is on.
+    // Restored after a process death. Otherwise starts from the previous game's mode and expansion if the
+    // setting is on.
     private val input = MutableStateFlow(
-        settings.settings.value.takeIf { it.rememberSetup }?.lastSetup?.let {
-            SetupInput(
-                mode = it.mode,
-                expansionEnabled = it.expansionEnabled,
-                chosenCards = it.cards,
-            )
-        } ?: SetupInput(),
+        savedStateHandle.restoreSetupInput()
+            ?: settings.settings.value.takeIf { it.rememberSetup }?.lastSetup?.let {
+                SetupInput(
+                    mode = it.mode,
+                    expansionEnabled = it.expansionEnabled,
+                    chosenCards = it.cards,
+                )
+            } ?: SetupInput(),
     )
 
-    val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input) { all, input ->
+    /**
+     * Set by the first tap on "Start" and kept after success: the screen is being left and this ViewModel is
+     * cleared with it, so a second tap during the transition must not create another game.
+     */
+    private val starting = MutableStateFlow(false)
+
+    init {
+        // Every change goes to the saved state: the setup survives a process death.
+        viewModelScope.launch { input.collect { savedStateHandle.saveSetupInput(it) } }
+    }
+
+    val state: StateFlow<SetupUiState> = combine(players.observePlayers(), input, starting) { all, input, starting ->
         val active = all.filter { !it.archived }
         val byId = active.associateBy { it.id }
         val selected = input.selectedIds.mapNotNull { byId[it] }
@@ -153,6 +198,7 @@ class SetupViewModel @Inject constructor(
             expansionEnabled = input.expansionEnabled,
             chosenCards = input.chosenCards,
             firstDealerSeat = input.firstDealerSeat.coerceIn(0, maxOf(selected.size - 1, 0)),
+            starting = starting,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SetupUiState())
 
@@ -210,7 +256,8 @@ class SetupViewModel @Inject constructor(
 
     fun start(onCreated: (Long) -> Unit) {
         val current = state.value
-        if (!current.canStart) return
+        if (!current.canStart || starting.value) return
+        starting.value = true
         val chosen = input.value
         settings.update {
             it.copy(
@@ -222,13 +269,20 @@ class SetupViewModel @Inject constructor(
             )
         }
         viewModelScope.launch {
-            val id = games.createGame(
-                playerIds = current.selected.map { it.id },
-                mode = current.mode,
-                expansionCards = current.effectiveCards,
-                firstDealerSeat = current.firstDealerSeat,
-            )
-            onCreated(id)
+            var created = false
+            try {
+                val id = games.createGame(
+                    playerIds = current.selected.map { it.id },
+                    mode = current.mode,
+                    expansionCards = current.effectiveCards,
+                    firstDealerSeat = current.firstDealerSeat,
+                )
+                created = true
+                onCreated(id)
+            } finally {
+                // Only a failure allows a new attempt. After success the guard holds until the screen is left.
+                if (!created) starting.value = false
+            }
         }
     }
 }
@@ -237,7 +291,7 @@ class SetupViewModel @Inject constructor(
 @Composable
 fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: SetupViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var creating by remember { mutableStateOf(false) }
+    var creating by rememberSaveable { mutableStateOf(false) }
 
     SkullScaffold(
         title = stringResource(R.string.setup_title),
@@ -254,7 +308,7 @@ fun SetupScreen(onBack: () -> Unit, onGameCreated: (Long) -> Unit, viewModel: Se
                 }
                 ActionBar(
                     primaryText = stringResource(R.string.setup_start),
-                    primaryEnabled = state.canStart,
+                    primaryEnabled = state.canStart && !state.starting,
                     onPrimary = { viewModel.start(onGameCreated) },
                 )
             }
@@ -562,7 +616,7 @@ private class PlayerReorderState(private val listState: LazyListState) {
 /** Manual choice of the first dealer, next to the random draw. */
 @Composable
 private fun ChooseDealerButton(players: List<Player>, onChoose: (Player) -> Unit) {
-    var open by remember { mutableStateOf(false) }
+    var open by rememberSaveable { mutableStateOf(false) }
     Box {
         OutlinedButton(onClick = { open = true }) { Text(stringResource(R.string.setup_choose_dealer)) }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {

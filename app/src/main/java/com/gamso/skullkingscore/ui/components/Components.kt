@@ -46,7 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -423,10 +423,20 @@ fun KeepScreenOn() {
 /** Undo / redo in the top bar. */
 @Composable
 fun UndoRedoActions(state: UndoState, onUndo: () -> Unit, onRedo: () -> Unit) {
-    IconButton(onClick = onUndo, enabled = state.canUndo) {
+    val undoLabel = stringResource(R.string.undo)
+    val redoLabel = stringResource(R.string.redo)
+    IconButton(
+        onClick = onUndo,
+        enabled = state.canUndo,
+        modifier = Modifier.semantics { contentDescription = undoLabel },
+    ) {
         Text("↶", style = MaterialTheme.typography.titleLarge)
     }
-    IconButton(onClick = onRedo, enabled = state.canRedo) {
+    IconButton(
+        onClick = onRedo,
+        enabled = state.canRedo,
+        modifier = Modifier.semantics { contentDescription = redoLabel },
+    ) {
         Text("↷", style = MaterialTheme.typography.titleLarge)
     }
 }
@@ -443,7 +453,7 @@ fun DealerLine(
     prominent: Boolean = false,
 ) {
     val dealer = game.dealerFor(roundNumber) ?: return
-    var open by remember { mutableStateOf(false) }
+    var open by rememberSaveable { mutableStateOf(false) }
     Box(modifier = modifier) {
         TextButton(onClick = { open = true }) {
             Text(

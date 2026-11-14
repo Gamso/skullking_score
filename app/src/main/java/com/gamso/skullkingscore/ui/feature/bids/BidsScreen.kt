@@ -41,11 +41,11 @@ import com.gamso.skullkingscore.domain.model.RoundPhase
 import com.gamso.skullkingscore.domain.model.ScoredGame
 import com.gamso.skullkingscore.domain.model.ScoredRound
 import com.gamso.skullkingscore.domain.repository.GameRepository
+import com.gamso.skullkingscore.domain.repository.setDealer
 import com.gamso.skullkingscore.domain.scoring.GameScoreCalculator
 import com.gamso.skullkingscore.domain.undo.UndoAction
 import com.gamso.skullkingscore.domain.undo.UndoHistory
 import com.gamso.skullkingscore.domain.undo.UndoKind
-import com.gamso.skullkingscore.domain.undo.UndoState
 import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.DealerLine
@@ -53,17 +53,14 @@ import com.gamso.skullkingscore.ui.components.DeltaStepper
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SkullScaffold
-import com.gamso.skullkingscore.ui.components.UndoNotice
+import com.gamso.skullkingscore.ui.components.UndoController
 import com.gamso.skullkingscore.ui.components.UndoNotices
 import com.gamso.skullkingscore.ui.components.UndoRedoActions
 import com.gamso.skullkingscore.ui.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -80,20 +77,13 @@ class BidsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val games: GameRepository,
     private val edit: EditRoundUseCase,
-    private val history: UndoHistory,
+    history: UndoHistory,
 ) : ViewModel() {
 
     private val gameId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_GAME_ID))
     private val roundId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_ROUND_ID))
 
-    val undoState: StateFlow<UndoState> = history.observe(gameId)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UndoState())
-    private val _notices = MutableSharedFlow<UndoNotice>(extraBufferCapacity = 1)
-    val notices: SharedFlow<UndoNotice> = _notices.asSharedFlow()
-
-    init {
-        history.clear(gameId)
-    }
+    val undoRedo = UndoController(history, gameId, viewModelScope)
 
     val state: StateFlow<BidsUiState?> = games.observeGame(gameId)
         .filterNotNull()
@@ -120,8 +110,7 @@ class BidsViewModel @Inject constructor(
                 it.copy(bid = (it.bid + step).coerceIn(0, cards), finalBid = null)
             } ?: return@launch
             if (before.bid == after.bid && before.finalBid == after.finalBid) return@launch
-            history.record(
-                gameId,
+            undoRedo.record(
                 UndoAction(UndoKind.BID, nameOf(playerId), {
                     apply(before.bid, before.finalBid)
                 }, { apply(after.bid, null) }),
@@ -136,33 +125,21 @@ class BidsViewModel @Inject constructor(
                 edit.updateEntry(gameId, roundId, playerId) { it.copy(cannonball = value) }
             }
             apply(enabled)
-            history.record(
-                gameId,
+            undoRedo.record(
                 UndoAction(UndoKind.CANNONBALL, nameOf(playerId), { apply(before) }, { apply(enabled) }),
             )
         }
     }
 
-    fun undo() {
-        viewModelScope.launch { history.undo(gameId)?.let { _notices.emit(UndoNotice(it, redone = false)) } }
-    }
-
-    fun redo() {
-        viewModelScope.launch { history.redo(gameId)?.let { _notices.emit(UndoNotice(it, redone = true)) } }
-    }
-
     fun setDealer(player: Player) {
         val game = state.value?.scored?.game ?: return
         val number = state.value?.round?.round?.number ?: return
-        val index = game.players.indexOfFirst { it.id == player.id }
-        viewModelScope.launch {
-            games.setFirstDealerSeat(gameId, Math.floorMod(index - (number - 1), game.players.size))
-        }
+        viewModelScope.launch { games.setDealer(game, number, player) }
     }
 
     fun confirm(onDone: () -> Unit) {
         viewModelScope.launch {
-            history.clear(gameId)
+            undoRedo.clear()
             edit.setPhase(gameId, roundId, RoundPhase.PLAYING)
             onDone()
         }
@@ -178,11 +155,11 @@ fun BidsScreen(
     viewModel: BidsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val undoState by viewModel.undoState.collectAsStateWithLifecycle()
+    val undoState by viewModel.undoRedo.state.collectAsStateWithLifecycle()
     val current = state
     val snackbar = remember { SnackbarHostState() }
     KeepScreenOn()
-    UndoNotices(viewModel.notices, snackbar)
+    UndoNotices(viewModel.undoRedo.notices, snackbar)
 
     SkullScaffold(
         title = if (current == null) {
@@ -193,7 +170,7 @@ fun BidsScreen(
         onBack = onBack,
         snackbarHost = { SnackbarHost(snackbar) },
         actions = {
-            UndoRedoActions(undoState, onUndo = viewModel::undo, onRedo = viewModel::redo)
+            UndoRedoActions(undoState, onUndo = viewModel.undoRedo::undo, onRedo = viewModel.undoRedo::redo)
             IconButton(onClick = onScoreboard) {
                 Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
             }

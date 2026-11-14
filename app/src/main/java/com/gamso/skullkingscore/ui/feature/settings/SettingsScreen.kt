@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewModelScope
 import com.gamso.skullkingscore.R
 import com.gamso.skullkingscore.data.backup.AutoBackupManager
 import com.gamso.skullkingscore.domain.repository.AppSettings
@@ -44,7 +44,6 @@ import com.gamso.skullkingscore.ui.components.SkullScaffold
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -68,7 +67,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun backupNow() {
-        viewModelScope.launch { autoBackup.run() }
+        // Not cancelled when the settings screen is left before the backup is written.
+        autoBackup.runInBackground()
     }
 }
 
@@ -183,7 +183,7 @@ fun SettingsScreen(
                 stringResource(R.string.settings_developed_by) + " · © 2026 Gamso",
                 style = MaterialTheme.typography.bodySmall,
             )
-            var showLicense by remember { mutableStateOf(false) }
+            var showLicense by rememberSaveable { mutableStateOf(false) }
             OutlinedButton(onClick = { showLicense = true }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.settings_view_license))
             }

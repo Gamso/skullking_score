@@ -314,6 +314,8 @@
     <string name="undo_trick_deleted">vaza %1$s excluída</string>
     <string name="undone_prefix">Desfeito: %1$s</string>
     <string name="redone_prefix">Refeito: %1$s</string>
+    <string name="undo">Desfazer</string>
+    <string name="redo">Refazer</string>
     <string name="dealer_label">Carteador: %1$s</string>
     <string name="setup_draw_dealer">Sortear o carteador</string>
     <string name="setup_dealer_badge">Carteador</string>

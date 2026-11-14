@@ -41,9 +41,14 @@ fun GameDetails.suggestedCards(): Int {
 }
 
 class StartRoundUseCase @Inject constructor(private val games: GameRepository) {
-    /** Creates the next round (bidding in progress) and returns its identifier. */
+    /**
+     * Creates the next round (bidding in progress) and returns its identifier. If the last round is not scored
+     * yet (a second tap while the first one was already starting it), no round is created and the identifier of
+     * that pending round is returned instead.
+     */
     suspend operator fun invoke(gameId: Long, cardsDealt: Int): Long {
         val details = checkNotNull(games.getGame(gameId)) { "Game not found" }
+        details.rounds.lastOrNull()?.round?.takeIf { it.phase != RoundPhase.SCORED }?.let { return it.id }
         val number = details.rounds.size + 1
         return games.addRound(
             gameId = gameId,

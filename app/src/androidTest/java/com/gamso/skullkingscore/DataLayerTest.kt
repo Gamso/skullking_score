@@ -286,15 +286,16 @@ class DataLayerTest {
         assertTrue(env.games.getAllGames().isEmpty())
     }
 
+    /** On a preferences file of its own: the app's settings are left alone. */
     @Test
     fun settingsArePersistedBetweenInstances() {
-        val name = "settings"
+        val name = "settings-data-layer-test"
         context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().clear().commit()
-        val first = SettingsRepositoryImpl(context)
+        val first = SettingsRepositoryImpl(context, name)
         assertTrue(first.settings.value.keepScreenOn)
         assertFalse(first.settings.value.autoBackup)
         first.update { it.copy(keepScreenOn = false, autoBackup = true, backupFolder = "content://folder") }
-        val second = SettingsRepositoryImpl(context)
+        val second = SettingsRepositoryImpl(context, name)
         assertFalse(second.settings.value.keepScreenOn)
         assertTrue(second.settings.value.autoBackup)
         assertEquals("content://folder", second.settings.value.backupFolder)

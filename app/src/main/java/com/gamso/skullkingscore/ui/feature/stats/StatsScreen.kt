@@ -1,7 +1,6 @@
 ﻿package com.gamso.skullkingscore.ui.feature.stats
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.clickable
@@ -56,6 +55,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -82,6 +82,7 @@ import com.gamso.skullkingscore.ui.components.LineChart
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
+import com.gamso.skullkingscore.ui.components.enumByName
 import com.gamso.skullkingscore.ui.components.formatPoints
 import com.gamso.skullkingscore.ui.components.formatScore
 import com.gamso.skullkingscore.ui.labelRes
@@ -89,6 +90,7 @@ import com.gamso.skullkingscore.ui.normalizeForSearch
 import com.gamso.skullkingscore.ui.share.StatsImageRenderer
 import com.gamso.skullkingscore.ui.share.StatsImageTextsFactory
 import com.gamso.skullkingscore.ui.share.StatsTrend
+import com.gamso.skullkingscore.ui.share.shareFile
 import com.gamso.skullkingscore.ui.shortLabelRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -125,8 +127,33 @@ data class StatsUiState(
     val players: List<Player> = emptyList(),
 )
 
+private const val KEY_STATS_MODE = "stats.mode"
+private const val KEY_STATS_PLAYER_COUNT = "stats.playerCount"
+private const val KEY_STATS_EXPANSION = "stats.expansion"
+private const val KEY_STATS_PRESENT = "stats.present"
+
+/** Copies [filter] to the saved state in Bundle-compatible types: enums as their names, ids as a LongArray. */
+internal fun SavedStateHandle.saveStatsFilter(filter: StatsFilter) {
+    this[KEY_STATS_MODE] = filter.mode.name
+    this[KEY_STATS_PLAYER_COUNT] = filter.playerCount.name
+    this[KEY_STATS_EXPANSION] = filter.expansion.name
+    this[KEY_STATS_PRESENT] = filter.presentPlayerIds.toLongArray()
+}
+
+/** The filter saved by [saveStatsFilter], or null when nothing was saved yet. */
+internal fun SavedStateHandle.restoreStatsFilter(): StatsFilter? {
+    val mode = enumByName<ScoringMode>(get<String>(KEY_STATS_MODE)) ?: return null
+    return StatsFilter(
+        mode = mode,
+        playerCount = enumByName<PlayerCountFilter>(get<String>(KEY_STATS_PLAYER_COUNT)) ?: PlayerCountFilter.ALL,
+        expansion = enumByName<ExpansionFilter>(get<String>(KEY_STATS_EXPANSION)) ?: ExpansionFilter.ALL,
+        presentPlayerIds = get<LongArray>(KEY_STATS_PRESENT)?.toSet().orEmpty(),
+    )
+}
+
 @HiltViewModel
 class StatsViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     games: GameRepository,
     playerRepository: PlayerRepository,
     private val files: FileGateway,
@@ -139,7 +166,12 @@ class StatsViewModel @Inject constructor(
     /** Share in progress: repeated taps do not render several images in parallel. */
     private var shareJob: Job? = null
 
-    private val filter = MutableStateFlow(StatsFilter())
+    // Restored after a process death.
+    private val filter = MutableStateFlow(savedStateHandle.restoreStatsFilter() ?: StatsFilter())
+
+    init {
+        viewModelScope.launch { filter.collect { savedStateHandle.saveStatsFilter(it) } }
+    }
 
     val state: StateFlow<StatsUiState> = combine(
         games.observeAllGames(),
@@ -226,7 +258,7 @@ internal fun trendOf(stats: PlayerStats): StatsTrend? =
 @Composable
 fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var expandedId by remember { mutableStateOf<Long?>(null) }
+    var expandedId by rememberSaveable { mutableStateOf<Long?>(null) }
     var query by rememberSaveable { mutableStateOf("") }
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val context = LocalContext.current
@@ -241,15 +273,7 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is StatsEvent.Send -> {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "image/png"
-                        putExtra(Intent.EXTRA_STREAM, event.uri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    context.startActivity(Intent.createChooser(intent, chooserTitle))
-                }
-
+                is StatsEvent.Send -> context.shareFile(event.uri, "image/png", chooserTitle)
                 StatsEvent.ShareFailed -> snackbar.showSnackbar(shareFailed)
             }
         }

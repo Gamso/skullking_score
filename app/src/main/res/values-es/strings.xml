@@ -314,6 +314,8 @@
     <string name="undo_trick_deleted">baza %1$s eliminada</string>
     <string name="undone_prefix">Deshecho: %1$s</string>
     <string name="redone_prefix">Rehecho: %1$s</string>
+    <string name="undo">Deshacer</string>
+    <string name="redo">Rehacer</string>
     <string name="dealer_label">Reparte: %1$s</string>
     <string name="setup_draw_dealer">Sortear quién reparte</string>
     <string name="setup_dealer_badge">Reparte</string>
