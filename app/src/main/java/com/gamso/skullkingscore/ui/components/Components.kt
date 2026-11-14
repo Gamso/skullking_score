@@ -233,12 +233,28 @@ fun Stepper(
     /** Dense version for entry dialogs. */
     compact: Boolean = false,
 ) {
+    DeltaStepper(value, { onValueChange((value + it).coerceIn(range)) }, modifier, range, enabled, compact)
+}
+
+/**
+ * [Stepper] that sends the step (-1 or +1) instead of the new value, for a value stored in the database:
+ * the step is applied to the stored value, so a second tap made before [value] is refreshed still counts.
+ */
+@Composable
+fun DeltaStepper(
+    value: Int,
+    onStep: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    range: IntRange = 0..99,
+    enabled: Boolean = true,
+    compact: Boolean = false,
+) {
     val button = if (compact) 34.dp else 44.dp
     val valueWidth = if (compact) 30.dp else 44.dp
     // Compact: no 48 dp touch padding around the buttons, the lines stay close together.
     val touch = if (compact) Dp.Unspecified else LocalMinimumInteractiveComponentSize.current
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides touch) {
-        StepperRow(value, onValueChange, modifier, range, enabled, compact, button, valueWidth)
+        StepperRow(value, onStep, modifier, range, enabled, compact, button, valueWidth)
     }
 }
 
@@ -246,7 +262,7 @@ fun Stepper(
 @Composable
 private fun StepperRow(
     value: Int,
-    onValueChange: (Int) -> Unit,
+    onStep: (Int) -> Unit,
     modifier: Modifier,
     range: IntRange,
     enabled: Boolean,
@@ -257,7 +273,7 @@ private fun StepperRow(
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         val decrease = stringResource(R.string.stepper_decrease)
         FilledTonalIconButton(
-            onClick = { onValueChange((value - 1).coerceAtLeast(range.first)) },
+            onClick = { onStep(-1) },
             enabled = enabled && value > range.first,
             modifier = Modifier.size(button).semantics { contentDescription = decrease },
         ) {
@@ -271,7 +287,7 @@ private fun StepperRow(
             modifier = Modifier.padding(horizontal = 2.dp).width(valueWidth),
         )
         FilledTonalIconButton(
-            onClick = { onValueChange((value + 1).coerceAtMost(range.last)) },
+            onClick = { onStep(1) },
             enabled = enabled && value < range.last,
             modifier = Modifier.size(button),
         ) {

@@ -113,12 +113,15 @@ fun Bonus.keepOnly(allowed: Set<BonusType>, expansion: Set<ExpansionCard>): Bonu
 /**
  * List of captured-card counters, one stepper per line. Each counter stops at the number of such cards in the
  * deck; [allowed], when set, keeps only the counters that the winning card can capture.
+ *
+ * [onChange] receives a transform (one step of one counter, clamped) to apply to the current [Bonus]: applied to
+ * the stored value, every tap counts even when two come before [bonus] is refreshed.
  */
 @Composable
 fun BonusCounterList(
     bonus: Bonus,
     expansion: Set<ExpansionCard>,
-    onChange: (Bonus) -> Unit,
+    onChange: (transform: (Bonus) -> Bonus) -> Unit,
     modifier: Modifier = Modifier,
     compact: Boolean = false,
     allowed: Set<BonusType>? = null,
@@ -137,10 +140,11 @@ fun BonusCounterList(
                     modifier = Modifier.weight(1f),
                     style = if (compact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
                 )
-                Stepper(
+                val range = 0..DeckRules.maxCaptured(counter.type, expansion)
+                DeltaStepper(
                     value = counter.read(bonus),
-                    onValueChange = { onChange(counter.write(bonus, it)) },
-                    range = 0..DeckRules.maxCaptured(counter.type, expansion),
+                    onStep = { step -> onChange { counter.write(it, (counter.read(it) + step).coerceIn(range)) } },
+                    range = range,
                     compact = compact,
                 )
             }

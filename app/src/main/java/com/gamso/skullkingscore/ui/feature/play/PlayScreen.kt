@@ -66,6 +66,7 @@ import com.gamso.skullkingscore.domain.undo.UndoHistory
 import com.gamso.skullkingscore.domain.undo.UndoKind
 import com.gamso.skullkingscore.domain.undo.UndoState
 import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
+import com.gamso.skullkingscore.domain.usecase.TrickEventIds
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.BidsReminder
 import com.gamso.skullkingscore.ui.components.DealerLine
@@ -154,30 +155,23 @@ class PlayViewModel @Inject constructor(
     }
 
     /**
-     * Records trick [number] with the events played in it. The events go first: recording the trick
-     * then gives its winner to the Loots of that trick.
+     * Records trick [number] with the events played in it, in one transaction. Undo cancels those events with
+     * the trick, redo records them again (under new identifiers, kept for the next undo).
      */
     fun recordTrick(number: Int, draft: TrickDraft, events: TrickEvents = TrickEvents()) {
         val before = state.value?.round?.details?.tricks?.firstOrNull { it.number == number }?.toDraft()
         viewModelScope.launch {
-            events.lootPlayerIds.forEach { edit.addLoot(gameId, roundId, it, null, number) }
-            events.chests.forEach { (playerId, creatures) ->
-                edit.addDavyJones(gameId, roundId, playerId, creatures, number)
+            val record: suspend () -> TrickEventIds = {
+                edit.recordTrick(gameId, roundId, number, draft, events.lootPlayerIds, events.chests)
             }
-            edit.recordTrick(gameId, roundId, number, draft)
+            var created = record()
             history.record(
                 gameId,
                 UndoAction(
                     UndoKind.TRICK,
                     number.toString(),
-                    undo = {
-                        if (before == null) {
-                            edit.deleteLastTrick(gameId, roundId)
-                        } else {
-                            edit.recordTrick(gameId, roundId, number, before)
-                        }
-                    },
-                    redo = { edit.recordTrick(gameId, roundId, number, draft) },
+                    undo = { edit.undoTrick(gameId, roundId, number, before, created) },
+                    redo = { created = record() },
                 ),
             )
         }

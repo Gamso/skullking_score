@@ -59,12 +59,12 @@ import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.BonusCounterList
 import com.gamso.skullkingscore.ui.components.CompactChip
+import com.gamso.skullkingscore.ui.components.DeltaStepper
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.LiveEventsPanel
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
-import com.gamso.skullkingscore.ui.components.Stepper
 import com.gamso.skullkingscore.ui.components.TrickDialog
 import com.gamso.skullkingscore.ui.components.TrickEvents
 import com.gamso.skullkingscore.ui.components.WarningCard
@@ -113,11 +113,21 @@ class ResultsViewModel @Inject constructor(
         viewModelScope.launch { edit.updateEntry(gameId, roundId, playerId, transform) }
     }
 
-    fun setTricks(playerId: Long, tricks: Int) = update(playerId) { it.copy(tricks = tricks) }
+    private val cards: Int? get() = state.value?.round?.round?.cardsDealt
 
-    /** Bid correction after the fact (Harry the Giant: +/-1). */
-    fun setFinalBid(playerId: Long, bid: Int) = update(playerId) {
-        it.copy(finalBid = if (bid == it.bid) null else bid)
+    /** Adds [step] to the stored tricks won, inside the update: fast taps all count. */
+    fun stepTricks(playerId: Long, step: Int) {
+        val cards = cards ?: return
+        update(playerId) { it.copy(tricks = (it.tricks + step).coerceIn(0, cards)) }
+    }
+
+    /** Bid correction after the fact (Harry the Giant: +/-1), [step] added to the stored bid. */
+    fun stepFinalBid(playerId: Long, step: Int) {
+        val cards = cards ?: return
+        update(playerId) {
+            val bid = (it.effectiveBid + step).coerceIn(0, cards)
+            it.copy(finalBid = if (bid == it.bid) null else bid)
+        }
     }
 
     fun setBonus(playerId: Long, transform: (Bonus) -> Bonus) = update(playerId) {
@@ -128,8 +138,12 @@ class ResultsViewModel @Inject constructor(
 
     fun setWager(playerId: Long, wager: Int) = update(playerId) { it.copy(rascalWager = wager) }
 
-    fun setDiscarded(count: Int) {
-        viewModelScope.launch { edit.updateRound(gameId, roundId) { it.copy(discardedTricks = count) } }
+    fun stepDiscarded(step: Int) {
+        viewModelScope.launch {
+            edit.updateRound(gameId, roundId) {
+                it.copy(discardedTricks = (it.discardedTricks + step).coerceIn(0, it.cardsDealt))
+            }
+        }
     }
 
     fun addLoot(lootPlayerId: Long, trickWinnerId: Long?) {
@@ -151,11 +165,7 @@ class ResultsViewModel @Inject constructor(
     /** Corrects trick [number] (and records the events added in the dialog) like during play. */
     fun recordTrick(number: Int, draft: TrickDraft, events: TrickEvents) {
         viewModelScope.launch {
-            events.lootPlayerIds.forEach { edit.addLoot(gameId, roundId, it, null, number) }
-            events.chests.forEach { (playerId, creatures) ->
-                edit.addDavyJones(gameId, roundId, playerId, creatures, number)
-            }
-            edit.recordTrick(gameId, roundId, number, draft)
+            edit.recordTrick(gameId, roundId, number, draft, events.lootPlayerIds, events.chests)
         }
     }
 
@@ -319,7 +329,7 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
             }
         }
     } else {
-        DiscardedTricks(details.round.discardedTricks, details.round.cardsDealt, viewModel::setDiscarded)
+        DiscardedTricks(details.round.discardedTricks, details.round.cardsDealt, viewModel::stepDiscarded)
     }
 
     state.warnings.forEach { WarningCard(it.message()) }
@@ -371,7 +381,7 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
 
 /** Tricks nobody won, entered by hand for a round recorded without its tricks. */
 @Composable
-private fun DiscardedTricks(count: Int, cards: Int, onChange: (Int) -> Unit) {
+private fun DiscardedTricks(count: Int, cards: Int, onStep: (Int) -> Unit) {
     SectionTitle(stringResource(R.string.results_discarded_title))
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -386,7 +396,7 @@ private fun DiscardedTricks(count: Int, cards: Int, onChange: (Int) -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Stepper(value = count, onValueChange = onChange, range = 0..cards)
+        DeltaStepper(value = count, onStep = onStep, range = 0..cards)
     }
 }
 
@@ -438,13 +448,13 @@ private fun PlayerPage(
             value = entry.effectiveBid,
             range = 0..cards,
             modifier = Modifier.weight(1f),
-        ) { viewModel.setFinalBid(player.id, it) }
+        ) { viewModel.stepFinalBid(player.id, it) }
         LabeledStepper(
             label = stringResource(R.string.results_tricks),
             value = entry.tricks,
             range = 0..cards,
             modifier = Modifier.weight(1f),
-        ) { viewModel.setTricks(player.id, it) }
+        ) { viewModel.stepTricks(player.id, it) }
     }
     if (entry.effectiveBid != entry.bid) {
         Text(
@@ -470,7 +480,7 @@ private fun PlayerPage(
         BonusCounterList(
             bonus = entry.bonus,
             expansion = expansion,
-            onChange = { updated -> viewModel.setBonus(player.id) { updated } },
+            onChange = { transform -> viewModel.setBonus(player.id, transform) },
             compact = true,
         )
         breakdown.bonusLines
@@ -504,18 +514,18 @@ private fun PlayerPage(
     }
 }
 
-/** Small label above a compact counter: two of them fit on one line. */
+/** Small label above a compact counter (sending its step): two of them fit on one line. */
 @Composable
 private fun LabeledStepper(
     label: String,
     value: Int,
     range: IntRange,
     modifier: Modifier = Modifier,
-    onChange: (Int) -> Unit,
+    onStep: (Int) -> Unit,
 ) {
     Column(modifier = modifier) {
         Text(label, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
-        Stepper(value = value, onValueChange = onChange, range = range, compact = true)
+        DeltaStepper(value = value, onStep = onStep, range = range, compact = true)
     }
 }
 

@@ -8,6 +8,7 @@ import com.gamso.skullkingscore.domain.model.PlayerRound
 import com.gamso.skullkingscore.domain.model.Round
 import com.gamso.skullkingscore.domain.model.RoundPhase
 import com.gamso.skullkingscore.domain.model.TrickDraft
+import com.gamso.skullkingscore.domain.repository.EntryChange
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.ScoreUpdate
 import com.gamso.skullkingscore.domain.scoring.GameScoreCalculator
@@ -53,20 +54,37 @@ class StartRoundUseCase @Inject constructor(private val games: GameRepository) {
     }
 }
 
-/** Every entry goes through here: atomic write, then recomputation of the cached scores. */
+/** Identifiers of the Loots and Davy Jones captures recorded with a trick: undoing the trick cancels them. */
+data class TrickEventIds(val lootIds: List<Long> = emptyList(), val captureIds: List<Long> = emptyList())
+
+/**
+ * Every entry goes through here: one write transaction holding the change and the recomputation of the
+ * cached scores, so the screens never observe a half-written entry.
+ */
 class EditRoundUseCase @Inject constructor(
     private val games: GameRepository,
     private val recalculate: RecalculateScoresUseCase,
 ) {
-    suspend fun updateEntry(gameId: Long, roundId: Long, playerId: Long, transform: (PlayerRound) -> PlayerRound) {
-        games.updateEntry(roundId, playerId, transform)
+    /** Runs [block] then recomputes the scores, in one transaction. */
+    private suspend fun <R> write(gameId: Long, block: suspend () -> R): R = games.inTransaction {
+        val result = block()
         recalculate(gameId)
+        result
     }
 
-    suspend fun updateRound(gameId: Long, roundId: Long, transform: (Round) -> Round) {
-        games.updateRound(roundId, transform)
-        recalculate(gameId)
-    }
+    /**
+     * [transform] is applied to the stored entry, inside the transaction: an increment computed from it counts
+     * even if the screen has not shown the previous one yet. Returns the entry before and after the change.
+     */
+    suspend fun updateEntry(
+        gameId: Long,
+        roundId: Long,
+        playerId: Long,
+        transform: (PlayerRound) -> PlayerRound,
+    ): EntryChange? = write(gameId) { games.updateEntry(roundId, playerId, transform) }
+
+    suspend fun updateRound(gameId: Long, roundId: Long, transform: (Round) -> Round) =
+        write(gameId) { games.updateRound(roundId, transform) }
 
     suspend fun setPhase(gameId: Long, roundId: Long, phase: RoundPhase) =
         updateRound(gameId, roundId) { it.copy(phase = phase) }
@@ -78,10 +96,7 @@ class EditRoundUseCase @Inject constructor(
         lootPlayerId: Long,
         trickWinnerId: Long?,
         trickNumber: Int? = null,
-    ) {
-        games.addLoot(roundId, lootPlayerId, trickWinnerId, trickNumber)
-        recalculate(gameId)
-    }
+    ): Long = write(gameId) { games.addLoot(roundId, lootPlayerId, trickWinnerId, trickNumber) }
 
     suspend fun addDavyJones(
         gameId: Long,
@@ -89,33 +104,67 @@ class EditRoundUseCase @Inject constructor(
         playerId: Long,
         creatures: Set<SeaMonster>,
         trickNumber: Int? = null,
-    ) {
-        games.addDavyJones(roundId, playerId, creatures, trickNumber)
-        recalculate(gameId)
-    }
+    ): Long = write(gameId) { games.addDavyJones(roundId, playerId, creatures, trickNumber) }
 
     /**
      * Records (or corrects) a live trick, then copies into the round the tricks won, the cards
      * captured, the Rascal wager, the bid adjusted by Harry the Giant and the destroyed tricks; the results
-     * screen shows them pre-filled.
+     * screen shows them pre-filled. Everything, with the events played in the trick, is one transaction.
+     *
+     * The events go first: recording the trick then gives its winner to the Loots of that trick.
      *
      * @param draft the trick entered; `bidAdjustment` (-1, 0, +1) is Harry the Giant's adjustment for the winner
+     * @param lootPlayerIds players who played a Loot in this trick
+     * @param chests Davy Jones' Lockers opened in this trick: player and creatures
+     * @return the identifiers of the events created
      */
-    suspend fun recordTrick(gameId: Long, roundId: Long, number: Int, draft: TrickDraft) {
+    suspend fun recordTrick(
+        gameId: Long,
+        roundId: Long,
+        number: Int,
+        draft: TrickDraft,
+        lootPlayerIds: List<Long> = emptyList(),
+        chests: List<Pair<Long, Set<SeaMonster>>> = emptyList(),
+    ): TrickEventIds = write(gameId) {
+        val ids = TrickEventIds(
+            lootIds = lootPlayerIds.map { games.addLoot(roundId, it, null, number) },
+            captureIds = chests.map { (playerId, creatures) ->
+                games.addDavyJones(roundId, playerId, creatures, number)
+            },
+        )
         games.upsertTrick(roundId, number, draft)
         games.setLootWinner(roundId, number, draft.winnerId)
         syncFromTricks(gameId, roundId)
+        ids
     }
 
+    /**
+     * Undoes [recordTrick]: cancels the events recorded with the trick, then restores the previous version of
+     * the trick ([before]), or deletes it if it was new. One transaction.
+     */
+    suspend fun undoTrick(gameId: Long, roundId: Long, number: Int, before: TrickDraft?, events: TrickEventIds) =
+        write(gameId) {
+            events.lootIds.forEach { games.cancelLoot(it) }
+            events.captureIds.forEach { games.cancelDavyJones(it) }
+            if (before == null) {
+                games.deleteTrick(roundId, number)
+            } else {
+                games.upsertTrick(roundId, number, before)
+            }
+            games.setLootWinner(roundId, number, before?.winnerId)
+            syncFromTricks(gameId, roundId)
+        }
+
     /** Cancels the last trick entered. */
-    suspend fun deleteLastTrick(gameId: Long, roundId: Long) {
-        val round = games.getGame(gameId)?.rounds?.firstOrNull { it.round.id == roundId } ?: return
-        val last = round.tricks.lastOrNull() ?: return
+    suspend fun deleteLastTrick(gameId: Long, roundId: Long) = write(gameId) {
+        val round = games.getGame(gameId)?.rounds?.firstOrNull { it.round.id == roundId } ?: return@write
+        val last = round.tricks.lastOrNull() ?: return@write
         games.deleteTrick(roundId, last.number)
         games.setLootWinner(roundId, last.number, null)
         syncFromTricks(gameId, roundId)
     }
 
+    /** Copies the tricks into the entries and the round. Called inside the transaction of the caller. */
     private suspend fun syncFromTricks(gameId: Long, roundId: Long) {
         val details = games.getGame(gameId) ?: return
         val round = details.rounds.firstOrNull { it.round.id == roundId } ?: return
@@ -134,18 +183,11 @@ class EditRoundUseCase @Inject constructor(
             }
         }
         games.updateRound(roundId) { it.copy(discardedTricks = totals.destroyed) }
-        recalculate(gameId)
     }
 
-    suspend fun cancelLoot(gameId: Long, lootId: Long) {
-        games.cancelLoot(lootId)
-        recalculate(gameId)
-    }
+    suspend fun cancelLoot(gameId: Long, lootId: Long) = write(gameId) { games.cancelLoot(lootId) }
 
-    suspend fun cancelDavyJones(gameId: Long, captureId: Long) {
-        games.cancelDavyJones(captureId)
-        recalculate(gameId)
-    }
+    suspend fun cancelDavyJones(gameId: Long, captureId: Long) = write(gameId) { games.cancelDavyJones(captureId) }
 
     /** "Undo the last action": reopens the last validated round to correct its results. */
     suspend fun reopenLastRound(gameId: Long): Long? {
