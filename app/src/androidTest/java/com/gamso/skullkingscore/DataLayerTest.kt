@@ -8,6 +8,7 @@ import com.gamso.skullkingscore.core.Bonus
 import com.gamso.skullkingscore.core.ExpansionCard
 import com.gamso.skullkingscore.core.Pirate
 import com.gamso.skullkingscore.core.ScoringMode
+import com.gamso.skullkingscore.core.SeaMonster
 import com.gamso.skullkingscore.core.WinningCard
 import com.gamso.skullkingscore.data.backup.BackupRepositoryImpl
 import com.gamso.skullkingscore.data.local.SkullKingDatabase
@@ -120,6 +121,35 @@ class DataLayerTest {
         val round = checkNotNull(env.games.getGame(gameId)).rounds.single()
         assertTrue(round.tricks.isEmpty())
         assertEquals(0, round.entry(ids[0])?.tricks)
+    }
+
+    /** Trick, events, entries and scores in one Room transaction, then undone with its events. */
+    @Test
+    fun aTrickRecordedWithItsEventsIsUndoneWithThem() = runBlocking {
+        val env = env()
+        val ana = env.players.createPlayer("Ana")
+        val bob = env.players.createPlayer("Bob")
+        val gameId = env.games.createGame(listOf(ana, bob), ScoringMode.CLASSIC, emptySet())
+        val roundId = env.start(gameId, 2)
+        val ids = env.edit.recordTrick(
+            gameId,
+            roundId,
+            1,
+            TrickDraft(winnerId = ana),
+            lootPlayerIds = listOf(bob),
+            chests = listOf(bob to setOf(SeaMonster.KRAKEN)),
+        )
+        var round = checkNotNull(env.games.getGame(gameId)).rounds.single()
+        assertEquals(1, round.entry(ana)?.tricks)
+        assertEquals(ana, round.activeLoots.single().trickWinnerId)
+        assertEquals(1, round.activeCaptures.size)
+
+        env.edit.undoTrick(gameId, roundId, 1, null, ids)
+        round = checkNotNull(env.games.getGame(gameId)).rounds.single()
+        assertTrue(round.tricks.isEmpty())
+        assertTrue(round.activeLoots.isEmpty())
+        assertTrue(round.activeCaptures.isEmpty())
+        assertEquals(0, round.entry(ana)?.tricks)
     }
 
     @Test

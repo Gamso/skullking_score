@@ -359,7 +359,7 @@ fun TrickDialog(
                     BonusCounterList(
                         bonus = bonus,
                         expansion = expansion,
-                        onChange = { bonus = it },
+                        onChange = { transform -> bonus = transform(bonus) },
                         compact = true,
                         allowed = allowedBonus,
                     )

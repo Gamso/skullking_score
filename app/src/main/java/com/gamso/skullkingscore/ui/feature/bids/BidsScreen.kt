@@ -49,10 +49,10 @@ import com.gamso.skullkingscore.domain.undo.UndoState
 import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.DealerLine
+import com.gamso.skullkingscore.ui.components.DeltaStepper
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SkullScaffold
-import com.gamso.skullkingscore.ui.components.Stepper
 import com.gamso.skullkingscore.ui.components.UndoNotice
 import com.gamso.skullkingscore.ui.components.UndoNotices
 import com.gamso.skullkingscore.ui.components.UndoRedoActions
@@ -105,19 +105,26 @@ class BidsViewModel @Inject constructor(
 
     private fun nameOf(playerId: Long) = state.value?.players?.firstOrNull { it.id == playerId }?.name.orEmpty()
 
-    fun setBid(playerId: Long, bid: Int) {
-        val before = state.value?.round?.details?.entry(playerId) ?: return
-        if (before.bid == bid && before.finalBid == null) return
+    /**
+     * Adds [step] to the stored bid, inside the update: a second tap made before the screen is refreshed still
+     * counts. The undo entry is built from the entry read in that update, so each effective tap records exactly
+     * one, and a tap that changes nothing records none.
+     */
+    fun stepBid(playerId: Long, step: Int) {
+        val cards = state.value?.cards ?: return
         viewModelScope.launch {
             val apply: suspend (Int, Int?) -> Unit = { newBid, newFinal ->
                 edit.updateEntry(gameId, roundId, playerId) { it.copy(bid = newBid, finalBid = newFinal) }
             }
-            apply(bid, null)
+            val (before, after) = edit.updateEntry(gameId, roundId, playerId) {
+                it.copy(bid = (it.bid + step).coerceIn(0, cards), finalBid = null)
+            } ?: return@launch
+            if (before.bid == after.bid && before.finalBid == after.finalBid) return@launch
             history.record(
                 gameId,
                 UndoAction(UndoKind.BID, nameOf(playerId), {
                     apply(before.bid, before.finalBid)
-                }, { apply(bid, null) }),
+                }, { apply(after.bid, null) }),
             )
         }
     }
@@ -245,9 +252,9 @@ private fun BidRow(state: BidsUiState, player: Player, viewModel: BidsViewModel)
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Stepper(
+            DeltaStepper(
                 value = selected,
-                onValueChange = { viewModel.setBid(player.id, it) },
+                onStep = { viewModel.stepBid(player.id, it) },
                 range = 0..state.cards,
             )
         }

@@ -24,7 +24,16 @@ interface PlayerRepository {
 
 data class ScoreUpdate(val roundId: Long, val playerId: Long, val score: Double)
 
+/** An entry as read inside the atomic update ([before]) and as written ([after]). */
+data class EntryChange(val before: PlayerRound, val after: PlayerRound)
+
 interface GameRepository {
+    /**
+     * Runs [block] in one write transaction: the other calls made inside it read its pending writes, and the
+     * observers only see the state once [block] has completed (nothing is written if it throws).
+     */
+    suspend fun <R> inTransaction(block: suspend () -> R): R
+
     fun observeGame(gameId: Long): Flow<GameDetails?>
 
     /** The most recent game in progress, if any. */
@@ -52,9 +61,11 @@ interface GameRepository {
     /** Atomic read-modify-write, to avoid losing a quick entry. */
     suspend fun updateRound(roundId: Long, transform: (Round) -> Round)
 
-    suspend fun updateEntry(roundId: Long, playerId: Long, transform: (PlayerRound) -> PlayerRound)
+    /** Returns the entry before and after [transform], or `null` if it does not exist. */
+    suspend fun updateEntry(roundId: Long, playerId: Long, transform: (PlayerRound) -> PlayerRound): EntryChange?
 
-    suspend fun addLoot(roundId: Long, lootPlayerId: Long, trickWinnerId: Long?, trickNumber: Int? = null)
+    /** Returns the identifier of the new Loot. */
+    suspend fun addLoot(roundId: Long, lootPlayerId: Long, trickWinnerId: Long?, trickNumber: Int? = null): Long
 
     /** Creates or replaces trick [number] of the round. */
     suspend fun upsertTrick(roundId: Long, number: Int, draft: TrickDraft)
@@ -64,7 +75,8 @@ interface GameRepository {
     /** Sets (or clears, with `null`) the winner of the Loots played during this trick. */
     suspend fun setLootWinner(roundId: Long, trickNumber: Int, winnerId: Long?)
 
-    suspend fun addDavyJones(roundId: Long, playerId: Long, creatures: Set<SeaMonster>, trickNumber: Int? = null)
+    /** Returns the identifier of the new capture. */
+    suspend fun addDavyJones(roundId: Long, playerId: Long, creatures: Set<SeaMonster>, trickNumber: Int? = null): Long
 
     suspend fun cancelLoot(lootId: Long)
 
