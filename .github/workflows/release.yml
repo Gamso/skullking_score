@@ -2,25 +2,177 @@ name: Release
 
 # Publishes a GitHub release (APK + AAB) for every version tag.
 # Example: git tag v1.0.0 && git push origin v1.0.0
+# A manual run only builds the artifacts (workflow artifact), it never publishes a release.
 on:
   push:
     tags: ["v*"]
   workflow_dispatch:
     inputs:
       version:
-        description: "Version to build, without publishing (e.g. 1.0.0)"
+        description: "Version to build, without publishing (e.g. v1.0.0 or v1.1.0-rc1)"
         required: true
+      allow_unsigned:
+        description: "Build unsigned artifacts when the signing secrets are missing (never published)"
+        type: boolean
+        default: false
 
+# Least privilege by default: only the publishing job gets `contents: write`.
 permissions:
-  contents: write
+  contents: read
 
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false
 
+# Actions are pinned to a commit SHA (the tag is kept as a comment, Dependabot updates both).
 jobs:
-  release:
-    name: Build and publish
+  prepare:
+    name: Version and signing
     runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.version.outputs.name }}
+      code: ${{ steps.version.outputs.code }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+      signed: ${{ steps.signing.outputs.signed }}
+    steps:
+      # The tag or the input is only read through the environment, never interpolated into the script, and it is
+      # validated before anything uses it.
+      #
+      # versionCode = major * 1_000_000 + minor * 10_000 + patch * 100 + build, where build is 99 for a final
+      # release and N for a pre-release whose suffix ends with the number N (v1.5.0-rc1 -> 1050001, v1.5.0 ->
+      # 1050099). Pre-releases are thus ordered below their final release, by their trailing number (use increasing
+      # numbers across alpha, beta and rc of the same version). Minor and patch must be below 100, N below 99 and
+      # major below 2100 (Google Play caps the versionCode at 2_100_000_000). The former scheme
+      # (major * 10_000 + minor * 100 + patch) went up to 10401 (v1.4.1): every code of this scheme from v1.0.0 on
+      # is above it, so updates still install over the published versions.
+      - name: Determine the version
+        id: version
+        env:
+          RAW: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
+        run: |
+          # Bash matching on the whole string (grep would accept a single matching line of a multi-line value).
+          if ! [[ "$RAW" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Invalid version, expected v<major>.<minor>.<patch>[-<pre-release>] (e.g. v1.5.0-rc1)."
+            exit 1
+          fi
+          VERSION="${RAW#v}"
+          CORE="${VERSION%%-*}"
+          IFS=. read -r MAJOR MINOR PATCH <<< "$CORE"
+          # Length first, so that a huge number cannot overflow the shell arithmetic below.
+          if [ "${#MAJOR}" -gt 4 ] || [ "${#MINOR}" -gt 2 ] || [ "${#PATCH}" -gt 2 ]; then
+            echo "::error::Version out of range: major must be below 2100, minor and patch below 100."
+            exit 1
+          fi
+          # Base 10 explicitly: a leading zero would otherwise be read as octal.
+          MAJOR=$((10#$MAJOR)); MINOR=$((10#$MINOR)); PATCH=$((10#$PATCH))
+          if [ "$MAJOR" -ge 2100 ] || [ "$MINOR" -ge 100 ] || [ "$PATCH" -ge 100 ]; then
+            echo "::error::Version out of range: major must be below 2100, minor and patch below 100."
+            exit 1
+          fi
+          if [ "$CORE" = "$VERSION" ]; then
+            BUILD=99
+            PRERELEASE=false
+          else
+            SUFFIX="${VERSION#*-}"
+            N=$(printf '%s' "$SUFFIX" | grep -Eo '[0-9]+$' || true)
+            if [ -z "$N" ]; then
+              echo "::error::A pre-release suffix must end with a number (e.g. -rc1), it orders the versionCode."
+              exit 1
+            fi
+            if [ "${#N}" -gt 2 ] || [ "$((10#$N))" -ge 99 ]; then
+              echo "::error::The pre-release number must be below 99."
+              exit 1
+            fi
+            BUILD=$((10#$N))
+            PRERELEASE=true
+          fi
+          {
+            echo "name=$VERSION"
+            echo "code=$((MAJOR * 1000000 + MINOR * 10000 + PATCH * 100 + BUILD))"
+            echo "prerelease=$PRERELEASE"
+          } >> "$GITHUB_OUTPUT"
+
+      # A tag release fails here, before anything is built, when a signing secret is missing. An unsigned build is
+      # only possible from a manual run that asks for it, and it is never published.
+      - name: Check the signing secrets
+        id: signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          EVENT: ${{ github.event_name }}
+          ALLOW_UNSIGNED: ${{ inputs.allow_unsigned }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+          elif [ "$EVENT" = "workflow_dispatch" ] && [ "$ALLOW_UNSIGNED" = "true" ]; then
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Signing secrets are missing: the artifacts are not signed and are not published."
+          else
+            echo "::error::Signing secrets are missing (SIGNING_KEYSTORE_BASE64, SIGNING_KEYSTORE_PASSWORD, SIGNING_KEY_ALIAS, SIGNING_KEY_PASSWORD)."
+            exit 1
+          fi
+
+  instrumented-tests:
+    name: Instrumented tests (emulator)
+    runs-on: ubuntu-latest
+    needs: prepare
+    # Same emulator setup as in ci.yml. Unlike CI, this job cannot be switched off: a release is only published when
+    # the instrumented tests of the tagged commit pass.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+      - name: Cache the AVD
+        id: avd-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-api34-x86_64-google_apis
+      - name: Create the AVD and its snapshot
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "AVD snapshot generated for the cache."
+      - name: Instrumented tests
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: sh ./gradlew :app:connectedDebugAndroidTest
+      - name: Failing tests
+        if: failure()
+        run: python3 scripts/test_failures.py "app/build/outputs/androidTest-results/connected/**/*.xml"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: android-test-reports
+          path: app/build/reports/androidTests/**
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: prepare
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -31,66 +183,65 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
 
-      - name: Determine the version
-        id: version
-        env:
-          RAW: ${{ github.event.inputs.version || github.ref_name }}
-        run: |
-          VERSION="${RAW#v}"
-          IFS=. read -r MAJOR MINOR PATCH <<< "${VERSION%%-*}"
-          echo "name=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "code=$((MAJOR * 10000 + MINOR * 100 + PATCH))" >> "$GITHUB_OUTPUT"
-
       - name: Prepare the signing keystore
         id: signing
+        if: needs.prepare.outputs.signed == 'true'
         env:
           KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
         run: |
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
-            echo "keystore=$RUNNER_TEMP/release.jks" >> "$GITHUB_OUTPUT"
-            echo "signed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "signed=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::Secret SIGNING_KEYSTORE_BASE64 is missing: the artifacts will not be signed."
-          fi
+          echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+          echo "keystore=$RUNNER_TEMP/release.jks" >> "$GITHUB_OUTPUT"
 
       - name: Checks
         run: sh ./gradlew ktlintCheck detekt :core-scoring:test :app:testDebugUnitTest :app:lintDebug
 
       - name: Build the release APK and AAB
         env:
+          VERSION_NAME: ${{ needs.prepare.outputs.name }}
+          VERSION_CODE: ${{ needs.prepare.outputs.code }}
           SIGNING_KEYSTORE_FILE: ${{ steps.signing.outputs.keystore }}
           SIGNING_KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: >
           sh ./gradlew :app:assembleRelease :app:bundleRelease
-          -PversionName=${{ steps.version.outputs.name }}
-          -PversionCode=${{ steps.version.outputs.code }}
+          "-PversionName=$VERSION_NAME"
+          "-PversionCode=$VERSION_CODE"
 
       - name: Name the artifacts
         env:
-          VERSION: ${{ steps.version.outputs.name }}
-          SIGNED: ${{ steps.signing.outputs.signed }}
+          VERSION: ${{ needs.prepare.outputs.name }}
+          SIGNED: ${{ needs.prepare.outputs.signed }}
         run: |
           mkdir -p dist
           SUFFIX=""
           if [ "$SIGNED" != "true" ]; then SUFFIX="-unsigned"; fi
           cp app/build/outputs/apk/release/*.apk "dist/skullking-score-${VERSION}${SUFFIX}.apk"
-          cp app/build/outputs/bundle/release/app-release.aab "dist/skullking-score-${VERSION}.aab"
+          cp app/build/outputs/bundle/release/app-release.aab "dist/skullking-score-${VERSION}${SUFFIX}.aab"
           ls -la dist
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: skullking-score-${{ steps.version.outputs.name }}
+          name: skullking-score-${{ needs.prepare.outputs.name }}
           path: dist/*
           if-no-files-found: error
 
-      - name: Publish the GitHub release
-        if: github.event_name == 'push'
-        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
+  publish:
+    name: Publish the GitHub release
+    runs-on: ubuntu-latest
+    # Only a tag push publishes, only with signed artifacts, and only once the instrumented tests passed.
+    needs: [prepare, build, instrumented-tests]
+    if: github.event_name == 'push' && needs.prepare.outputs.signed == 'true'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: skullking-score-${{ needs.prepare.outputs.name }}
+          path: dist
+
+      - uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
           files: dist/*
           generate_release_notes: true
-          prerelease: ${{ contains(github.ref_name, '-') }}
+          prerelease: ${{ needs.prepare.outputs.prerelease == 'true' }}
