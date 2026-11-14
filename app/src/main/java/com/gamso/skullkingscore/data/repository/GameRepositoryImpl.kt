@@ -29,6 +29,7 @@ import com.gamso.skullkingscore.domain.model.PlayerRound
 import com.gamso.skullkingscore.domain.model.Round
 import com.gamso.skullkingscore.domain.model.RoundPhase
 import com.gamso.skullkingscore.domain.model.TrickDraft
+import com.gamso.skullkingscore.domain.repository.EntryChange
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.ScoreUpdate
 import java.util.UUID
@@ -55,6 +56,9 @@ class GameRepositoryImpl @Inject constructor(
         val captures: List<DavyJonesCaptureEntity>,
         val tricks: List<TrickEntity>,
     )
+
+    // Nested calls reuse the transaction's connection (a savepoint), so they see its pending writes.
+    override suspend fun <R> inTransaction(block: suspend () -> R): R = database.withWriteTransaction { block() }
 
     override fun observeGame(gameId: Long): Flow<GameDetails?> {
         val header = combine(
@@ -196,15 +200,18 @@ class GameRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateEntry(roundId: Long, playerId: Long, transform: (PlayerRound) -> PlayerRound) {
-        database.withWriteTransaction {
-            val current = gameDao.getPlayerRound(roundId, playerId) ?: return@withWriteTransaction
-            val updated = transform(current.toDomain()).copy(roundId = roundId, playerId = playerId)
-            gameDao.upsertPlayerRound(updated.toEntity())
-        }
+    override suspend fun updateEntry(
+        roundId: Long,
+        playerId: Long,
+        transform: (PlayerRound) -> PlayerRound,
+    ): EntryChange? = database.withWriteTransaction {
+        val current = gameDao.getPlayerRound(roundId, playerId)?.toDomain() ?: return@withWriteTransaction null
+        val updated = transform(current).copy(roundId = roundId, playerId = playerId)
+        gameDao.upsertPlayerRound(updated.toEntity())
+        EntryChange(current, updated)
     }
 
-    override suspend fun addLoot(roundId: Long, lootPlayerId: Long, trickWinnerId: Long?, trickNumber: Int?) {
+    override suspend fun addLoot(roundId: Long, lootPlayerId: Long, trickWinnerId: Long?, trickNumber: Int?): Long =
         gameDao.insertLoot(
             LootLinkEntity(
                 roundId = roundId,
@@ -215,20 +222,22 @@ class GameRepositoryImpl @Inject constructor(
                 trickNumber = trickNumber,
             ),
         )
-    }
 
-    override suspend fun addDavyJones(roundId: Long, playerId: Long, creatures: Set<SeaMonster>, trickNumber: Int?) {
-        gameDao.insertCapture(
-            DavyJonesCaptureEntity(
-                roundId = roundId,
-                playerId = playerId,
-                creatures = encodeCreatures(creatures),
-                createdAt = System.currentTimeMillis(),
-                cancelledAt = null,
-                trickNumber = trickNumber,
-            ),
-        )
-    }
+    override suspend fun addDavyJones(
+        roundId: Long,
+        playerId: Long,
+        creatures: Set<SeaMonster>,
+        trickNumber: Int?,
+    ): Long = gameDao.insertCapture(
+        DavyJonesCaptureEntity(
+            roundId = roundId,
+            playerId = playerId,
+            creatures = encodeCreatures(creatures),
+            createdAt = System.currentTimeMillis(),
+            cancelledAt = null,
+            trickNumber = trickNumber,
+        ),
+    )
 
     override suspend fun upsertTrick(roundId: Long, number: Int, draft: TrickDraft) {
         database.withWriteTransaction {

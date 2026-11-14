@@ -1,7 +1,6 @@
 package com.gamso.skullkingscore.ui.share
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.Image
@@ -194,14 +193,8 @@ fun ShareScreen(onBack: () -> Unit, viewModel: ShareViewModel = hiltViewModel())
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is ShareEvent.Send -> {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "image/png"
-                        putExtra(Intent.EXTRA_STREAM, event.uri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    context.startActivity(Intent.createChooser(intent, resources.getString(R.string.share_action)))
-                }
+                is ShareEvent.Send ->
+                    context.shareFile(event.uri, "image/png", resources.getString(R.string.share_action))
 
                 ShareEvent.Saved -> snackbar.showSnackbar(resources.getString(R.string.share_saved))
 

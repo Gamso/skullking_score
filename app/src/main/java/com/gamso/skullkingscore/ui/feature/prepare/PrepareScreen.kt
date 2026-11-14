@@ -1,9 +1,14 @@
 package com.gamso.skullkingscore.ui.feature.prepare
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.Icon
@@ -27,6 +32,7 @@ import com.gamso.skullkingscore.core.DeckRules
 import com.gamso.skullkingscore.domain.model.GameDetails
 import com.gamso.skullkingscore.domain.model.Player
 import com.gamso.skullkingscore.domain.repository.GameRepository
+import com.gamso.skullkingscore.domain.repository.setDealer
 import com.gamso.skullkingscore.domain.usecase.StartRoundUseCase
 import com.gamso.skullkingscore.domain.usecase.suggestedCards
 import com.gamso.skullkingscore.ui.components.ActionBar
@@ -53,10 +59,14 @@ data class PrepareUiState(
     val cards: Int,
     val maxCards: Int,
     val deckSize: Int,
+    /** The round is being created: the start button is disabled. */
+    val starting: Boolean = false,
 ) {
     val needed: Int get() = cards * details.game.players.size
     val exceedsDeck: Boolean get() = needed > deckSize
 }
+
+private const val KEY_CHOSEN_CARDS = "prepare.chosenCards"
 
 @HiltViewModel
 class PrepareViewModel @Inject constructor(
@@ -66,13 +76,21 @@ class PrepareViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val gameId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_GAME_ID))
-    private val chosenCards = MutableStateFlow<Int?>(null)
-    private var starting = false
 
-    val state: StateFlow<PrepareUiState?> = combine(games.observeGame(gameId).filterNotNull(), chosenCards) {
-            details,
-            chosen,
-        ->
+    // In the saved state: the chosen number of cards survives a process death.
+    private val chosenCards = savedStateHandle.getMutableStateFlow<Int?>(KEY_CHOSEN_CARDS, null)
+
+    /**
+     * Set by the first tap on "Start" and kept after success: the screen is being left and this ViewModel is
+     * cleared with it, so a second tap during the transition must not start another round.
+     */
+    private val starting = MutableStateFlow(false)
+
+    val state: StateFlow<PrepareUiState?> = combine(
+        games.observeGame(gameId).filterNotNull(),
+        chosenCards,
+        starting,
+    ) { details, chosen, starting ->
         val number = details.rounds.size + 1
         PrepareUiState(
             details = details,
@@ -81,16 +99,14 @@ class PrepareViewModel @Inject constructor(
             cards = chosen ?: details.suggestedCards(),
             maxCards = DeckRules.MAX_CARDS_PER_ROUND,
             deckSize = DeckRules.deckSize(details.game.expansionCards),
+            starting = starting,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     fun setDealer(player: Player) {
         val game = state.value?.details?.game ?: return
         val number = state.value?.roundNumber ?: return
-        val index = game.players.indexOfFirst { it.id == player.id }
-        viewModelScope.launch {
-            games.setFirstDealerSeat(gameId, Math.floorMod(index - (number - 1), game.players.size))
-        }
+        viewModelScope.launch { games.setDealer(game, number, player) }
     }
 
     fun setCards(cards: Int) {
@@ -99,13 +115,17 @@ class PrepareViewModel @Inject constructor(
 
     fun start(onStarted: (roundId: Long) -> Unit) {
         val current = state.value ?: return
-        if (starting) return
-        starting = true
+        if (starting.value) return
+        starting.value = true
         viewModelScope.launch {
+            var started = false
             try {
-                onStarted(startRound(gameId, current.cards))
+                val roundId = startRound(gameId, current.cards)
+                started = true
+                onStarted(roundId)
             } finally {
-                starting = false
+                // Only a failure allows a new attempt. After success the guard holds until the screen is left.
+                if (!started) starting.value = false
             }
         }
     }
@@ -139,48 +159,52 @@ fun PrepareScreen(
         bottomBar = {
             ActionBar(
                 primaryText = stringResource(R.string.prepare_start_bids),
-                primaryEnabled = current != null,
+                primaryEnabled = current != null && !current.starting,
                 onPrimary = { viewModel.start(onRoundStarted) },
             )
         },
     ) { padding ->
         if (current == null) return@SkullScaffold
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            DealerLine(
-                game = current.details.game,
-                roundNumber = current.roundNumber,
-                onChoose = viewModel::setDealer,
-                prominent = true,
-            )
-            Text(
-                stringResource(R.string.prepare_cards_question),
-                style = MaterialTheme.typography.titleLarge,
-            )
-            Text(
-                current.cards.toString(),
-                style = MaterialTheme.typography.displayLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Stepper(
-                value = current.cards,
-                onValueChange = viewModel::setCards,
-                range = 1..current.maxCards,
-            )
-            Text(
-                stringResource(R.string.prepare_cards_hint),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            if (current.exceedsDeck) {
-                WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+        // Scrolls when the content does not fit (landscape, large font), centred vertically when it does.
+        BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .heightIn(min = maxHeight)
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                DealerLine(
+                    game = current.details.game,
+                    roundNumber = current.roundNumber,
+                    onChoose = viewModel::setDealer,
+                    prominent = true,
+                )
+                Text(
+                    stringResource(R.string.prepare_cards_question),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    current.cards.toString(),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Stepper(
+                    value = current.cards,
+                    onValueChange = viewModel::setCards,
+                    range = 1..current.maxCards,
+                )
+                Text(
+                    stringResource(R.string.prepare_cards_hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (current.exceedsDeck) {
+                    WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+                }
             }
         }
     }

@@ -41,6 +41,14 @@ private fun NavController.safeBack() {
     if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) popBackStack()
 }
 
+/**
+ * Opens [route] on top of the current screen. Ignored while the current screen is not resumed (it is already
+ * leaving, or still entering): a fast double tap would otherwise push the same screen twice.
+ */
+private fun NavController.safeNavigate(route: String) {
+    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) navigate(route)
+}
+
 @Composable
 fun SkullKingNavHost() {
     val navController = rememberNavController()
@@ -54,13 +62,13 @@ fun SkullKingNavHost() {
     NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(Routes.HOME) {
             HomeScreen(
-                onNewGame = { navController.navigate(Routes.SETUP) },
-                onResume = { route -> navController.navigate(route) },
-                onHistory = { navController.navigate(Routes.history()) },
-                onStats = { navController.navigate(Routes.STATS) },
-                onPlayers = { navController.navigate(Routes.PLAYERS) },
-                onHelp = { navController.navigate(Routes.HELP) },
-                onSettings = { navController.navigate(Routes.SETTINGS) },
+                onNewGame = { navController.safeNavigate(Routes.SETUP) },
+                onResume = { route -> navController.safeNavigate(route) },
+                onHistory = { navController.safeNavigate(Routes.history()) },
+                onStats = { navController.safeNavigate(Routes.STATS) },
+                onPlayers = { navController.safeNavigate(Routes.PLAYERS) },
+                onHelp = { navController.safeNavigate(Routes.HELP) },
+                onSettings = { navController.safeNavigate(Routes.SETTINGS) },
             )
         }
         composable(Routes.SETUP) {
@@ -73,15 +81,15 @@ fun SkullKingNavHost() {
         // The import argument is read (once) by HistoryViewModel from its SavedStateHandle.
         composable(Routes.HISTORY, arguments = listOf(importArg)) {
             HistoryScreen(
-                onShare = { id -> navController.navigate(Routes.share(id)) },
+                onShare = { id -> navController.safeNavigate(Routes.share(id)) },
                 onBack = { navController.safeBack() },
-                onOpen = { route -> navController.navigate(route) },
+                onOpen = { route -> navController.safeNavigate(route) },
             )
         }
         composable(Routes.STATS) {
             StatsScreen(
                 onBack = { navController.safeBack() },
-                onDuel = { navController.navigate(Routes.DUEL) },
+                onDuel = { navController.safeNavigate(Routes.DUEL) },
             )
         }
         composable(Routes.DUEL) { DuelScreen(onBack = { navController.safeBack() }) }
@@ -89,8 +97,8 @@ fun SkullKingNavHost() {
         composable(Routes.SETTINGS) {
             SettingsScreen(
                 onBack = { navController.safeBack() },
-                onRestore = { navController.navigate(Routes.history(import = true)) },
-                onLicenses = { navController.navigate(Routes.LICENSES) },
+                onRestore = { navController.safeNavigate(Routes.history(import = true)) },
+                onLicenses = { navController.safeNavigate(Routes.LICENSES) },
             )
         }
         composable(Routes.LICENSES) { LicensesScreen(onBack = { navController.safeBack() }) }
@@ -99,7 +107,7 @@ fun SkullKingNavHost() {
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
             PrepareScreen(
                 onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
-                onScoreboard = { navController.navigate(Routes.scoreboard(gameId)) },
+                onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
                 onRoundStarted = { roundId -> navController.replaceFlow(Routes.bids(gameId, roundId)) },
             )
         }
@@ -108,8 +116,8 @@ fun SkullKingNavHost() {
             val roundId = entry.arguments?.getLong(Routes.ARG_ROUND_ID) ?: return@composable
             BidsScreen(
                 onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
-                onScoreboard = { navController.navigate(Routes.scoreboard(gameId)) },
-                onHelp = { navController.navigate(Routes.HELP) },
+                onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
+                onHelp = { navController.safeNavigate(Routes.HELP) },
                 onValidated = { navController.replaceFlow(Routes.play(gameId, roundId)) },
             )
         }
@@ -118,24 +126,17 @@ fun SkullKingNavHost() {
             val roundId = entry.arguments?.getLong(Routes.ARG_ROUND_ID) ?: return@composable
             PlayScreen(
                 onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
-                onScoreboard = { navController.navigate(Routes.scoreboard(gameId)) },
-                onHelp = { navController.navigate(Routes.HELP) },
+                onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
+                onHelp = { navController.safeNavigate(Routes.HELP) },
                 onRoundValidated = { navController.replaceFlow(Routes.scoreboard(gameId)) },
             )
         }
         composable(Routes.RESULTS, arguments = listOf(gameArg, roundArg)) { entry ->
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
-            val roundId = entry.arguments?.getLong(Routes.ARG_ROUND_ID) ?: return@composable
             ResultsScreen(
-                // Opened from the scoreboard (round correction): back to it. Otherwise back to the round's play screen.
-                onBack = {
-                    if (navController.previousBackStackEntry?.destination?.route == Routes.SCOREBOARD) {
-                        navController.safeBack()
-                    } else {
-                        navController.replaceFlow(Routes.play(gameId, roundId))
-                    }
-                },
-                onHelp = { navController.navigate(Routes.HELP) },
+                // Only opened from the scoreboard (round correction): back returns to it.
+                onBack = { navController.safeBack() },
+                onHelp = { navController.safeNavigate(Routes.HELP) },
                 onValidated = { navController.replaceFlow(Routes.scoreboard(gameId)) },
             )
         }
@@ -143,19 +144,19 @@ fun SkullKingNavHost() {
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
             ScoreboardScreen(
                 onBack = { navController.safeBack() },
-                onHelp = { navController.navigate(Routes.HELP) },
+                onHelp = { navController.safeNavigate(Routes.HELP) },
                 onNavigate = { route -> navController.replaceFlow(route) },
-                onEditRound = { roundId -> navController.navigate(Routes.results(gameId, roundId)) },
+                onEditRound = { roundId -> navController.safeNavigate(Routes.results(gameId, roundId)) },
                 onFinished = { navController.replaceFlow(Routes.end(gameId)) },
-                onShare = { navController.navigate(Routes.share(gameId)) },
+                onShare = { navController.safeNavigate(Routes.share(gameId)) },
             )
         }
         composable(Routes.END, arguments = listOf(gameArg)) { entry ->
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
             EndGameScreen(
                 onBack = { navController.safeBack() },
-                onScoreboard = { navController.navigate(Routes.scoreboard(gameId)) },
-                onShare = { navController.navigate(Routes.share(gameId)) },
+                onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
+                onShare = { navController.safeNavigate(Routes.share(gameId)) },
             )
         }
         composable(Routes.SHARE, arguments = listOf(gameArg)) {

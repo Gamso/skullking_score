@@ -46,7 +46,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -233,12 +233,28 @@ fun Stepper(
     /** Dense version for entry dialogs. */
     compact: Boolean = false,
 ) {
+    DeltaStepper(value, { onValueChange((value + it).coerceIn(range)) }, modifier, range, enabled, compact)
+}
+
+/**
+ * [Stepper] that sends the step (-1 or +1) instead of the new value, for a value stored in the database:
+ * the step is applied to the stored value, so a second tap made before [value] is refreshed still counts.
+ */
+@Composable
+fun DeltaStepper(
+    value: Int,
+    onStep: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    range: IntRange = 0..99,
+    enabled: Boolean = true,
+    compact: Boolean = false,
+) {
     val button = if (compact) 34.dp else 44.dp
     val valueWidth = if (compact) 30.dp else 44.dp
     // Compact: no 48 dp touch padding around the buttons, the lines stay close together.
     val touch = if (compact) Dp.Unspecified else LocalMinimumInteractiveComponentSize.current
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides touch) {
-        StepperRow(value, onValueChange, modifier, range, enabled, compact, button, valueWidth)
+        StepperRow(value, onStep, modifier, range, enabled, compact, button, valueWidth)
     }
 }
 
@@ -246,7 +262,7 @@ fun Stepper(
 @Composable
 private fun StepperRow(
     value: Int,
-    onValueChange: (Int) -> Unit,
+    onStep: (Int) -> Unit,
     modifier: Modifier,
     range: IntRange,
     enabled: Boolean,
@@ -257,7 +273,7 @@ private fun StepperRow(
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         val decrease = stringResource(R.string.stepper_decrease)
         FilledTonalIconButton(
-            onClick = { onValueChange((value - 1).coerceAtLeast(range.first)) },
+            onClick = { onStep(-1) },
             enabled = enabled && value > range.first,
             modifier = Modifier.size(button).semantics { contentDescription = decrease },
         ) {
@@ -271,7 +287,7 @@ private fun StepperRow(
             modifier = Modifier.padding(horizontal = 2.dp).width(valueWidth),
         )
         FilledTonalIconButton(
-            onClick = { onValueChange((value + 1).coerceAtMost(range.last)) },
+            onClick = { onStep(1) },
             enabled = enabled && value < range.last,
             modifier = Modifier.size(button),
         ) {
@@ -407,10 +423,20 @@ fun KeepScreenOn() {
 /** Undo / redo in the top bar. */
 @Composable
 fun UndoRedoActions(state: UndoState, onUndo: () -> Unit, onRedo: () -> Unit) {
-    IconButton(onClick = onUndo, enabled = state.canUndo) {
+    val undoLabel = stringResource(R.string.undo)
+    val redoLabel = stringResource(R.string.redo)
+    IconButton(
+        onClick = onUndo,
+        enabled = state.canUndo,
+        modifier = Modifier.semantics { contentDescription = undoLabel },
+    ) {
         Text("↶", style = MaterialTheme.typography.titleLarge)
     }
-    IconButton(onClick = onRedo, enabled = state.canRedo) {
+    IconButton(
+        onClick = onRedo,
+        enabled = state.canRedo,
+        modifier = Modifier.semantics { contentDescription = redoLabel },
+    ) {
         Text("↷", style = MaterialTheme.typography.titleLarge)
     }
 }
@@ -427,7 +453,7 @@ fun DealerLine(
     prominent: Boolean = false,
 ) {
     val dealer = game.dealerFor(roundNumber) ?: return
-    var open by remember { mutableStateOf(false) }
+    var open by rememberSaveable { mutableStateOf(false) }
     Box(modifier = modifier) {
         TextButton(onClick = { open = true }) {
             Text(

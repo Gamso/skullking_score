@@ -1,12 +1,39 @@
 package com.gamso.skullkingscore.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.gamso.skullkingscore.R
 import com.gamso.skullkingscore.core.RoundWarning
 import com.gamso.skullkingscore.core.SeaMonster
 import com.gamso.skullkingscore.core.WarningCode
 import com.gamso.skullkingscore.ui.labelRes
+
+/** Lists the [warnings] of a round about to be validated: validate it anyway ([onConfirm]), or go back to fix it. */
+@Composable
+fun ConfirmWarningsDialog(warnings: List<RoundWarning>, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.play_warnings_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                warnings.forEach { Text(it.message(), style = MaterialTheme.typography.bodyMedium) }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm) { Text(stringResource(R.string.play_validate_anyway)) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.play_fix)) }
+        },
+    )
+}
 
 /** French text of a consistency warning (never blocking). */
 @Composable

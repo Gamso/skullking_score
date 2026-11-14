@@ -127,7 +127,3 @@ fun LineChart(
         if (count == 0) drawRect(grid, Offset(left, top), Size(width, bottom - top), style = Stroke(1.dp.toPx()))
     }
 }
-
-/** Text of an x position: the value of each series at that index, shown below the chart. */
-fun seriesAt(series: List<ChartSeries>, index: Int): List<Pair<ChartSeries, Float>> =
-    series.mapNotNull { s -> s.values.getOrNull(index)?.let { s to it } }.sortedByDescending { it.second }

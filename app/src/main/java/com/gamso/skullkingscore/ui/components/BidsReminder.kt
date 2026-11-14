@@ -36,8 +36,8 @@ import com.gamso.skullkingscore.ui.theme.ScoreNegative
  * player shows "tricks / bid", colored once the bid is made or exceeded.
  */
 @Composable
-fun BidsReminder(players: List<Player>, details: RoundDetails, initiallyExpanded: Boolean = true) {
-    var expanded by rememberSaveable { mutableStateOf(initiallyExpanded) }
+fun BidsReminder(players: List<Player>, details: RoundDetails) {
+    var expanded by rememberSaveable { mutableStateOf(true) }
     val totalBid = details.entries.sumOf { it.effectiveBid }
     val cards = details.round.cardsDealt
     Card(modifier = Modifier.fillMaxWidth()) {

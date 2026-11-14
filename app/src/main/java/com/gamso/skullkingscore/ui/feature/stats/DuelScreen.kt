@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -39,6 +40,7 @@ import com.gamso.skullkingscore.domain.stats.StatsFilter
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
+import com.gamso.skullkingscore.ui.components.enumByName
 import com.gamso.skullkingscore.ui.components.formatPoints
 import com.gamso.skullkingscore.ui.components.formatScore
 import com.gamso.skullkingscore.ui.labelRes
@@ -54,6 +56,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class DuelUiState(
     val mode: ScoringMode = ScoringMode.CLASSIC,
@@ -63,16 +66,42 @@ data class DuelUiState(
     val duel: DuelStats? = null,
 )
 
-private data class DuelSelection(
+internal data class DuelSelection(
     val mode: ScoringMode = ScoringMode.CLASSIC,
     val first: Long? = null,
     val second: Long? = null,
 )
 
-@HiltViewModel
-class DuelViewModel @Inject constructor(games: GameRepository, playerRepository: PlayerRepository) : ViewModel() {
+private const val KEY_DUEL_MODE = "duel.mode"
+private const val KEY_DUEL_FIRST = "duel.first"
+private const val KEY_DUEL_SECOND = "duel.second"
 
-    private val selection = MutableStateFlow(DuelSelection())
+/** Copies [selection] to the saved state in Bundle-compatible types: the mode as its name. */
+internal fun SavedStateHandle.saveDuelSelection(selection: DuelSelection) {
+    this[KEY_DUEL_MODE] = selection.mode.name
+    this[KEY_DUEL_FIRST] = selection.first
+    this[KEY_DUEL_SECOND] = selection.second
+}
+
+/** The selection saved by [saveDuelSelection], or null when nothing was saved yet. */
+internal fun SavedStateHandle.restoreDuelSelection(): DuelSelection? {
+    val mode = enumByName<ScoringMode>(get<String>(KEY_DUEL_MODE)) ?: return null
+    return DuelSelection(mode, get<Long>(KEY_DUEL_FIRST), get<Long>(KEY_DUEL_SECOND))
+}
+
+@HiltViewModel
+class DuelViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    games: GameRepository,
+    playerRepository: PlayerRepository,
+) : ViewModel() {
+
+    // Restored after a process death.
+    private val selection = MutableStateFlow(savedStateHandle.restoreDuelSelection() ?: DuelSelection())
+
+    init {
+        viewModelScope.launch { selection.collect { savedStateHandle.saveDuelSelection(it) } }
+    }
 
     val state: StateFlow<DuelUiState> = combine(
         games.observeAllGames(),

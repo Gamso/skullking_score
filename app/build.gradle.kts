@@ -23,7 +23,8 @@ android {
         // see .github/workflows/release.yml.
         versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(1040199)
         versionName = providers.gradleProperty("versionName").getOrElse("1.4.1")
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Runs the instrumented tests in HiltTestApplication: each test gets its own in-memory database and settings.
+        testInstrumentationRunner = "com.gamso.skullkingscore.HiltTestRunner"
     }
 
     // The release signing config is only set up when the keystore is provided (CI or local machine).
@@ -63,6 +64,12 @@ android {
 
     buildFeatures {
         compose = true
+    }
+
+    // Generates the locale config from the values-* folders (and res/resources.properties for the default one),
+    // so Android 13+ offers the app language in the system settings.
+    androidResources {
+        generateLocaleConfig = true
     }
 
     // Lint's Kotlin analysis crashes on the instrumented test sources (Kotlin 2.4): only production code is checked.
@@ -171,5 +178,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

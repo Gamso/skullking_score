@@ -1,26 +1,18 @@
 package com.gamso.skullkingscore.ui.feature.play
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -51,56 +42,45 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.gamso.skullkingscore.R
 import com.gamso.skullkingscore.core.RoundWarning
-import com.gamso.skullkingscore.core.SeaMonster
 import com.gamso.skullkingscore.domain.model.Player
-import com.gamso.skullkingscore.domain.model.RoundDetails
 import com.gamso.skullkingscore.domain.model.RoundPhase
 import com.gamso.skullkingscore.domain.model.ScoredGame
 import com.gamso.skullkingscore.domain.model.ScoredRound
-import com.gamso.skullkingscore.domain.model.Trick
 import com.gamso.skullkingscore.domain.model.TrickDraft
 import com.gamso.skullkingscore.domain.repository.GameRepository
+import com.gamso.skullkingscore.domain.repository.setDealer
 import com.gamso.skullkingscore.domain.scoring.GameScoreCalculator
 import com.gamso.skullkingscore.domain.undo.UndoAction
 import com.gamso.skullkingscore.domain.undo.UndoHistory
 import com.gamso.skullkingscore.domain.undo.UndoKind
-import com.gamso.skullkingscore.domain.undo.UndoState
 import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
+import com.gamso.skullkingscore.domain.usecase.TrickEventIds
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.BidsReminder
+import com.gamso.skullkingscore.ui.components.ConfirmWarningsDialog
 import com.gamso.skullkingscore.ui.components.DealerLine
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.LiveEventsPanel
-import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
 import com.gamso.skullkingscore.ui.components.TrickDialog
 import com.gamso.skullkingscore.ui.components.TrickEvents
-import com.gamso.skullkingscore.ui.components.UndoNotice
+import com.gamso.skullkingscore.ui.components.UndoController
 import com.gamso.skullkingscore.ui.components.UndoNotices
 import com.gamso.skullkingscore.ui.components.UndoRedoActions
 import com.gamso.skullkingscore.ui.components.WidthClass
-import com.gamso.skullkingscore.ui.components.message
 import com.gamso.skullkingscore.ui.components.rememberWidthClass
 import com.gamso.skullkingscore.ui.components.trickEventLines
 import com.gamso.skullkingscore.ui.components.trickLabel
-import com.gamso.skullkingscore.ui.emoji
-import com.gamso.skullkingscore.ui.labelRes
 import com.gamso.skullkingscore.ui.navigation.Routes
-import com.gamso.skullkingscore.ui.theme.ScoreNegative
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-
-private fun Trick.toDraft() = TrickDraft(winnerId, bonus, rascalWager, bidAdjustment, winningCard, winningPirate)
 
 data class PlayUiState(val scored: ScoredGame, val round: ScoredRound, val warnings: List<RoundWarning>)
 
@@ -109,20 +89,13 @@ class PlayViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val games: GameRepository,
     private val edit: EditRoundUseCase,
-    private val history: UndoHistory,
+    history: UndoHistory,
 ) : ViewModel() {
 
     private val gameId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_GAME_ID))
     private val roundId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_ROUND_ID))
 
-    val undoState: StateFlow<UndoState> = history.observe(gameId)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), UndoState())
-    private val _notices = MutableSharedFlow<UndoNotice>(extraBufferCapacity = 1)
-    val notices: SharedFlow<UndoNotice> = _notices.asSharedFlow()
-
-    init {
-        history.clear(gameId)
-    }
+    val undoRedo = UndoController(history, gameId, viewModelScope)
 
     val state: StateFlow<PlayUiState?> = games.observeGame(gameId)
         .filterNotNull()
@@ -134,17 +107,6 @@ class PlayViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
-    private val currentTrick: Int? get() = state.value?.round?.details?.currentTrickNumber
-
-    /** During play, the winner of a Loot is unknown: it is filled in when the trick is entered. */
-    fun addLoot(lootPlayerId: Long, trickWinnerId: Long?) {
-        viewModelScope.launch { edit.addLoot(gameId, roundId, lootPlayerId, trickWinnerId, currentTrick) }
-    }
-
-    fun addDavyJones(playerId: Long, creatures: Set<SeaMonster>) {
-        viewModelScope.launch { edit.addDavyJones(gameId, roundId, playerId, creatures, currentTrick) }
-    }
-
     fun cancelLoot(id: Long) {
         viewModelScope.launch { edit.cancelLoot(gameId, id) }
     }
@@ -154,56 +116,37 @@ class PlayViewModel @Inject constructor(
     }
 
     /**
-     * Records trick [number] with the events played in it. The events go first: recording the trick
-     * then gives its winner to the Loots of that trick.
+     * Records trick [number] with the events played in it, in one transaction. Undo cancels those events with
+     * the trick, redo records them again (under new identifiers, kept for the next undo).
      */
     fun recordTrick(number: Int, draft: TrickDraft, events: TrickEvents = TrickEvents()) {
         val before = state.value?.round?.details?.tricks?.firstOrNull { it.number == number }?.toDraft()
         viewModelScope.launch {
-            events.lootPlayerIds.forEach { edit.addLoot(gameId, roundId, it, null, number) }
-            events.chests.forEach { (playerId, creatures) ->
-                edit.addDavyJones(gameId, roundId, playerId, creatures, number)
+            val record: suspend () -> TrickEventIds = {
+                edit.recordTrick(gameId, roundId, number, draft, events.lootPlayerIds, events.chests)
             }
-            edit.recordTrick(gameId, roundId, number, draft)
-            history.record(
-                gameId,
+            var created = record()
+            undoRedo.record(
                 UndoAction(
                     UndoKind.TRICK,
                     number.toString(),
-                    undo = {
-                        if (before == null) {
-                            edit.deleteLastTrick(gameId, roundId)
-                        } else {
-                            edit.recordTrick(gameId, roundId, number, before)
-                        }
-                    },
-                    redo = { edit.recordTrick(gameId, roundId, number, draft) },
+                    undo = { edit.undoTrick(gameId, roundId, number, before, created) },
+                    redo = { created = record() },
                 ),
             )
         }
     }
 
-    fun undo() {
-        viewModelScope.launch { history.undo(gameId)?.let { _notices.emit(UndoNotice(it, redone = false)) } }
-    }
-
-    fun redo() {
-        viewModelScope.launch { history.redo(gameId)?.let { _notices.emit(UndoNotice(it, redone = true)) } }
-    }
-
     fun setDealer(player: Player) {
         val game = state.value?.scored?.game ?: return
         val number = state.value?.round?.round?.number ?: return
-        val index = game.players.indexOfFirst { it.id == player.id }
-        viewModelScope.launch {
-            games.setFirstDealerSeat(gameId, Math.floorMod(index - (number - 1), game.players.size))
-        }
+        viewModelScope.launch { games.setDealer(game, number, player) }
     }
 
     /** Validates the round as is: the tricks entered live have already filled in the results. */
     fun validateRound(onDone: () -> Unit) {
         viewModelScope.launch {
-            history.clear(gameId)
+            undoRedo.clear()
             edit.setPhase(gameId, roundId, RoundPhase.SCORED)
             onDone()
         }
@@ -214,8 +157,7 @@ class PlayViewModel @Inject constructor(
         val draft = last.toDraft()
         viewModelScope.launch {
             edit.deleteLastTrick(gameId, roundId)
-            history.record(
-                gameId,
+            undoRedo.record(
                 UndoAction(
                     UndoKind.TRICK_DELETED,
                     last.number.toString(),
@@ -236,11 +178,11 @@ fun PlayScreen(
     viewModel: PlayViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val undoState by viewModel.undoState.collectAsStateWithLifecycle()
+    val undoState by viewModel.undoRedo.state.collectAsStateWithLifecycle()
     val current = state
-    var confirmWarnings by remember { mutableStateOf(false) }
+    var confirmWarnings by rememberSaveable { mutableStateOf(false) }
     // Number of the trick open in the entry dialog (new trick or correction); null = closed.
-    var editing by remember { mutableStateOf<Int?>(null) }
+    var editing by rememberSaveable { mutableStateOf<Int?>(null) }
     val snackbar = remember { SnackbarHostState() }
     // Once the bids are confirmed, the entry of the first trick opens right away.
     var firstTrickOpened by rememberSaveable { mutableStateOf(false) }
@@ -252,7 +194,7 @@ fun PlayScreen(
         }
     }
     KeepScreenOn()
-    UndoNotices(viewModel.notices, snackbar)
+    UndoNotices(viewModel.undoRedo.notices, snackbar)
 
     SkullScaffold(
         title = if (current == null) {
@@ -264,7 +206,7 @@ fun PlayScreen(
         maxContentWidth = Dp.Unspecified,
         snackbarHost = { SnackbarHost(snackbar) },
         actions = {
-            UndoRedoActions(undoState, onUndo = viewModel::undo, onRedo = viewModel::redo)
+            UndoRedoActions(undoState, onUndo = viewModel.undoRedo::undo, onRedo = viewModel.undoRedo::redo)
             IconButton(onClick = onScoreboard) {
                 Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
             }
@@ -337,23 +279,13 @@ fun PlayScreen(
     }
 
     if (confirmWarnings && current != null) {
-        AlertDialog(
-            onDismissRequest = { confirmWarnings = false },
-            title = { Text(stringResource(R.string.play_warnings_title)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    current.warnings.forEach { Text(it.message(), style = MaterialTheme.typography.bodyMedium) }
-                }
+        ConfirmWarningsDialog(
+            warnings = current.warnings,
+            onConfirm = {
+                confirmWarnings = false
+                viewModel.validateRound(onRoundValidated)
             },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmWarnings = false
-                    viewModel.validateRound(onRoundValidated)
-                }) { Text(stringResource(R.string.play_validate_anyway)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { confirmWarnings = false }) { Text(stringResource(R.string.play_fix)) }
-            },
+            onDismiss = { confirmWarnings = false },
         )
     }
 }
@@ -458,12 +390,8 @@ private fun RoundProgress(
             LiveEventsPanel(
                 game = game,
                 round = details,
-                onAddLoot = viewModel::addLoot,
-                onAddDavyJones = viewModel::addDavyJones,
                 onCancelLoot = viewModel::cancelLoot,
                 onCancelDavyJones = viewModel::cancelDavyJones,
-                askWinner = false,
-                showButtons = false,
                 logMaxHeight = if (inDialog) LOG_MAX_HEIGHT else null,
             )
         }

@@ -22,7 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +42,7 @@ import com.gamso.skullkingscore.domain.model.RoundDetails
 import com.gamso.skullkingscore.ui.emoji
 import com.gamso.skullkingscore.ui.labelRes
 
-private sealed interface EventDialog {
+internal sealed interface EventDialog {
     data object LootWho : EventDialog
     data class LootWinner(val lootPlayerId: Long) : EventDialog
     data object ChestWho : EventDialog
@@ -72,30 +72,29 @@ private sealed interface LogItem {
 /**
  * Live events: a Loot is recorded in two taps (who played it, who won the trick), as is a Davy Jones'
  * Locker (who played it, which creatures). The log keeps a trace of cancelled events.
+ *
+ * Without [onAddLoot] and [onAddDavyJones] (events entered elsewhere, in the trick dialog), only the log is
+ * shown.
  */
 @Suppress("CyclomaticComplexMethod")
 @Composable
 fun LiveEventsPanel(
     game: Game,
     round: RoundDetails,
-    onAddLoot: (lootPlayerId: Long, trickWinnerId: Long?) -> Unit,
-    onAddDavyJones: (playerId: Long, creatures: Set<SeaMonster>) -> Unit,
     onCancelLoot: (Long) -> Unit,
     onCancelDavyJones: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    /** False during play: the Loot winner is filled in when the trick is entered. */
-    askWinner: Boolean = true,
-    /** False when the events are entered elsewhere (trick dialog): only the log is shown. */
-    showButtons: Boolean = true,
+    onAddLoot: ((lootPlayerId: Long, trickWinnerId: Long?) -> Unit)? = null,
+    onAddDavyJones: ((playerId: Long, creatures: Set<SeaMonster>) -> Unit)? = null,
     /** When set, only the log scrolls, within this height. */
     logMaxHeight: Dp? = null,
 ) {
-    var dialog by remember { mutableStateOf<EventDialog?>(null) }
+    var dialog by rememberSaveable(stateSaver = EventDialogSaver) { mutableStateOf<EventDialog?>(null) }
     val hasChest = ExpansionCard.DAVY_JONES_CHEST in game.expansionCards
     val names = game.players.associate { it.id to it.name }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        if (showButtons) {
+        if (onAddLoot != null && onAddDavyJones != null) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CompactChip(
                     text = "💰 " + stringResource(R.string.event_loot_button),
@@ -166,14 +165,7 @@ fun LiveEventsPanel(
         EventDialog.LootWho -> PlayerPickerDialog(
             title = stringResource(R.string.loot_who_played),
             players = game.players,
-            onPick = {
-                if (askWinner) {
-                    dialog = EventDialog.LootWinner(it.id)
-                } else {
-                    onAddLoot(it.id, null)
-                    dialog = null
-                }
-            },
+            onPick = { dialog = EventDialog.LootWinner(it.id) },
             onDismiss = { dialog = null },
         )
 
@@ -181,7 +173,7 @@ fun LiveEventsPanel(
             title = stringResource(R.string.loot_who_won),
             players = game.players,
             onPick = {
-                onAddLoot(d.lootPlayerId, it.id)
+                onAddLoot?.invoke(d.lootPlayerId, it.id)
                 dialog = null
             },
             onDismiss = { dialog = null },
@@ -201,7 +193,7 @@ fun LiveEventsPanel(
                 if (ExpansionCard.SPOTTED_RAY in game.expansionCards) add(SeaMonster.SPOTTED_RAY)
             },
             onConfirm = {
-                onAddDavyJones(d.playerId, it)
+                onAddDavyJones?.invoke(d.playerId, it)
                 dialog = null
             },
             onDismiss = { dialog = null },
@@ -243,7 +235,7 @@ internal fun CreaturePickerDialog(
     onConfirm: (Set<SeaMonster>) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var selected by remember { mutableStateOf(emptySet<SeaMonster>()) }
+    var selected by rememberSaveable(stateSaver = SeaMonsterSetSaver) { mutableStateOf(emptySet<SeaMonster>()) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.chest_which_creatures)) },

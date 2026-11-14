@@ -314,6 +314,8 @@
     <string name="undo_trick_deleted">gelöschter Stich %1$s</string>
     <string name="undone_prefix">Rückgängig: %1$s</string>
     <string name="redone_prefix">Wiederholt: %1$s</string>
+    <string name="undo">Rückgängig</string>
+    <string name="redo">Wiederholen</string>
     <string name="dealer_label">Geber: %1$s</string>
     <string name="setup_draw_dealer">Geber auslosen</string>
     <string name="setup_dealer_badge">Geber</string>
