@@ -18,11 +18,11 @@ android {
         applicationId = "com.gamso.skullkingscore"
         minSdk = 26
         targetSdk = 37
-        // Overridden by the CI from the release tag (e.g. -PversionName=1.4.1 -PversionCode=1040199).
+        // Overridden by the CI from the release tag (e.g. -PversionName=1.5.0 -PversionCode=1050099).
         // versionCode = major * 1_000_000 + minor * 10_000 + patch * 100 + (99, or N for a pre-release -rcN),
         // see .github/workflows/release.yml.
-        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(1040199)
-        versionName = providers.gradleProperty("versionName").getOrElse("1.4.1")
+        versionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(1050099)
+        versionName = providers.gradleProperty("versionName").getOrElse("1.5.0")
         // Runs the instrumented tests in HiltTestApplication: each test gets its own in-memory database and settings.
         testInstrumentationRunner = "com.gamso.skullkingscore.HiltTestRunner"
     }
