@@ -88,7 +88,6 @@ internal sealed interface TrickEventDialog {
  * @param chestsPlayed Davy Jones' Lockers already recorded in the round: the deck holds only one
  * @param eventPlayerIds players who already played a Loot or a Locker in this trick: one card per player
  * @param chestPlayerIds players who already played a Locker in this trick: a Locker never wins the trick
- * @param header shown above the entry, such as the bids against the tricks won
  * @param roundState content of the round state dialog, opened from the top bar
  */
 @OptIn(ExperimentalLayoutApi::class)
@@ -108,7 +107,6 @@ fun TrickDialog(
     eventPlayerIds: Set<Long> = emptySet(),
     chestPlayerIds: Set<Long> = emptySet(),
     onPrevious: (() -> Unit)? = null,
-    header: (@Composable () -> Unit)? = null,
     roundState: (@Composable () -> Unit)? = null,
 ) {
     // Saveable: the entry in progress survives a rotation.
@@ -205,7 +203,6 @@ fun TrickDialog(
                     .padding(horizontal = 16.dp, vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
-                header?.invoke()
                 SubTitle(R.string.trick_who_won)
                 FlowRow(horizontalArrangement = CHIP_SPACING, verticalArrangement = CHIP_SPACING) {
                     // One button opens the list of players: the screen does not grow with the table.

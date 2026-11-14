@@ -72,21 +72,20 @@ private sealed interface LogItem {
 /**
  * Live events: a Loot is recorded in two taps (who played it, who won the trick), as is a Davy Jones'
  * Locker (who played it, which creatures). The log keeps a trace of cancelled events.
+ *
+ * Without [onAddLoot] and [onAddDavyJones] (events entered elsewhere, in the trick dialog), only the log is
+ * shown.
  */
 @Suppress("CyclomaticComplexMethod")
 @Composable
 fun LiveEventsPanel(
     game: Game,
     round: RoundDetails,
-    onAddLoot: (lootPlayerId: Long, trickWinnerId: Long?) -> Unit,
-    onAddDavyJones: (playerId: Long, creatures: Set<SeaMonster>) -> Unit,
     onCancelLoot: (Long) -> Unit,
     onCancelDavyJones: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    /** False during play: the Loot winner is filled in when the trick is entered. */
-    askWinner: Boolean = true,
-    /** False when the events are entered elsewhere (trick dialog): only the log is shown. */
-    showButtons: Boolean = true,
+    onAddLoot: ((lootPlayerId: Long, trickWinnerId: Long?) -> Unit)? = null,
+    onAddDavyJones: ((playerId: Long, creatures: Set<SeaMonster>) -> Unit)? = null,
     /** When set, only the log scrolls, within this height. */
     logMaxHeight: Dp? = null,
 ) {
@@ -95,7 +94,7 @@ fun LiveEventsPanel(
     val names = game.players.associate { it.id to it.name }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        if (showButtons) {
+        if (onAddLoot != null && onAddDavyJones != null) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 CompactChip(
                     text = "💰 " + stringResource(R.string.event_loot_button),
@@ -166,14 +165,7 @@ fun LiveEventsPanel(
         EventDialog.LootWho -> PlayerPickerDialog(
             title = stringResource(R.string.loot_who_played),
             players = game.players,
-            onPick = {
-                if (askWinner) {
-                    dialog = EventDialog.LootWinner(it.id)
-                } else {
-                    onAddLoot(it.id, null)
-                    dialog = null
-                }
-            },
+            onPick = { dialog = EventDialog.LootWinner(it.id) },
             onDismiss = { dialog = null },
         )
 
@@ -181,7 +173,7 @@ fun LiveEventsPanel(
             title = stringResource(R.string.loot_who_won),
             players = game.players,
             onPick = {
-                onAddLoot(d.lootPlayerId, it.id)
+                onAddLoot?.invoke(d.lootPlayerId, it.id)
                 dialog = null
             },
             onDismiss = { dialog = null },
@@ -201,7 +193,7 @@ fun LiveEventsPanel(
                 if (ExpansionCard.SPOTTED_RAY in game.expansionCards) add(SeaMonster.SPOTTED_RAY)
             },
             onConfirm = {
-                onAddDavyJones(d.playerId, it)
+                onAddDavyJones?.invoke(d.playerId, it)
                 dialog = null
             },
             onDismiss = { dialog = null },

@@ -44,9 +44,6 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE id = :gameId")
     suspend fun getGame(gameId: Long): GameEntity?
 
-    @Query("SELECT * FROM games WHERE uuid = :uuid LIMIT 1")
-    suspend fun findGameByUuid(uuid: String): GameEntity?
-
     @Insert
     suspend fun insertGame(game: GameEntity): Long
 

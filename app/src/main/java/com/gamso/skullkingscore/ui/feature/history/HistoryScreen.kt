@@ -1,7 +1,5 @@
 package com.gamso.skullkingscore.ui.feature.history
 
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -94,6 +92,7 @@ import com.gamso.skullkingscore.ui.components.formatScore
 import com.gamso.skullkingscore.ui.labelRes
 import com.gamso.skullkingscore.ui.navigation.Routes
 import com.gamso.skullkingscore.ui.normalizeForSearch
+import com.gamso.skullkingscore.ui.share.shareFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.IOException
 import java.text.DateFormat
@@ -287,7 +286,9 @@ fun HistoryScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.exports.collect { file -> share(context, file) }
+        viewModel.exports.collect { file ->
+            context.shareFile(file.uri, file.mimeType, resources.getString(R.string.export_action))
+        }
     }
 
     SkullScaffold(
@@ -400,15 +401,6 @@ fun HistoryScreen(
             onDismiss = viewModel::dismissImport,
         )
     }
-}
-
-private fun share(context: Context, file: ExportFile) {
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type = file.mimeType
-        putExtra(Intent.EXTRA_STREAM, file.uri)
-        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    }
-    context.startActivity(Intent.createChooser(intent, context.getString(R.string.export_action)))
 }
 
 @Composable

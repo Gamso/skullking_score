@@ -32,6 +32,7 @@ import com.gamso.skullkingscore.core.DeckRules
 import com.gamso.skullkingscore.domain.model.GameDetails
 import com.gamso.skullkingscore.domain.model.Player
 import com.gamso.skullkingscore.domain.repository.GameRepository
+import com.gamso.skullkingscore.domain.repository.setDealer
 import com.gamso.skullkingscore.domain.usecase.StartRoundUseCase
 import com.gamso.skullkingscore.domain.usecase.suggestedCards
 import com.gamso.skullkingscore.ui.components.ActionBar
@@ -105,10 +106,7 @@ class PrepareViewModel @Inject constructor(
     fun setDealer(player: Player) {
         val game = state.value?.details?.game ?: return
         val number = state.value?.roundNumber ?: return
-        val index = game.players.indexOfFirst { it.id == player.id }
-        viewModelScope.launch {
-            games.setFirstDealerSeat(gameId, Math.floorMod(index - (number - 1), game.players.size))
-        }
+        viewModelScope.launch { games.setDealer(game, number, player) }
     }
 
     fun setCards(cards: Int) {

@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -58,6 +56,7 @@ import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.BonusCounterList
 import com.gamso.skullkingscore.ui.components.CompactChip
+import com.gamso.skullkingscore.ui.components.ConfirmWarningsDialog
 import com.gamso.skullkingscore.ui.components.DeltaStepper
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.LiveEventsPanel
@@ -275,23 +274,13 @@ fun ResultsScreen(
     }
 
     if (confirmWarnings && current != null) {
-        AlertDialog(
-            onDismissRequest = { confirmWarnings = false },
-            title = { Text(stringResource(R.string.play_warnings_title)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    current.warnings.forEach { Text(it.message(), style = MaterialTheme.typography.bodyMedium) }
-                }
+        ConfirmWarningsDialog(
+            warnings = current.warnings,
+            onConfirm = {
+                confirmWarnings = false
+                viewModel.validate(onValidated)
             },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmWarnings = false
-                    viewModel.validate(onValidated)
-                }) { Text(stringResource(R.string.play_validate_anyway)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { confirmWarnings = false }) { Text(stringResource(R.string.play_fix)) }
-            },
+            onDismiss = { confirmWarnings = false },
         )
     }
 }
@@ -337,15 +326,15 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
     val hasEvents = details.loots.isNotEmpty() || details.captures.isNotEmpty()
     if (details.tricks.isEmpty() || hasEvents) {
         SectionTitle(stringResource(R.string.play_live_events))
+        // With tricks, the events are added in the trick they were played in.
+        val addEvents = details.tricks.isEmpty()
         LiveEventsPanel(
             game = game,
             round = details,
-            onAddLoot = viewModel::addLoot,
-            onAddDavyJones = viewModel::addDavyJones,
             onCancelLoot = viewModel::cancelLoot,
             onCancelDavyJones = viewModel::cancelDavyJones,
-            // With tricks, the events are added in the trick they were played in.
-            showButtons = details.tricks.isEmpty(),
+            onAddLoot = if (addEvents) viewModel::addLoot else null,
+            onAddDavyJones = if (addEvents) viewModel::addDavyJones else null,
         )
     }
 
@@ -355,14 +344,7 @@ private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
             trickNumber = number,
             players = game.players,
             expansion = game.expansionCards,
-            initial = TrickDraft(
-                existing.winnerId,
-                existing.bonus,
-                existing.rascalWager,
-                existing.bidAdjustment,
-                existing.winningCard,
-                existing.winningPirate,
-            ),
+            initial = existing.toDraft(),
             recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
             isLastTrick = number == details.round.cardsDealt,
             lootsPlayed = details.activeLoots.size,

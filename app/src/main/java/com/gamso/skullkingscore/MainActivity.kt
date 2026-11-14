@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val dark = isSystemInDarkTheme()
-            // System bar icons must follow the theme chosen in the app, not only the system one.
+            // System bar icons follow the system theme: dark icons on a light theme, light icons on a dark one.
             DisposableEffect(dark) {
                 val style = if (dark) {
                     SystemBarStyle.dark(Color.TRANSPARENT)

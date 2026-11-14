@@ -133,16 +133,9 @@ fun SkullKingNavHost() {
         }
         composable(Routes.RESULTS, arguments = listOf(gameArg, roundArg)) { entry ->
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
-            val roundId = entry.arguments?.getLong(Routes.ARG_ROUND_ID) ?: return@composable
             ResultsScreen(
-                // Opened from the scoreboard (round correction): back to it. Otherwise back to the round's play screen.
-                onBack = {
-                    if (navController.previousBackStackEntry?.destination?.route == Routes.SCOREBOARD) {
-                        navController.safeBack()
-                    } else {
-                        navController.replaceFlow(Routes.play(gameId, roundId))
-                    }
-                },
+                // Only opened from the scoreboard (round correction): back returns to it.
+                onBack = { navController.safeBack() },
                 onHelp = { navController.safeNavigate(Routes.HELP) },
                 onValidated = { navController.replaceFlow(Routes.scoreboard(gameId)) },
             )

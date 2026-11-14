@@ -3,6 +3,7 @@ package com.gamso.skullkingscore.domain.repository
 import com.gamso.skullkingscore.core.ExpansionCard
 import com.gamso.skullkingscore.core.ScoringMode
 import com.gamso.skullkingscore.core.SeaMonster
+import com.gamso.skullkingscore.domain.model.Game
 import com.gamso.skullkingscore.domain.model.GameDetails
 import com.gamso.skullkingscore.domain.model.GameSummary
 import com.gamso.skullkingscore.domain.model.Player
@@ -89,4 +90,13 @@ interface GameRepository {
     suspend fun finishGame(gameId: Long)
 
     suspend fun deleteGame(gameId: Long)
+}
+
+/**
+ * Makes [player] the dealer of round [roundNumber] of [game]: the seat of the first dealer is moved so that the
+ * rotation lands on [player] for that round.
+ */
+suspend fun GameRepository.setDealer(game: Game, roundNumber: Int, player: Player) {
+    val index = game.players.indexOfFirst { it.id == player.id }
+    setFirstDealerSeat(game.id, Math.floorMod(index - (roundNumber - 1), game.players.size))
 }

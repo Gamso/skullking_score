@@ -1,7 +1,6 @@
 ﻿package com.gamso.skullkingscore.ui.feature.stats
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.clickable
@@ -91,6 +90,7 @@ import com.gamso.skullkingscore.ui.normalizeForSearch
 import com.gamso.skullkingscore.ui.share.StatsImageRenderer
 import com.gamso.skullkingscore.ui.share.StatsImageTextsFactory
 import com.gamso.skullkingscore.ui.share.StatsTrend
+import com.gamso.skullkingscore.ui.share.shareFile
 import com.gamso.skullkingscore.ui.shortLabelRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -273,15 +273,7 @@ fun StatsScreen(onBack: () -> Unit, onDuel: () -> Unit, viewModel: StatsViewMode
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is StatsEvent.Send -> {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "image/png"
-                        putExtra(Intent.EXTRA_STREAM, event.uri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-                    context.startActivity(Intent.createChooser(intent, chooserTitle))
-                }
-
+                is StatsEvent.Send -> context.shareFile(event.uri, "image/png", chooserTitle)
                 StatsEvent.ShareFailed -> snackbar.showSnackbar(shareFailed)
             }
         }
