@@ -70,9 +70,9 @@ fun SkullKingNavHost() {
             )
         }
         composable(Routes.PLAYERS) { PlayersScreen(onBack = { navController.safeBack() }) }
-        composable(Routes.HISTORY, arguments = listOf(importArg)) { entry ->
+        // The import argument is read (once) by HistoryViewModel from its SavedStateHandle.
+        composable(Routes.HISTORY, arguments = listOf(importArg)) {
             HistoryScreen(
-                startImport = entry.arguments?.getBoolean(Routes.ARG_IMPORT) ?: false,
                 onShare = { id -> navController.navigate(Routes.share(id)) },
                 onBack = { navController.safeBack() },
                 onOpen = { route -> navController.navigate(route) },
