@@ -52,7 +52,7 @@ class BidsViewModelTest {
         val edit = EditRoundUseCase(games, RecalculateScoresUseCase(games))
         return BidsViewModel(handle, games, edit, history).also { viewModel ->
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.state.collect {} }
-            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.undoState.collect {} }
+            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.undoRedo.state.collect {} }
         }
     }
 
@@ -63,17 +63,19 @@ class BidsViewModelTest {
     fun aBidStepCanBeUndoneAndRedone() = runTest {
         val viewModel = viewModel()
         val notices = mutableListOf<UndoNotice>()
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.notices.collect(notices::add) }
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.undoRedo.notices.collect(notices::add)
+        }
 
         viewModel.stepBid(ann, 1)
         assertEquals(1, bid(viewModel, ann))
-        assertTrue(viewModel.undoState.value.canUndo)
+        assertTrue(viewModel.undoRedo.state.value.canUndo)
 
-        viewModel.undo()
+        viewModel.undoRedo.undo()
         assertEquals(0, bid(viewModel, ann))
-        assertTrue(viewModel.undoState.value.canRedo)
+        assertTrue(viewModel.undoRedo.state.value.canRedo)
 
-        viewModel.redo()
+        viewModel.undoRedo.redo()
         assertEquals(1, bid(viewModel, ann))
         assertEquals(listOf(false, true), notices.map { it.redone })
         assertEquals(listOf("Ann", "Ann"), notices.map { it.action.detail })
@@ -87,7 +89,7 @@ class BidsViewModelTest {
         viewModel.stepBid(bob, -1)
 
         assertEquals(0, bid(viewModel, bob))
-        assertFalse(viewModel.undoState.value.canUndo)
+        assertFalse(viewModel.undoRedo.state.value.canUndo)
     }
 
     @Test
@@ -97,7 +99,7 @@ class BidsViewModelTest {
         viewModel.setCannonball(bob, true)
         assertEquals(true, viewModel.state.value?.round?.details?.entry(bob)?.cannonball)
 
-        viewModel.undo()
+        viewModel.undoRedo.undo()
         assertEquals(false, viewModel.state.value?.round?.details?.entry(bob)?.cannonball)
     }
 
@@ -111,6 +113,6 @@ class BidsViewModelTest {
 
         assertTrue(done)
         assertEquals(RoundPhase.PLAYING, viewModel.state.value?.round?.round?.phase)
-        assertFalse(viewModel.undoState.value.canUndo)
+        assertFalse(viewModel.undoRedo.state.value.canUndo)
     }
 }

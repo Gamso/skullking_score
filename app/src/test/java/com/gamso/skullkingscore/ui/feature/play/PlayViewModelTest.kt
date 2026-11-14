@@ -59,7 +59,7 @@ class PlayViewModelTest {
         val edit = EditRoundUseCase(games, RecalculateScoresUseCase(games))
         return PlayViewModel(handle, games, edit, history).also { viewModel ->
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.state.collect {} }
-            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.undoState.collect {} }
+            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.undoRedo.state.collect {} }
         }
     }
 
@@ -74,7 +74,7 @@ class PlayViewModelTest {
         assertEquals(1, viewModel.round().entry(ann)?.tricks)
         assertEquals(1, viewModel.round().activeLoots.size)
 
-        viewModel.undo()
+        viewModel.undoRedo.undo()
         viewModel.round().let {
             assertTrue(it.tricks.isEmpty())
             assertTrue(it.activeLoots.isEmpty())
@@ -82,7 +82,7 @@ class PlayViewModelTest {
             assertEquals(0, it.entry(ann)?.tricks)
         }
 
-        viewModel.redo()
+        viewModel.undoRedo.redo()
         viewModel.round().let {
             assertEquals(ann, it.tricks.single().winnerId)
             assertEquals(1, it.activeLoots.size)
@@ -97,7 +97,7 @@ class PlayViewModelTest {
         viewModel.recordTrick(1, TrickDraft(winnerId = bob))
         assertEquals(bob, viewModel.round().tricks.single().winnerId)
 
-        viewModel.undo()
+        viewModel.undoRedo.undo()
 
         assertEquals(ann, viewModel.round().tricks.single().winnerId)
         assertEquals(1, viewModel.round().entry(ann)?.tricks)
@@ -113,10 +113,10 @@ class PlayViewModelTest {
         viewModel.deleteLastTrick()
         assertEquals(listOf(1), viewModel.round().tricks.map { it.number })
 
-        viewModel.undo()
+        viewModel.undoRedo.undo()
         assertEquals(listOf(ann, bob), viewModel.round().tricks.map { it.winnerId })
 
-        viewModel.redo()
+        viewModel.undoRedo.redo()
         assertEquals(listOf(1), viewModel.round().tricks.map { it.number })
     }
 
@@ -131,7 +131,7 @@ class PlayViewModelTest {
 
         assertTrue(done)
         assertEquals(RoundPhase.SCORED, assertNotNull(viewModel.state.value).round.round.phase)
-        assertFalse(viewModel.undoState.value.canUndo)
+        assertFalse(viewModel.undoRedo.state.value.canUndo)
         // Both bid 0: Ann took the two tricks (-20), Bob none (+20).
         assertEquals(-20.0, viewModel.round().entry(ann)?.score)
         assertEquals(20.0, viewModel.round().entry(bob)?.score)
