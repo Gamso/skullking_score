@@ -423,10 +423,20 @@ fun KeepScreenOn() {
 /** Undo / redo in the top bar. */
 @Composable
 fun UndoRedoActions(state: UndoState, onUndo: () -> Unit, onRedo: () -> Unit) {
-    IconButton(onClick = onUndo, enabled = state.canUndo) {
+    val undoLabel = stringResource(R.string.undo)
+    val redoLabel = stringResource(R.string.redo)
+    IconButton(
+        onClick = onUndo,
+        enabled = state.canUndo,
+        modifier = Modifier.semantics { contentDescription = undoLabel },
+    ) {
         Text("↶", style = MaterialTheme.typography.titleLarge)
     }
-    IconButton(onClick = onRedo, enabled = state.canRedo) {
+    IconButton(
+        onClick = onRedo,
+        enabled = state.canRedo,
+        modifier = Modifier.semantics { contentDescription = redoLabel },
+    ) {
         Text("↷", style = MaterialTheme.typography.titleLarge)
     }
 }
