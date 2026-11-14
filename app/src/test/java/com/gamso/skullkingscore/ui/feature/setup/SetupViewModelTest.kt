@@ -1,5 +1,6 @@
 package com.gamso.skullkingscore.ui.feature.setup
 
+import androidx.lifecycle.SavedStateHandle
 import com.gamso.skullkingscore.domain.model.Player
 import com.gamso.skullkingscore.fakes.FakeGameRepository
 import com.gamso.skullkingscore.fakes.FakePlayerRepository
@@ -37,7 +38,8 @@ class SetupViewModelTest {
     @Test
     fun aSecondTapOnStartCreatesNoSecondGame() = runTest {
         val games = FakeGameRepository(players).apply { createGameGate = CompletableDeferred() }
-        val viewModel = SetupViewModel(FakePlayerRepository(players), games, FakeSettingsRepository())
+        val viewModel =
+            SetupViewModel(SavedStateHandle(), FakePlayerRepository(players), games, FakeSettingsRepository())
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.state.collect {} }
         players.forEach(viewModel::addPlayer)
         assertTrue(viewModel.state.value.canStart)

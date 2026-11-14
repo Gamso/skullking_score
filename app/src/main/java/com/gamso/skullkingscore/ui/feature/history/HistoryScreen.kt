@@ -89,6 +89,7 @@ import com.gamso.skullkingscore.domain.stats.StatsPeriod
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
+import com.gamso.skullkingscore.ui.components.StringSetSaver
 import com.gamso.skullkingscore.ui.components.formatScore
 import com.gamso.skullkingscore.ui.labelRes
 import com.gamso.skullkingscore.ui.navigation.Routes
@@ -264,8 +265,9 @@ fun HistoryScreen(
     val context = LocalContext.current
     val resources = LocalResources.current
     val snackbar = remember { SnackbarHostState() }
-    var exporting by remember { mutableStateOf(false) }
-    var deleting by remember { mutableStateOf<GameSummary?>(null) }
+    var exporting by rememberSaveable { mutableStateOf(false) }
+    // Id of the game to delete, saveable: the confirmation survives a rotation.
+    var deleting by rememberSaveable { mutableStateOf<Long?>(null) }
     var query by rememberSaveable { mutableStateOf("") }
     var modeFilter by rememberSaveable { mutableStateOf<ScoringMode?>(null) }
 
@@ -359,7 +361,7 @@ fun HistoryScreen(
                     date = dates[summary.game.id].orEmpty(),
                     onOpen = { viewModel.open(summary.game.id, onOpen) },
                     onShare = { onShare(summary.game.id) },
-                    onDelete = { deleting = summary },
+                    onDelete = { deleting = summary.game.id },
                 )
             }
         }
@@ -376,14 +378,14 @@ fun HistoryScreen(
         )
     }
 
-    deleting?.let { summary ->
+    deleting?.let { gameId ->
         AlertDialog(
             onDismissRequest = { deleting = null },
             title = { Text(stringResource(R.string.history_delete_title)) },
             text = { Text(stringResource(R.string.history_delete_message)) },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.delete(summary.game.id)
+                    viewModel.delete(gameId)
                     deleting = null
                 }) { Text(stringResource(R.string.delete)) }
             },
@@ -546,10 +548,10 @@ private fun ExportDialog(
     onDismiss: () -> Unit,
     onExport: (ExportFormat, ExportFilter) -> Unit,
 ) {
-    var format by remember { mutableStateOf(ExportFormat.CSV) }
-    var period by remember { mutableStateOf(StatsPeriod.ALL) }
-    var playerId by remember { mutableStateOf<Long?>(null) }
-    var menuOpen by remember { mutableStateOf(false) }
+    var format by rememberSaveable { mutableStateOf(ExportFormat.CSV) }
+    var period by rememberSaveable { mutableStateOf(StatsPeriod.ALL) }
+    var playerId by rememberSaveable { mutableStateOf<Long?>(null) }
+    var menuOpen by rememberSaveable { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -641,7 +643,9 @@ internal fun periodLabel(period: StatsPeriod): Int = when (period) {
 /** Import preview: the whole file is imported; only players with the same name can be chosen. */
 @Composable
 private fun ImportDialog(preview: ImportPreview, onConfirm: (ImportOptions) -> Unit, onDismiss: () -> Unit) {
-    var merged by remember(preview) { mutableStateOf(preview.nameConflicts.map { it.importedUuid }.toSet()) }
+    var merged by rememberSaveable(preview, stateSaver = StringSetSaver) {
+        mutableStateOf(preview.nameConflicts.map { it.importedUuid }.toSet())
+    }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.import_title)) },

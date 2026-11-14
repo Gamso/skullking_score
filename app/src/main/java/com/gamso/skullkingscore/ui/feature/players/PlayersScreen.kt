@@ -16,7 +16,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,8 +57,9 @@ class PlayersViewModel @Inject constructor(private val players: PlayerRepository
 @Composable
 fun PlayersScreen(onBack: () -> Unit, viewModel: PlayersViewModel = hiltViewModel()) {
     val players by viewModel.state.collectAsStateWithLifecycle()
-    var editing by remember { mutableStateOf<Player?>(null) }
-    var creating by remember { mutableStateOf(false) }
+    // Id of the profile being renamed, saveable: the dialog survives a rotation.
+    var editing by rememberSaveable { mutableStateOf<Long?>(null) }
+    var creating by rememberSaveable { mutableStateOf(false) }
 
     SkullScaffold(
         title = stringResource(R.string.home_players),
@@ -81,7 +82,7 @@ fun PlayersScreen(onBack: () -> Unit, viewModel: PlayersViewModel = hiltViewMode
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { editing = player }
+                        .clickable { editing = player.id }
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -109,7 +110,7 @@ fun PlayersScreen(onBack: () -> Unit, viewModel: PlayersViewModel = hiltViewMode
             onDismiss = { creating = false },
         )
     }
-    editing?.let { player ->
+    players.firstOrNull { it.id == editing }?.let { player ->
         PlayerEditDialog(
             initial = player,
             onConfirm = { name ->

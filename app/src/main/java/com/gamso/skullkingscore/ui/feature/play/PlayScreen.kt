@@ -232,9 +232,9 @@ fun PlayScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val undoState by viewModel.undoState.collectAsStateWithLifecycle()
     val current = state
-    var confirmWarnings by remember { mutableStateOf(false) }
+    var confirmWarnings by rememberSaveable { mutableStateOf(false) }
     // Number of the trick open in the entry dialog (new trick or correction); null = closed.
-    var editing by remember { mutableStateOf<Int?>(null) }
+    var editing by rememberSaveable { mutableStateOf<Int?>(null) }
     val snackbar = remember { SnackbarHostState() }
     // Once the bids are confirmed, the entry of the first trick opens right away.
     var firstTrickOpened by rememberSaveable { mutableStateOf(false) }

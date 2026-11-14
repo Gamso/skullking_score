@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -191,7 +190,7 @@ fun ResultsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val current = state
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
-    var confirmWarnings by remember { mutableStateOf(false) }
+    var confirmWarnings by rememberSaveable { mutableStateOf(false) }
     KeepScreenOn()
 
     SkullScaffold(
@@ -306,7 +305,7 @@ fun ResultsScreen(
 private fun RoundPage(state: ResultsUiState, viewModel: ResultsViewModel) {
     val details = state.round.details
     val game = state.scored.game
-    var editing by remember { mutableStateOf<Int?>(null) }
+    var editing by rememberSaveable { mutableStateOf<Int?>(null) }
     if (state.isEdit) {
         Text(
             stringResource(R.string.results_editing_hint),

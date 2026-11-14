@@ -25,8 +25,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,7 +67,7 @@ data class TrickEvents(
     val chests: List<Pair<Long, Set<SeaMonster>>> = emptyList(),
 )
 
-private sealed interface TrickEventDialog {
+internal sealed interface TrickEventDialog {
     data object Winner : TrickEventDialog
     data object LootWho : TrickEventDialog
     data object ChestWho : TrickEventDialog
@@ -110,20 +111,23 @@ fun TrickDialog(
     header: (@Composable () -> Unit)? = null,
     roundState: (@Composable () -> Unit)? = null,
 ) {
-    var choice by remember {
+    // Saveable: the entry in progress survives a rotation.
+    var choice by rememberSaveable {
         mutableStateOf(if (initial != null && initial.winnerId == null) DESTROYED else initial?.winnerId)
     }
-    var bonus by remember { mutableStateOf(initial?.bonus ?: Bonus.NONE) }
-    var wager by remember { mutableStateOf(initial?.rascalWager ?: 0) }
-    var bidAdjustment by remember { mutableStateOf(initial?.bidAdjustment ?: 0) }
+    var bonus by rememberSaveable(stateSaver = BonusSaver) { mutableStateOf(initial?.bonus ?: Bonus.NONE) }
+    var wager by rememberSaveable { mutableIntStateOf(initial?.rascalWager ?: 0) }
+    var bidAdjustment by rememberSaveable { mutableIntStateOf(initial?.bidAdjustment ?: 0) }
     // "Other" (a numbered card) is the most common case: selected by default.
-    var card by remember { mutableStateOf<WinningCard?>(initial?.winningCard ?: WinningCard.OTHER) }
-    var pirate by remember { mutableStateOf(initial?.winningPirate) }
-    var events by remember { mutableStateOf(TrickEvents()) }
+    var card by rememberSaveable { mutableStateOf<WinningCard?>(initial?.winningCard ?: WinningCard.OTHER) }
+    var pirate by rememberSaveable { mutableStateOf(initial?.winningPirate) }
+    var events by rememberSaveable(stateSaver = TrickEventsSaver) { mutableStateOf(TrickEvents()) }
 
-    var pirateMenu by remember { mutableStateOf(false) }
-    var eventDialog by remember { mutableStateOf<TrickEventDialog?>(null) }
-    var showRoundState by remember { mutableStateOf(false) }
+    var pirateMenu by rememberSaveable { mutableStateOf(false) }
+    var eventDialog by rememberSaveable(stateSaver = TrickEventDialogSaver) {
+        mutableStateOf<TrickEventDialog?>(null)
+    }
+    var showRoundState by rememberSaveable { mutableStateOf(false) }
 
     val destroyed = choice == DESTROYED
     val hasWinner = choice != null && !destroyed
