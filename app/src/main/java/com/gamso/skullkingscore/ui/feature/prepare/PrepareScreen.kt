@@ -1,9 +1,14 @@
 package com.gamso.skullkingscore.ui.feature.prepare
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.Icon
@@ -60,6 +65,8 @@ data class PrepareUiState(
     val exceedsDeck: Boolean get() = needed > deckSize
 }
 
+private const val KEY_CHOSEN_CARDS = "prepare.chosenCards"
+
 @HiltViewModel
 class PrepareViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -68,7 +75,9 @@ class PrepareViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val gameId: Long = checkNotNull(savedStateHandle.get<Long>(Routes.ARG_GAME_ID))
-    private val chosenCards = MutableStateFlow<Int?>(null)
+
+    // In the saved state: the chosen number of cards survives a process death.
+    private val chosenCards = savedStateHandle.getMutableStateFlow<Int?>(KEY_CHOSEN_CARDS, null)
 
     /**
      * Set by the first tap on "Start" and kept after success: the screen is being left and this ViewModel is
@@ -158,42 +167,46 @@ fun PrepareScreen(
         },
     ) { padding ->
         if (current == null) return@SkullScaffold
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            DealerLine(
-                game = current.details.game,
-                roundNumber = current.roundNumber,
-                onChoose = viewModel::setDealer,
-                prominent = true,
-            )
-            Text(
-                stringResource(R.string.prepare_cards_question),
-                style = MaterialTheme.typography.titleLarge,
-            )
-            Text(
-                current.cards.toString(),
-                style = MaterialTheme.typography.displayLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Stepper(
-                value = current.cards,
-                onValueChange = viewModel::setCards,
-                range = 1..current.maxCards,
-            )
-            Text(
-                stringResource(R.string.prepare_cards_hint),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            if (current.exceedsDeck) {
-                WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+        // Scrolls when the content does not fit (landscape, large font), centred vertically when it does.
+        BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .heightIn(min = maxHeight)
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                DealerLine(
+                    game = current.details.game,
+                    roundNumber = current.roundNumber,
+                    onChoose = viewModel::setDealer,
+                    prominent = true,
+                )
+                Text(
+                    stringResource(R.string.prepare_cards_question),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    current.cards.toString(),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Stepper(
+                    value = current.cards,
+                    onValueChange = viewModel::setCards,
+                    range = 1..current.maxCards,
+                )
+                Text(
+                    stringResource(R.string.prepare_cards_hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (current.exceedsDeck) {
+                    WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+                }
             }
         }
     }

@@ -64,6 +64,12 @@ android {
         compose = true
     }
 
+    // Generates the locale config from the values-* folders (and res/resources.properties for the default one),
+    // so Android 13+ offers the app language in the system settings.
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     // Lint's Kotlin analysis crashes on the instrumented test sources (Kotlin 2.4): only production code is checked.
     lint {
         ignoreTestSources = true

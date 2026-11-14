@@ -22,7 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +42,7 @@ import com.gamso.skullkingscore.domain.model.RoundDetails
 import com.gamso.skullkingscore.ui.emoji
 import com.gamso.skullkingscore.ui.labelRes
 
-private sealed interface EventDialog {
+internal sealed interface EventDialog {
     data object LootWho : EventDialog
     data class LootWinner(val lootPlayerId: Long) : EventDialog
     data object ChestWho : EventDialog
@@ -90,7 +90,7 @@ fun LiveEventsPanel(
     /** When set, only the log scrolls, within this height. */
     logMaxHeight: Dp? = null,
 ) {
-    var dialog by remember { mutableStateOf<EventDialog?>(null) }
+    var dialog by rememberSaveable(stateSaver = EventDialogSaver) { mutableStateOf<EventDialog?>(null) }
     val hasChest = ExpansionCard.DAVY_JONES_CHEST in game.expansionCards
     val names = game.players.associate { it.id to it.name }
 
@@ -243,7 +243,7 @@ internal fun CreaturePickerDialog(
     onConfirm: (Set<SeaMonster>) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var selected by remember { mutableStateOf(emptySet<SeaMonster>()) }
+    var selected by rememberSaveable(stateSaver = SeaMonsterSetSaver) { mutableStateOf(emptySet<SeaMonster>()) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.chest_which_creatures)) },

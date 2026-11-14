@@ -314,6 +314,8 @@
     <string name="undo_trick_deleted">pli %1$s supprimé</string>
     <string name="undone_prefix">Annulé : %1$s</string>
     <string name="redone_prefix">Rétabli : %1$s</string>
+    <string name="undo">Annuler</string>
+    <string name="redo">Rétablir</string>
     <string name="dealer_label">Donneur : %1$s</string>
     <string name="setup_draw_dealer">Tirer le donneur</string>
     <string name="setup_dealer_badge">Donneur</string>

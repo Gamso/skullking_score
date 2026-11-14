@@ -314,6 +314,8 @@
     <string name="undo_trick_deleted">presa %1$s eliminata</string>
     <string name="undone_prefix">Annullato: %1$s</string>
     <string name="redone_prefix">Ripristinato: %1$s</string>
+    <string name="undo">Annulla</string>
+    <string name="redo">Ripristina</string>
     <string name="dealer_label">Mazziere: %1$s</string>
     <string name="setup_draw_dealer">Sorteggia il mazziere</string>
     <string name="setup_dealer_badge">Mazziere</string>
