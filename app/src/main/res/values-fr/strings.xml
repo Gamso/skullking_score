@@ -167,6 +167,7 @@
     <string name="results_final_bid">Annonce</string>
     <string name="results_bonus_title">Cartes gagnées</string>
     <string name="results_bonus_ignored">Annonce ratée : les bonus saisis ne comptent pas.</string>
+    <string name="results_bonus_count">%1$s : %2$d (%3$s)</string>
     <string name="results_cannonball">Boulet de canon</string>
     <string name="results_cannonball_hint">Tout ou rien : 15 × cartes si l’annonce est exacte, sinon 0</string>
     <string name="results_rascal_wager">Pari de Rascal le Flambeur</string>
@@ -213,6 +214,7 @@
     <!-- End of game -->
     <string name="end_title">Fin de partie</string>
     <string name="end_winner">Victoire de %1$s !</string>
+    <string name="end_winners_separator">" et "</string>
     <string name="end_see_scoreboard">Voir le tableau des scores</string>
 
     <!-- Historique, export, import -->
@@ -322,6 +324,7 @@
     <string name="share_save">Enregistrer dans la galerie</string>
     <string name="share_saved">Image enregistrée dans Pictures/SkullKing.</string>
     <string name="share_save_failed">Impossible d’enregistrer l’image.</string>
+    <string name="share_file_failed">Impossible de préparer le fichier à partager.</string>
     <string name="share_preview">Aperçu de l’image à partager</string>
     <string name="share_nothing">Choisissez ce que l’image doit contenir.</string>
     <string name="share_podium">Podium</string>

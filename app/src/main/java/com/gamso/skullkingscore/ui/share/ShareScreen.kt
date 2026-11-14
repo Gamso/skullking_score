@@ -50,6 +50,7 @@ import com.gamso.skullkingscore.ui.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.text.DateFormat
 import java.util.Date
 import javax.inject.Inject
@@ -106,8 +107,15 @@ class ShareViewModel @Inject constructor(
     fun send() {
         val bitmap = image.value ?: return
         viewModelScope.launch {
-            val uri = files.writeShareableBytes(fileName(), bitmap.toPng())
-            _events.send(ShareEvent.Send(uri))
+            val event = try {
+                ShareEvent.Send(files.writeShareableBytes(fileName(), bitmap.toPng()))
+            } catch (ignored: IOException) {
+                ShareEvent.SendFailed
+            } catch (ignored: IllegalArgumentException) {
+                // Thrown by FileProvider when the file is outside the configured paths.
+                ShareEvent.SendFailed
+            }
+            _events.send(event)
         }
     }
 
@@ -141,6 +149,7 @@ class ShareViewModel @Inject constructor(
             roundHeader = context.getString(R.string.share_round),
             totalLabel = context.getString(R.string.table_total),
             statsLines = statsLines(scored),
+            cardsShort = { cards -> context.getString(R.string.table_cards_short, cards) },
         )
     }
 
@@ -171,6 +180,7 @@ sealed interface ShareEvent {
     data class Send(val uri: android.net.Uri) : ShareEvent
     data object Saved : ShareEvent
     data object SaveFailed : ShareEvent
+    data object SendFailed : ShareEvent
 }
 
 @Composable
@@ -196,6 +206,8 @@ fun ShareScreen(onBack: () -> Unit, viewModel: ShareViewModel = hiltViewModel())
                 ShareEvent.Saved -> snackbar.showSnackbar(resources.getString(R.string.share_saved))
 
                 ShareEvent.SaveFailed -> snackbar.showSnackbar(resources.getString(R.string.share_save_failed))
+
+                ShareEvent.SendFailed -> snackbar.showSnackbar(resources.getString(R.string.share_file_failed))
             }
         }
     }
