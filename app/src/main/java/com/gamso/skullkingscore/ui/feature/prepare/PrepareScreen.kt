@@ -1,8 +1,11 @@
 package com.gamso.skullkingscore.ui.feature.prepare
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -160,43 +163,46 @@ fun PrepareScreen(
         },
     ) { padding ->
         if (current == null) return@SkullScaffold
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            DealerLine(
-                game = current.details.game,
-                roundNumber = current.roundNumber,
-                onChoose = viewModel::setDealer,
-                prominent = true,
-            )
-            Text(
-                stringResource(R.string.prepare_cards_question),
-                style = MaterialTheme.typography.titleLarge,
-            )
-            Text(
-                current.cards.toString(),
-                style = MaterialTheme.typography.displayLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Stepper(
-                value = current.cards,
-                onValueChange = viewModel::setCards,
-                range = 1..current.maxCards,
-            )
-            Text(
-                stringResource(R.string.prepare_cards_hint),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            if (current.exceedsDeck) {
-                WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+        // Scrolls when the content does not fit (landscape, large font), centred vertically when it does.
+        BoxWithConstraints(Modifier.fillMaxSize().padding(padding)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .heightIn(min = maxHeight)
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                DealerLine(
+                    game = current.details.game,
+                    roundNumber = current.roundNumber,
+                    onChoose = viewModel::setDealer,
+                    prominent = true,
+                )
+                Text(
+                    stringResource(R.string.prepare_cards_question),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    current.cards.toString(),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Stepper(
+                    value = current.cards,
+                    onValueChange = viewModel::setCards,
+                    range = 1..current.maxCards,
+                )
+                Text(
+                    stringResource(R.string.prepare_cards_hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (current.exceedsDeck) {
+                    WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+                }
             }
         }
     }
