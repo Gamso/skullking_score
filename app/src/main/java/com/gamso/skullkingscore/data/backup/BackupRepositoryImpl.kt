@@ -1,5 +1,6 @@
 package com.gamso.skullkingscore.data.backup
 
+import android.database.SQLException
 import androidx.room3.withWriteTransaction
 import com.gamso.skullkingscore.core.ExpansionCard
 import com.gamso.skullkingscore.core.Pirate
@@ -30,6 +31,7 @@ import com.gamso.skullkingscore.domain.repository.ImportPreview
 import com.gamso.skullkingscore.domain.repository.ImportResult
 import com.gamso.skullkingscore.domain.repository.InvalidBackupException
 import com.gamso.skullkingscore.domain.repository.NameConflict
+import com.gamso.skullkingscore.domain.usecase.RecalculateScoresUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,24 +40,37 @@ class BackupRepositoryImpl @Inject constructor(
     private val database: SkullKingDatabase,
     private val gameDao: GameDao,
     private val playerDao: PlayerDao,
+    private val recalculateScores: RecalculateScoresUseCase,
 ) : BackupRepository {
 
     override suspend fun exportJson(games: List<GameDetails>): String = BackupCodec.encode(games)
 
+    /** Games of the file not yet on the device, the only ones imported. */
+    private suspend fun newGames(dto: BackupDto): List<GameDto> {
+        val knownGames = gameDao.getAllGames().map { it.uuid }.toSet()
+        return dto.games.filter { it.uuid !in knownGames }
+    }
+
+    /** Players seated in [games]: only they are resolved, so no profile is created without a game. */
+    private fun playersOf(dto: BackupDto, games: List<GameDto>): List<PlayerDto> {
+        val needed = games.flatMap { it.playerUuids }.toSet()
+        return dto.players.filter { it.uuid in needed }
+    }
+
     override suspend fun previewImport(json: String): ImportPreview {
         val dto = BackupCodec.decode(json)
-        val knownGames = gameDao.getAllGames().map { it.uuid }.toSet()
-        val knownPlayers = playerDao.getAll().map { it.uuid }.toSet()
-        val newGames = dto.games.count { it.uuid !in knownGames }
-        val namesByUuid = dto.players.associate { it.uuid to it.name }
-        val existingNames = playerDao.getAll().map { it.name.lowercase() }.toSet()
+        val newGames = newGames(dto)
+        val local = playerDao.getAll()
+        val knownPlayers = local.map { it.uuid }.toSet()
+        val existingNames = local.map { it.name.lowercase() }.toSet()
+        val unknown = playersOf(dto, newGames).filter { it.uuid !in knownPlayers }
         return ImportPreview(
             formatVersion = dto.formatVersion,
-            newGames = newGames,
-            alreadyPresentGames = dto.games.size - newGames,
-            newPlayers = dto.players.count { it.uuid !in knownPlayers },
-            nameConflicts = dto.players
-                .filter { it.uuid !in knownPlayers && it.name.lowercase() in existingNames }
+            newGames = newGames.size,
+            alreadyPresentGames = dto.games.size - newGames.size,
+            newPlayers = unknown.size,
+            nameConflicts = unknown
+                .filter { it.name.lowercase() in existingNames }
                 .map { NameConflict(it.uuid, it.name) },
         )
     }
@@ -101,25 +116,19 @@ class BackupRepositoryImpl @Inject constructor(
 
     override suspend fun importJson(json: String, options: ImportOptions): ImportResult {
         val dto = BackupCodec.decode(json)
-        val chosen = dto.games
-        // Only players who played a game in the file are created: no orphan profiles.
-        val neededPlayers = chosen.flatMap { it.playerUuids }.toSet()
-        try {
-            return database.withWriteTransaction {
-                val resolved = resolvePlayers(dto.players.filter { it.uuid in neededPlayers }, options)
+        val importedGameIds = mutableListOf<Long>()
+        val result: ImportResult = try {
+            database.withWriteTransaction {
+                // Games already on the device are skipped, and only the players of the others are resolved:
+                // no orphan profiles.
+                val chosen = newGames(dto)
+                val resolved = resolvePlayers(playersOf(dto, chosen), options)
                 val playerIds = resolved.ids
-                val createdPlayers = resolved.created
-                val mergedPlayers = resolved.merged
                 fun playerId(uuid: String): Long =
                     playerIds[uuid] ?: throw InvalidBackupException("Unknown player in the backup: $uuid")
 
-                var imported = 0
-                var skipped = 0
                 for (g in chosen) {
-                    if (gameDao.findGameByUuid(g.uuid) != null) {
-                        skipped++
-                        continue
-                    }
+                    checkDistinctProfiles(g, ::playerId)
                     val gameId = gameDao.insertGame(
                         GameEntity(
                             uuid = g.uuid,
@@ -222,18 +231,36 @@ class BackupRepositoryImpl @Inject constructor(
                             )
                         }
                     }
-                    imported++
+                    importedGameIds += gameId
                 }
                 ImportResult(
-                    importedGames = imported,
-                    skippedGames = skipped,
-                    createdPlayers = createdPlayers,
-                    mergedPlayers = mergedPlayers,
+                    importedGames = chosen.size,
+                    skippedGames = dto.games.size - chosen.size,
+                    createdPlayers = resolved.created,
+                    mergedPlayers = resolved.merged,
                 )
             }
         } catch (e: IllegalArgumentException) {
             // Unknown enum name: the transaction is rolled back, nothing was imported.
             throw InvalidBackupException("Invalid backup: ${e.message}", e)
+        } catch (e: SQLException) {
+            // Constraint not caught by the checks above: rolled back as well.
+            throw InvalidBackupException("Invalid backup: ${e.message}", e)
+        }
+        // The cached scores of the file are not trusted: recomputed with the rules of this version.
+        importedGameIds.forEach { recalculateScores(it) }
+        return result
+    }
+
+    /**
+     * Two players of the file merged into the same profile cannot sit at the same table, nor have two entries in
+     * the same round: the database would refuse the game.
+     */
+    private fun checkDistinctProfiles(game: GameDto, playerId: (String) -> Long) {
+        val seats = game.playerUuids.map(playerId)
+        val entries = game.rounds.map { r -> r.entries.map { playerId(it.playerUuid) } }
+        if (seats.toSet().size != seats.size || entries.any { it.toSet().size != it.size }) {
+            throw InvalidBackupException("Two players of game ${game.uuid} are the same profile")
         }
     }
 }

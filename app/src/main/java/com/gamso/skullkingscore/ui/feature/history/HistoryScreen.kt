@@ -65,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -123,7 +124,19 @@ class HistoryViewModel @Inject constructor(
     players: PlayerRepository,
     private val backup: BackupRepository,
     private val files: FileGateway,
+    private val savedState: SavedStateHandle,
 ) : ViewModel() {
+
+    /**
+     * `true` once per navigation request from Settings: the route argument stays in the back stack entry, so a flag
+     * kept with it (rotation and process death included) prevents the picker from opening again on each return.
+     */
+    fun consumeStartImport(): Boolean {
+        val requested = savedState.get<Boolean>(Routes.ARG_IMPORT) == true
+        if (!requested || savedState.get<Boolean>(KEY_IMPORT_CONSUMED) == true) return false
+        savedState[KEY_IMPORT_CONSUMED] = true
+        return true
+    }
 
     val summaries: StateFlow<List<GameSummary>> =
         games.observeSummaries().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
@@ -232,6 +245,10 @@ class HistoryViewModel @Inject constructor(
     fun dismissImport() {
         _pendingImport.value = null
     }
+
+    private companion object {
+        const val KEY_IMPORT_CONSUMED = "importConsumed"
+    }
 }
 
 @Composable
@@ -239,7 +256,6 @@ fun HistoryScreen(
     onBack: () -> Unit,
     onOpen: (route: String) -> Unit,
     onShare: (gameId: Long) -> Unit,
-    startImport: Boolean = false,
     viewModel: HistoryViewModel = hiltViewModel(),
 ) {
     val summaries by viewModel.summaries.collectAsStateWithLifecycle()
@@ -257,8 +273,9 @@ fun HistoryScreen(
         if (uri != null) viewModel.loadImport(uri)
     }
 
-    LaunchedEffect(startImport) {
-        if (startImport) importLauncher.launch(arrayOf("*/*"))
+    // Picker requested from Settings (restore): opened once, not on each return to this screen.
+    LaunchedEffect(Unit) {
+        if (viewModel.consumeStartImport()) importLauncher.launch(arrayOf("*/*"))
     }
 
     LaunchedEffect(Unit) {
