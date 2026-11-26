@@ -90,12 +90,10 @@
     <!-- Round -->
     <string name="round_title_plain">Ronda %1$d</string>
     <string name="round_title_extra">Ronda %1$d (extra)</string>
-    <string name="prepare_cards_question">Cartas repartidas</string>
-    <string name="prepare_cards_hint">Sugerencia: ronda anterior + 1. Cámbialo con un toque.</string>
-    <string name="prepare_start_bids">Empezar los envites</string>
 
     <string name="bids_validate">Confirmar los envites</string>
     <string name="bids_total">Total de envites: %1$d (cartas repartidas: %2$d)</string>
+    <string name="bids_cards">Cartas repartidas</string>
 
     <string name="play_bids_reminder">Envites</string>
     <string name="play_bid_chip">Envite %1$d</string>

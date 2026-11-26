@@ -105,4 +105,28 @@ class EditRoundUseCaseTest {
         assertEquals(RoundPhase.SCORED, round.phase)
         assertEquals(1, round.discardedTricks)
     }
+
+    @Test
+    fun `the number of cards of a round can be changed during the bids`() {
+        oneWrite { edit.stepCardsDealt(gameId, roundId, 3) }
+
+        assertEquals(5, round().round.cardsDealt)
+    }
+
+    @Test
+    fun `fewer cards bring the bids above them back down`() {
+        runBlocking { repo.updateEntry(roundId, ann) { it.copy(bid = 2) } }
+
+        oneWrite { edit.stepCardsDealt(gameId, roundId, -1) }
+
+        assertEquals(1, round().round.cardsDealt)
+        assertEquals(1, round().entry(ann)?.bid)
+    }
+
+    @Test
+    fun `a round keeps at least one card`() {
+        oneWrite { edit.stepCardsDealt(gameId, roundId, -5) }
+
+        assertEquals(1, round().round.cardsDealt)
+    }
 }

@@ -78,7 +78,6 @@ class GameFlowTest {
         createPlayer(ANA)
         createPlayer(BEA)
         click(R.string.setup_start)
-        click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
 
         // Trick 1 opens by itself: Ana wins with a colored card; the one-card round is then complete.
@@ -101,7 +100,6 @@ class GameFlowTest {
         createPlayer(ANA)
         createPlayer(BEA)
         click(R.string.setup_start)
-        click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
         chooseWinner(ANA)
         rule.onAllNodesWithText(text(R.string.win_other)).onLast().performClick()
@@ -126,7 +124,6 @@ class GameFlowTest {
         repeat(cards - 1) {
             rule.onAllNodesWithContentDescription(text(R.string.stepper_increase)).onFirst().performClick()
         }
-        click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
     }
 
@@ -194,10 +191,9 @@ class GameFlowTest {
         createPlayer(BEA)
         click(R.string.setup_start)
         // Change a bid and undo it, then redo it: each change is written to the database first.
-        click(R.string.prepare_start_bids)
         expect(hasText(text(R.string.bids_total, 0, 1)))
-        // Each bid is set with - / +: raise the first player's bid.
-        rule.onAllNodesWithContentDescription(text(R.string.stepper_increase)).onFirst().performClick()
+        // Each bid is set with - / +: raise the first player's bid (the first stepper sets the cards).
+        rule.onAllNodesWithContentDescription(text(R.string.stepper_increase))[1].performClick()
         expect(hasText(text(R.string.bids_total, 1, 1)))
         rule.onNodeWithText("↶").performClick()
         expect(hasText(text(R.string.bids_total, 0, 1)))
