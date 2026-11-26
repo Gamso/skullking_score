@@ -12,6 +12,7 @@ import com.gamso.skullkingscore.domain.model.TrickDraft
 import com.gamso.skullkingscore.domain.repository.EntryChange
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.ScoreUpdate
+import com.gamso.skullkingscore.domain.repository.setDealer
 import com.gamso.skullkingscore.domain.scoring.GameScoreCalculator
 import com.gamso.skullkingscore.domain.scoring.TrickAggregator
 import javax.inject.Inject
@@ -91,6 +92,24 @@ class EditRoundUseCase @Inject constructor(
 
     suspend fun updateRound(gameId: Long, roundId: Long, transform: (Round) -> Round) =
         write(gameId) { games.updateRound(roundId, transform) }
+
+    /**
+     * Adds [step] to the number of cards of a round, during the bids, when it was wrong or the players change
+     * their mind. Kept between 1 and the maximum. A bid now above the number of cards is brought back to it.
+     * The step is applied to the stored value: a second tap made before the screen is refreshed still counts.
+     */
+    suspend fun stepCardsDealt(gameId: Long, roundId: Long, step: Int) = write(gameId) {
+        games.updateRound(roundId) {
+            it.copy(cardsDealt = (it.cardsDealt + step).coerceIn(1, DeckRules.MAX_CARDS_PER_ROUND))
+        }
+        val round = games.getGame(gameId)?.rounds?.firstOrNull { it.round.id == roundId } ?: return@write
+        val cards = round.round.cardsDealt
+        round.entries.filter { it.bid > cards || (it.finalBid ?: 0) > cards }.forEach { entry ->
+            games.updateEntry(roundId, entry.playerId) {
+                it.copy(bid = it.bid.coerceAtMost(cards), finalBid = it.finalBid?.coerceAtMost(cards))
+            }
+        }
+    }
 
     suspend fun setPhase(gameId: Long, roundId: Long, phase: RoundPhase) =
         updateRound(gameId, roundId) { it.copy(phase = phase) }
@@ -213,6 +232,29 @@ class ChangeModeUseCase @Inject constructor(
     suspend operator fun invoke(gameId: Long, mode: ScoringMode) = games.inTransaction {
         games.setMode(gameId, mode)
         recalculate(gameId)
+    }
+}
+
+/** Changes the order of the players of a game in progress, when it was wrong at the start. */
+class ReorderPlayersUseCase @Inject constructor(private val games: GameRepository) {
+    /**
+     * Seats the players in the order of [playerIds]. The dealer of the round in progress (or of the next round)
+     * stays the same player, so the game goes on from where it is: the new order applies to the rotation that
+     * follows. Nothing changes if [playerIds] are not exactly the players of the game. One transaction.
+     */
+    suspend operator fun invoke(gameId: Long, playerIds: List<Long>) = games.inTransaction {
+        val details = games.getGame(gameId) ?: return@inTransaction
+        if (playerIds.size != details.game.players.size ||
+            playerIds.toSet() != details.game.players.map { it.id }.toSet()
+        ) {
+            return@inTransaction
+        }
+        val last = details.rounds.lastOrNull()?.round
+        val current = if (last != null && last.phase != RoundPhase.SCORED) last.number else details.rounds.size + 1
+        val dealer = details.game.dealerFor(current)
+        games.reorderPlayers(gameId, playerIds)
+        val reordered = games.getGame(gameId)?.game
+        if (dealer != null && reordered != null) games.setDealer(reordered, current, dealer)
     }
 }
 

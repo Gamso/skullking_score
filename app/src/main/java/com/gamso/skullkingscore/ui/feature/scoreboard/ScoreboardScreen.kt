@@ -153,6 +153,7 @@ fun ScoreboardScreen(
     val selected = scored?.cell(selectedIds)
     var confirmFinish by rememberSaveable { mutableStateOf(false) }
     var changeMode by rememberSaveable { mutableStateOf(false) }
+    var editOrder by rememberSaveable { mutableStateOf(false) }
     // Ranking first: it is what the players look for between two rounds.
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val sidePanel = rememberWidthClass() == WidthClass.EXPANDED
@@ -179,6 +180,7 @@ fun ScoreboardScreen(
                     canReopen = lastRound?.isScored == true,
                     onReopen = { viewModel.reopenLastRound(onEditRound) },
                     onChangeMode = { changeMode = true },
+                    onEditOrder = { editOrder = true },
                     onFinish = { confirmFinish = true },
                 )
             }
@@ -264,6 +266,10 @@ fun ScoreboardScreen(
         ChangeModeDialog(current = game.mode, onDismiss = { changeMode = false })
     }
 
+    if (editOrder && game != null && inProgress) {
+        PlayerOrderDialog(players = game.players, onDismiss = { editOrder = false })
+    }
+
     if (confirmFinish) {
         AlertDialog(
             onDismissRequest = { confirmFinish = false },
@@ -284,7 +290,7 @@ fun ScoreboardScreen(
 
 /** The menu of a game in progress: corrections of the game, and its end. */
 @Composable
-private fun GameMenu(canReopen: Boolean, onReopen: () -> Unit, onChangeMode: () -> Unit, onFinish: () -> Unit) {
+private fun GameMenu(canReopen: Boolean, onReopen: () -> Unit, onChangeMode: () -> Unit, onEditOrder: () -> Unit, onFinish: () -> Unit) {
     var menuOpen by rememberSaveable { mutableStateOf(false) }
     IconButton(onClick = { menuOpen = true }) {
         Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more))
@@ -304,6 +310,13 @@ private fun GameMenu(canReopen: Boolean, onReopen: () -> Unit, onChangeMode: () 
             onClick = {
                 menuOpen = false
                 onChangeMode()
+            },
+        )
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.scoreboard_edit_order)) },
+            onClick = {
+                menuOpen = false
+                onEditOrder()
             },
         )
         DropdownMenuItem(

@@ -90,12 +90,10 @@
     <!-- Round -->
     <string name="round_title_plain">Manche %1$d</string>
     <string name="round_title_extra">Manche %1$d (supplémentaire)</string>
-    <string name="prepare_cards_question">Nombre de cartes distribuées</string>
-    <string name="prepare_cards_hint">Proposé : manche précédente + 1. Modifiable d’un toucher.</string>
-    <string name="prepare_start_bids">Commencer les annonces</string>
 
     <string name="bids_validate">Valider les annonces</string>
     <string name="bids_total">Total annoncé : %1$d (cartes distribuées : %2$d)</string>
+    <string name="bids_cards">Cartes distribuées</string>
 
     <string name="play_bids_reminder">Annonces</string>
     <string name="play_bid_chip">Annonce %1$d</string>
@@ -111,6 +109,7 @@
     <string name="trick_dialog_edit">Corriger le pli %1$d</string>
     <string name="trick_who_won">Qui a gagné le pli ?</string>
     <string name="trick_destroyed">Pli détruit (Kraken, ou Baleine / Raie sans carte numérotée)</string>
+    <string name="trick_loot_winner_warning">%1$s a joué un Butin et gagne le pli. Cela n’arrive que si le Butin ouvre le pli et que seules des fuites suivent, sans alliance. Vérifiez la saisie.</string>
     <string name="trick_destroyed_short">détruit</string>
     <string name="trick_captured">Cartes gagnées</string>
     <string name="trick_rascal_wager">Pari de Rascal</string>
@@ -203,7 +202,13 @@
     <string name="mode_change_title">Mode de calcul</string>
     <string name="mode_change_message">Les scores des manches déjà jouées sont recalculés avec le nouveau mode.</string>
     <string name="mode_change_confirm">Changer</string>
+    <string name="finish_round_not_counted">La manche en cours n’est pas comptée.</string>
     <string name="scoreboard_reopen_last">Rouvrir la dernière manche</string>
+    <string name="scoreboard_edit_order">Modifier l’ordre des joueurs</string>
+    <string name="order_title">Ordre des joueurs</string>
+    <string name="order_message">Ordre autour de la table. Le donneur de la manche en cours reste le même, le nouvel ordre s’applique à partir de lui.</string>
+    <string name="order_up">Monter %1$s</string>
+    <string name="order_down">Descendre %1$s</string>
     <string name="scoreboard_see_podium">Voir le podium</string>
     <string name="detail_title">%1$s · manche %2$d</string>
     <string name="detail_bid_tricks">Annonce %1$d (finale %2$d) · plis %3$d</string>

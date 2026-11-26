@@ -90,12 +90,10 @@
     <!-- Round -->
     <string name="round_title_plain">Runde %1$d</string>
     <string name="round_title_extra">Runde %1$d (extra)</string>
-    <string name="prepare_cards_question">Ausgeteilte Karten</string>
-    <string name="prepare_cards_hint">Vorschlag: vorherige Runde + 1. Mit einem Tipp änderbar.</string>
-    <string name="prepare_start_bids">Ansagen beginnen</string>
 
     <string name="bids_validate">Ansagen bestätigen</string>
     <string name="bids_total">Summe der Ansagen: %1$d (ausgeteilte Karten: %2$d)</string>
+    <string name="bids_cards">Ausgeteilte Karten</string>
 
     <string name="play_bids_reminder">Ansagen</string>
     <string name="play_bid_chip">Ansage %1$d</string>
@@ -111,6 +109,7 @@
     <string name="trick_dialog_edit">Stich %1$d korrigieren</string>
     <string name="trick_who_won">Wer hat den Stich gewonnen?</string>
     <string name="trick_destroyed">Zerstörter Stich (Kraken, oder Weißer Wal / Gefleckter Rochen ohne Zahlenkarte)</string>
+    <string name="trick_loot_winner_warning">%1$s hat eine Beute gespielt und gewinnt den Stich. Das passiert nur, wenn die Beute den Stich eröffnet und nur Fluchtkarten folgen, ohne Bündnis. Prüfe die Eingabe.</string>
     <string name="trick_destroyed_short">zerstört</string>
     <string name="trick_captured">Gewonnene Karten</string>
     <string name="trick_rascal_wager">Rascals Einsatz</string>
@@ -203,7 +202,13 @@
     <string name="mode_change_title">Wertungsmodus</string>
     <string name="mode_change_message">Die Punkte der bereits gespielten Runden werden mit dem neuen Modus neu berechnet.</string>
     <string name="mode_change_confirm">Ändern</string>
+    <string name="finish_round_not_counted">Die laufende Runde wird nicht gezählt.</string>
     <string name="scoreboard_reopen_last">Letzte Runde wieder öffnen</string>
+    <string name="scoreboard_edit_order">Spielerreihenfolge ändern</string>
+    <string name="order_title">Spielerreihenfolge</string>
+    <string name="order_message">Reihenfolge am Tisch. Der Geber der laufenden Runde bleibt gleich, die neue Reihenfolge gilt ab ihm.</string>
+    <string name="order_up">%1$s nach oben</string>
+    <string name="order_down">%1$s nach unten</string>
     <string name="scoreboard_see_podium">Siegerpodest ansehen</string>
     <string name="detail_title">%1$s · Runde %2$d</string>
     <string name="detail_bid_tricks">Ansage %1$d (final %2$d) · Stiche %3$d</string>

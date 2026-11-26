@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -67,6 +68,13 @@ data class TrickEvents(
     val chests: List<Pair<Long, Set<SeaMonster>>> = emptyList(),
 )
 
+/**
+ * True when the winner of the trick also played a Loot in it. It only happens when the trick starts with that Loot
+ * and only escapes follow, and then no alliance is formed: it is most often a typing mistake.
+ */
+internal fun lootWinsTrick(winnerId: Long?, lootPlayerIds: Collection<Long>): Boolean =
+    winnerId != null && winnerId in lootPlayerIds
+
 internal sealed interface TrickEventDialog {
     data object Winner : TrickEventDialog
     data object LootWho : TrickEventDialog
@@ -89,6 +97,7 @@ internal sealed interface TrickEventDialog {
  * @param eventPlayerIds players who already played a Loot or a Locker in this trick: one card per player
  * @param chestPlayerIds players who already played a Locker in this trick: a Locker never wins the trick
  * @param roundState content of the round state dialog, opened from the top bar
+ * @param onScoreboard opens the scoreboard (ranking of the players), as from the round screens
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "CyclomaticComplexMethod")
@@ -108,6 +117,7 @@ fun TrickDialog(
     chestPlayerIds: Set<Long> = emptySet(),
     onPrevious: (() -> Unit)? = null,
     roundState: (@Composable () -> Unit)? = null,
+    onScoreboard: (() -> Unit)? = null,
 ) {
     // Saveable: the entry in progress survives a rotation.
     var choice by rememberSaveable {
@@ -142,6 +152,9 @@ fun TrickDialog(
     // One card per player in a trick: whoever played a Loot or a Locker plays nothing else, and the Locker never wins.
     val busy = eventPlayerIds + events.lootPlayerIds + events.chests.map { it.first }
     val chestPlayers = chestPlayerIds + events.chests.map { it.first }
+    // Players who played a Loot in this trick, already recorded or being entered.
+    val lootPlayers = (eventPlayerIds - chestPlayerIds) + events.lootPlayerIds
+    val lootWinner = players.firstOrNull { it.id == choice && lootWinsTrick(choice, lootPlayers) }
 
     val confirm = {
         onConfirm(
@@ -180,10 +193,13 @@ fun TrickDialog(
             actions = {
                 if (roundState != null) {
                     IconButton(onClick = { showRoundState = true }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.List,
-                            contentDescription = stringResource(R.string.trick_round_state),
-                        )
+                        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.trick_round_state))
+                    }
+                }
+                // The same button as on the round screens: the scoreboard opens on the ranking.
+                if (onScoreboard != null) {
+                    IconButton(onClick = onScoreboard) {
+                        Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
                     }
                 }
             },
@@ -279,6 +295,9 @@ fun TrickDialog(
                             events = events.copy(chests = events.chests.filterIndexed { i, _ -> i != index })
                         }
                     }
+
+                    // Possible (a Loot led and only escapes followed), but most often a typing mistake.
+                    lootWinner?.let { WarningCard(stringResource(R.string.trick_loot_winner_warning, it.name)) }
 
                     SubTitle(R.string.trick_won_with)
                     FlowRow(horizontalArrangement = CHIP_SPACING, verticalArrangement = CHIP_SPACING) {
