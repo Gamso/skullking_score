@@ -198,6 +198,10 @@
     <string name="scoreboard_finish">Terminer la partie</string>
     <string name="scoreboard_finish_title">Terminer la partie ?</string>
     <string name="scoreboard_finish_message">Le podium s’affiche et les statistiques sont mises à jour. Les manches ne seront plus modifiables.</string>
+    <string name="scoreboard_change_mode">Changer le mode de calcul</string>
+    <string name="mode_change_title">Mode de calcul</string>
+    <string name="mode_change_message">Les scores des manches déjà jouées sont recalculés avec le nouveau mode.</string>
+    <string name="mode_change_confirm">Changer</string>
     <string name="finish_round_not_counted">La manche en cours n’est pas comptée.</string>
     <string name="scoreboard_reopen_last">Rouvrir la dernière manche</string>
     <string name="scoreboard_edit_order">Modifier l’ordre des joueurs</string>

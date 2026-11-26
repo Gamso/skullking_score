@@ -198,6 +198,10 @@
     <string name="scoreboard_finish">Encerrar a partida</string>
     <string name="scoreboard_finish_title">Encerrar a partida?</string>
     <string name="scoreboard_finish_message">O pódio é exibido e as estatísticas são atualizadas. As rodadas não poderão mais ser editadas.</string>
+    <string name="scoreboard_change_mode">Mudar o modo de pontuação</string>
+    <string name="mode_change_title">Modo de pontuação</string>
+    <string name="mode_change_message">Os pontos das rodadas já jogadas são recalculados com o novo modo.</string>
+    <string name="mode_change_confirm">Mudar</string>
     <string name="finish_round_not_counted">A rodada em andamento não é contada.</string>
     <string name="scoreboard_reopen_last">Reabrir a última rodada</string>
     <string name="scoreboard_edit_order">Editar a ordem dos jogadores</string>

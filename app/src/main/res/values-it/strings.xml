@@ -198,6 +198,10 @@
     <string name="scoreboard_finish">Termina la partita</string>
     <string name="scoreboard_finish_title">Terminare la partita?</string>
     <string name="scoreboard_finish_message">Viene mostrato il podio e le statistiche si aggiornano. I giri non potranno più essere modificati.</string>
+    <string name="scoreboard_change_mode">Cambia la modalità di punteggio</string>
+    <string name="mode_change_title">Modalità di punteggio</string>
+    <string name="mode_change_message">I punteggi dei round già giocati vengono ricalcolati con la nuova modalità.</string>
+    <string name="mode_change_confirm">Cambia</string>
     <string name="finish_round_not_counted">Il round in corso non viene contato.</string>
     <string name="scoreboard_reopen_last">Riapri l’ultimo giro</string>
     <string name="scoreboard_edit_order">Modifica l’ordine dei giocatori</string>

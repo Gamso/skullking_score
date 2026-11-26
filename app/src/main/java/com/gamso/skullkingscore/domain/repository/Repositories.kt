@@ -87,6 +87,9 @@ interface GameRepository {
 
     suspend fun setFirstDealerSeat(gameId: Long, seat: Int)
 
+    /** Changes the scoring mode of the game. The cached scores are recomputed by the caller. */
+    suspend fun setMode(gameId: Long, mode: ScoringMode)
+
     /** Seats the players of the game in the order of [playerIds], which lists exactly the players of the game. */
     suspend fun reorderPlayers(gameId: Long, playerIds: List<Long>)
 

@@ -198,6 +198,10 @@
     <string name="scoreboard_finish">Partie beenden</string>
     <string name="scoreboard_finish_title">Partie beenden?</string>
     <string name="scoreboard_finish_message">Das Siegerpodest wird angezeigt und die Statistiken werden aktualisiert. Runden können danach nicht mehr bearbeitet werden.</string>
+    <string name="scoreboard_change_mode">Wertungsmodus ändern</string>
+    <string name="mode_change_title">Wertungsmodus</string>
+    <string name="mode_change_message">Die Punkte der bereits gespielten Runden werden mit dem neuen Modus neu berechnet.</string>
+    <string name="mode_change_confirm">Ändern</string>
     <string name="finish_round_not_counted">Die laufende Runde wird nicht gezählt.</string>
     <string name="scoreboard_reopen_last">Letzte Runde wieder öffnen</string>
     <string name="scoreboard_edit_order">Spielerreihenfolge ändern</string>

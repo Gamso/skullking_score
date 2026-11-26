@@ -279,6 +279,11 @@ class GameRepositoryImpl @Inject constructor(
         gameDao.updateGame(game.copy(firstDealerSeat = seat))
     }
 
+    override suspend fun setMode(gameId: Long, mode: ScoringMode) {
+        val game = gameDao.getGame(gameId) ?: return
+        gameDao.updateGame(game.copy(mode = mode.name))
+    }
+
     override suspend fun reorderPlayers(gameId: Long, playerIds: List<Long>) {
         database.withWriteTransaction {
             playerIds.forEachIndexed { seat, playerId -> gameDao.updateSeat(gameId, playerId, seat) }
