@@ -90,12 +90,10 @@
     <!-- Round -->
     <string name="round_title_plain">Round %1$d</string>
     <string name="round_title_extra">Round %1$d (extra)</string>
-    <string name="prepare_cards_question">Cards dealt</string>
-    <string name="prepare_cards_hint">Suggested: previous round + 1. Change it with a tap.</string>
-    <string name="prepare_start_bids">Start the bids</string>
 
     <string name="bids_validate">Confirm bids</string>
     <string name="bids_total">Total bid: %1$d (cards dealt: %2$d)</string>
+    <string name="bids_cards">Cards dealt</string>
 
     <string name="play_bids_reminder">Bids</string>
     <string name="play_bid_chip">Bid %1$d</string>
@@ -200,6 +198,7 @@
     <string name="scoreboard_finish">End the game</string>
     <string name="scoreboard_finish_title">End the game?</string>
     <string name="scoreboard_finish_message">The podium is shown and statistics are updated. Rounds can no longer be edited.</string>
+    <string name="finish_round_not_counted">The round in progress is not counted.</string>
     <string name="scoreboard_reopen_last">Reopen the last round</string>
     <string name="scoreboard_see_podium">See the podium</string>
     <string name="detail_title">%1$s · round %2$d</string>
