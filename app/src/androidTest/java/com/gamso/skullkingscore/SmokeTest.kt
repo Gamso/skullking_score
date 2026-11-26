@@ -64,7 +64,6 @@ class SmokeTest {
         createPlayer(winner)
         createPlayer(other)
         click(R.string.setup_start)
-        click(R.string.prepare_start_bids)
         click(R.string.bids_validate)
         click(R.string.trick_choose_winner)
         // The trick screen sits over the round screen: its player buttons are the last ones.

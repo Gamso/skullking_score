@@ -174,7 +174,10 @@ fun BidsScreen(
         title = if (current == null) {
             stringResource(R.string.app_name)
         } else {
-            stringResource(R.string.round_title_plain, current.round.round.number)
+            stringResource(
+                if (current.round.round.isExtra) R.string.round_title_extra else R.string.round_title_plain,
+                current.round.round.number,
+            )
         },
         onBack = onBack,
         snackbarHost = { SnackbarHost(snackbar) },

@@ -90,9 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Rodada %1$d</string>
     <string name="round_title_extra">Rodada %1$d (extra)</string>
-    <string name="prepare_cards_question">Cartas distribuídas</string>
-    <string name="prepare_cards_hint">Sugestão: rodada anterior + 1. Altere com um toque.</string>
-    <string name="prepare_start_bids">Começar os lances</string>
 
     <string name="bids_validate">Confirmar os lances</string>
     <string name="bids_total">Total dos lances: %1$d (cartas distribuídas: %2$d)</string>

@@ -90,9 +90,6 @@
     <!-- Round -->
     <string name="round_title_plain">Manche %1$d</string>
     <string name="round_title_extra">Manche %1$d (supplémentaire)</string>
-    <string name="prepare_cards_question">Nombre de cartes distribuées</string>
-    <string name="prepare_cards_hint">Proposé : manche précédente + 1. Modifiable d’un toucher.</string>
-    <string name="prepare_start_bids">Commencer les annonces</string>
 
     <string name="bids_validate">Valider les annonces</string>
     <string name="bids_total">Total annoncé : %1$d (cartes distribuées : %2$d)</string>

@@ -106,8 +106,6 @@ fun SkullKingNavHost() {
         composable(Routes.PREPARE, arguments = listOf(gameArg)) { entry ->
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
             PrepareScreen(
-                onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
-                onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
                 onRoundStarted = { roundId -> navController.replaceFlow(Routes.bids(gameId, roundId)) },
             )
         }
