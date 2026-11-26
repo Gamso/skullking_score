@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -53,6 +52,7 @@ import com.gamso.skullkingscore.ui.components.DealerLine
 import com.gamso.skullkingscore.ui.components.DeltaStepper
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
+import com.gamso.skullkingscore.ui.components.RoundMenu
 import com.gamso.skullkingscore.ui.components.SkullScaffold
 import com.gamso.skullkingscore.ui.components.UndoController
 import com.gamso.skullkingscore.ui.components.UndoNotices
@@ -161,6 +161,7 @@ fun BidsScreen(
     onScoreboard: () -> Unit,
     onHelp: () -> Unit,
     onValidated: () -> Unit,
+    onGameFinished: () -> Unit,
     viewModel: BidsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -186,7 +187,8 @@ fun BidsScreen(
             IconButton(onClick = onScoreboard) {
                 Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
             }
-            IconButton(onClick = onHelp) { Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.help)) }
+            // The help is rarely opened during a round: it sits in the menu, the top bar keeps the entry actions.
+            RoundMenu(onHelp = onHelp, onFinished = onGameFinished)
         },
         bottomBar = {
             if (current != null) {

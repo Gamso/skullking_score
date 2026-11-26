@@ -197,6 +197,7 @@
     <string name="scoreboard_finish">Terminer la partie</string>
     <string name="scoreboard_finish_title">Terminer la partie ?</string>
     <string name="scoreboard_finish_message">Le podium s’affiche et les statistiques sont mises à jour. Les manches ne seront plus modifiables.</string>
+    <string name="finish_round_not_counted">La manche en cours n’est pas comptée.</string>
     <string name="scoreboard_reopen_last">Rouvrir la dernière manche</string>
     <string name="scoreboard_see_podium">Voir le podium</string>
     <string name="detail_title">%1$s · manche %2$d</string>

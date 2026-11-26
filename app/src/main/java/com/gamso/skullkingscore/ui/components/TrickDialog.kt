@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -89,6 +90,7 @@ internal sealed interface TrickEventDialog {
  * @param eventPlayerIds players who already played a Loot or a Locker in this trick: one card per player
  * @param chestPlayerIds players who already played a Locker in this trick: a Locker never wins the trick
  * @param roundState content of the round state dialog, opened from the top bar
+ * @param onScoreboard opens the scoreboard (ranking of the players), as from the round screens
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Suppress("LongMethod", "CyclomaticComplexMethod")
@@ -108,6 +110,7 @@ fun TrickDialog(
     chestPlayerIds: Set<Long> = emptySet(),
     onPrevious: (() -> Unit)? = null,
     roundState: (@Composable () -> Unit)? = null,
+    onScoreboard: (() -> Unit)? = null,
 ) {
     // Saveable: the entry in progress survives a rotation.
     var choice by rememberSaveable {
@@ -180,10 +183,13 @@ fun TrickDialog(
             actions = {
                 if (roundState != null) {
                     IconButton(onClick = { showRoundState = true }) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.List,
-                            contentDescription = stringResource(R.string.trick_round_state),
-                        )
+                        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.trick_round_state))
+                    }
+                }
+                // The same button as on the round screens: the scoreboard opens on the ranking.
+                if (onScoreboard != null) {
+                    IconButton(onClick = onScoreboard) {
+                        Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
                     }
                 }
             },

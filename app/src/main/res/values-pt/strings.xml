@@ -197,6 +197,7 @@
     <string name="scoreboard_finish">Encerrar a partida</string>
     <string name="scoreboard_finish_title">Encerrar a partida?</string>
     <string name="scoreboard_finish_message">O pódio é exibido e as estatísticas são atualizadas. As rodadas não poderão mais ser editadas.</string>
+    <string name="finish_round_not_counted">A rodada em andamento não é contada.</string>
     <string name="scoreboard_reopen_last">Reabrir a última rodada</string>
     <string name="scoreboard_see_podium">Ver o pódio</string>
     <string name="detail_title">%1$s · rodada %2$d</string>
