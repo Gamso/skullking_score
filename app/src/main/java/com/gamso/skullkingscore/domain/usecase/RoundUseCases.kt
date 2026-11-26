@@ -2,6 +2,7 @@ package com.gamso.skullkingscore.domain.usecase
 
 import com.gamso.skullkingscore.core.Bonus
 import com.gamso.skullkingscore.core.DeckRules
+import com.gamso.skullkingscore.core.ScoringMode
 import com.gamso.skullkingscore.core.SeaMonster
 import com.gamso.skullkingscore.domain.model.GameDetails
 import com.gamso.skullkingscore.domain.model.PlayerRound
@@ -200,6 +201,18 @@ class EditRoundUseCase @Inject constructor(
         if (last.phase != RoundPhase.SCORED) return null
         setPhase(gameId, last.id, RoundPhase.PLAYING)
         return last.id
+    }
+}
+
+/** Changes the scoring mode of a game in progress, when the wrong one was picked or it was not changed. */
+class ChangeModeUseCase @Inject constructor(
+    private val games: GameRepository,
+    private val recalculate: RecalculateScoresUseCase,
+) {
+    /** Changes the mode, then recomputes with it the scores of the rounds already played. One transaction. */
+    suspend operator fun invoke(gameId: Long, mode: ScoringMode) = games.inTransaction {
+        games.setMode(gameId, mode)
+        recalculate(gameId)
     }
 }
 

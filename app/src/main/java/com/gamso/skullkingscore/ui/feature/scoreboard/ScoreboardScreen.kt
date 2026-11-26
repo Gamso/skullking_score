@@ -151,8 +151,8 @@ fun ScoreboardScreen(
     // Round and player ids of the cell shown in detail, saveable: the detail survives a rotation.
     var selectedIds by rememberSaveable { mutableStateOf<Pair<Long, Long>?>(null) }
     val selected = scored?.cell(selectedIds)
-    var menuOpen by rememberSaveable { mutableStateOf(false) }
     var confirmFinish by rememberSaveable { mutableStateOf(false) }
+    var changeMode by rememberSaveable { mutableStateOf(false) }
     // Ranking first: it is what the players look for between two rounds.
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val sidePanel = rememberWidthClass() == WidthClass.EXPANDED
@@ -175,27 +175,12 @@ fun ScoreboardScreen(
             }
             IconButton(onClick = onHelp) { Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.help)) }
             if (inProgress) {
-                IconButton(onClick = { menuOpen = true }) {
-                    Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more))
-                }
-                DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                    if (lastRound?.isScored == true) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.scoreboard_reopen_last)) },
-                            onClick = {
-                                menuOpen = false
-                                viewModel.reopenLastRound(onEditRound)
-                            },
-                        )
-                    }
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.scoreboard_finish)) },
-                        onClick = {
-                            menuOpen = false
-                            confirmFinish = true
-                        },
-                    )
-                }
+                GameMenu(
+                    canReopen = lastRound?.isScored == true,
+                    onReopen = { viewModel.reopenLastRound(onEditRound) },
+                    onChangeMode = { changeMode = true },
+                    onFinish = { confirmFinish = true },
+                )
             }
         },
         bottomBar = {
@@ -275,6 +260,10 @@ fun ScoreboardScreen(
         )
     }
 
+    if (changeMode && game != null && inProgress) {
+        ChangeModeDialog(current = game.mode, onDismiss = { changeMode = false })
+    }
+
     if (confirmFinish) {
         AlertDialog(
             onDismissRequest = { confirmFinish = false },
@@ -288,6 +277,40 @@ fun ScoreboardScreen(
             },
             dismissButton = {
                 TextButton(onClick = { confirmFinish = false }) { Text(stringResource(R.string.cancel)) }
+            },
+        )
+    }
+}
+
+/** The menu of a game in progress: corrections of the game, and its end. */
+@Composable
+private fun GameMenu(canReopen: Boolean, onReopen: () -> Unit, onChangeMode: () -> Unit, onFinish: () -> Unit) {
+    var menuOpen by rememberSaveable { mutableStateOf(false) }
+    IconButton(onClick = { menuOpen = true }) {
+        Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more))
+    }
+    DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+        if (canReopen) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.scoreboard_reopen_last)) },
+                onClick = {
+                    menuOpen = false
+                    onReopen()
+                },
+            )
+        }
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.scoreboard_change_mode)) },
+            onClick = {
+                menuOpen = false
+                onChangeMode()
+            },
+        )
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.scoreboard_finish)) },
+            onClick = {
+                menuOpen = false
+                onFinish()
             },
         )
     }

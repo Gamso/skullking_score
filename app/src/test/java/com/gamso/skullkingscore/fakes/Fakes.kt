@@ -294,6 +294,10 @@ class FakeGameRepository(players: List<Player> = emptyList()) : GameRepository {
         raw.copy(games = raw.games.map { if (it.id == gameId) it.copy(firstDealerSeat = seat) else it }) to Unit
     }
 
+    override suspend fun setMode(gameId: Long, mode: ScoringMode) = write { raw ->
+        raw.copy(games = raw.games.map { if (it.id == gameId) it.copy(mode = mode.name) else it }) to Unit
+    }
+
     override suspend fun finishGame(gameId: Long) = write { raw ->
         raw.copy(
             games = raw.games.map {
