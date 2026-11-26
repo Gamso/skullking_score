@@ -90,12 +90,10 @@
     <!-- Round -->
     <string name="round_title_plain">Giro %1$d</string>
     <string name="round_title_extra">Giro %1$d (extra)</string>
-    <string name="prepare_cards_question">Carte distribuite</string>
-    <string name="prepare_cards_hint">Suggerimento: giro precedente + 1. Cambialo con un tocco.</string>
-    <string name="prepare_start_bids">Inizia le previsioni</string>
 
     <string name="bids_validate">Conferma le previsioni</string>
     <string name="bids_total">Totale delle previsioni: %1$d (carte distribuite: %2$d)</string>
+    <string name="bids_cards">Carte distribuite</string>
 
     <string name="play_bids_reminder">Previsioni</string>
     <string name="play_bid_chip">Previsione %1$d</string>
@@ -111,6 +109,7 @@
     <string name="trick_dialog_edit">Correggi la presa %1$d</string>
     <string name="trick_who_won">Chi ha vinto la presa?</string>
     <string name="trick_destroyed">Presa distrutta (Kraken, o Balena bianca / Razza maculata senza carte numerate)</string>
+    <string name="trick_loot_winner_warning">%1$s ha giocato un Bottino e vince la presa. Succede solo se il Bottino apre la presa e seguono solo Fughe, senza alleanza. Controlla l’inserimento.</string>
     <string name="trick_destroyed_short">distrutta</string>
     <string name="trick_captured">Carte vinte</string>
     <string name="trick_rascal_wager">Puntata di Rascal</string>
@@ -199,6 +198,7 @@
     <string name="scoreboard_finish">Termina la partita</string>
     <string name="scoreboard_finish_title">Terminare la partita?</string>
     <string name="scoreboard_finish_message">Viene mostrato il podio e le statistiche si aggiornano. I giri non potranno più essere modificati.</string>
+    <string name="finish_round_not_counted">Il round in corso non viene contato.</string>
     <string name="scoreboard_reopen_last">Riapri l’ultimo giro</string>
     <string name="scoreboard_edit_order">Modifica l’ordine dei giocatori</string>
     <string name="order_title">Ordine dei giocatori</string>

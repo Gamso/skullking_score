@@ -92,6 +92,24 @@ class EditRoundUseCase @Inject constructor(
     suspend fun updateRound(gameId: Long, roundId: Long, transform: (Round) -> Round) =
         write(gameId) { games.updateRound(roundId, transform) }
 
+    /**
+     * Adds [step] to the number of cards of a round, during the bids, when it was wrong or the players change
+     * their mind. Kept between 1 and the maximum. A bid now above the number of cards is brought back to it.
+     * The step is applied to the stored value: a second tap made before the screen is refreshed still counts.
+     */
+    suspend fun stepCardsDealt(gameId: Long, roundId: Long, step: Int) = write(gameId) {
+        games.updateRound(roundId) {
+            it.copy(cardsDealt = (it.cardsDealt + step).coerceIn(1, DeckRules.MAX_CARDS_PER_ROUND))
+        }
+        val round = games.getGame(gameId)?.rounds?.firstOrNull { it.round.id == roundId } ?: return@write
+        val cards = round.round.cardsDealt
+        round.entries.filter { it.bid > cards || (it.finalBid ?: 0) > cards }.forEach { entry ->
+            games.updateEntry(roundId, entry.playerId) {
+                it.copy(bid = it.bid.coerceAtMost(cards), finalBid = it.finalBid?.coerceAtMost(cards))
+            }
+        }
+    }
+
     suspend fun setPhase(gameId: Long, roundId: Long, phase: RoundPhase) =
         updateRound(gameId, roundId) { it.copy(phase = phase) }
 

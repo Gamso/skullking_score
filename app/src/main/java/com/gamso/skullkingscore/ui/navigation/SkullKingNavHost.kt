@@ -106,8 +106,6 @@ fun SkullKingNavHost() {
         composable(Routes.PREPARE, arguments = listOf(gameArg)) { entry ->
             val gameId = entry.arguments?.getLong(Routes.ARG_GAME_ID) ?: return@composable
             PrepareScreen(
-                onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
-                onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
                 onRoundStarted = { roundId -> navController.replaceFlow(Routes.bids(gameId, roundId)) },
             )
         }
@@ -119,6 +117,7 @@ fun SkullKingNavHost() {
                 onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
                 onHelp = { navController.safeNavigate(Routes.HELP) },
                 onValidated = { navController.replaceFlow(Routes.play(gameId, roundId)) },
+                onGameFinished = { navController.replaceFlow(Routes.end(gameId)) },
             )
         }
         composable(Routes.PLAY, arguments = listOf(gameArg, roundArg)) { entry ->
@@ -129,6 +128,7 @@ fun SkullKingNavHost() {
                 onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
                 onHelp = { navController.safeNavigate(Routes.HELP) },
                 onRoundValidated = { navController.replaceFlow(Routes.scoreboard(gameId)) },
+                onGameFinished = { navController.replaceFlow(Routes.end(gameId)) },
             )
         }
         composable(Routes.RESULTS, arguments = listOf(gameArg, roundArg)) { entry ->
