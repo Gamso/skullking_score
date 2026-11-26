@@ -28,7 +28,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class EndGameMenuViewModel @Inject constructor(
+class RoundMenuViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val finishGame: FinishGameUseCase,
     private val autoBackup: AutoBackupManager,
@@ -47,19 +47,24 @@ class EndGameMenuViewModel @Inject constructor(
 }
 
 /**
- * Menu of the round screens: ends the game before its last round (lack of time, a player leaves), after a
- * confirmation. The round in progress, if any, is not counted.
- *
- * @param roundInProgress a round has started and is not validated: the confirmation says it is not counted
+ * Menu of the round screens (bid entry and play): the help, and the end of the game before its last round (lack
+ * of time, a player leaves), after a confirmation. The round in progress is not counted.
  */
 @Composable
-fun EndGameMenu(roundInProgress: Boolean, onFinished: () -> Unit, viewModel: EndGameMenuViewModel = hiltViewModel()) {
+fun RoundMenu(onHelp: () -> Unit, onFinished: () -> Unit, viewModel: RoundMenuViewModel = hiltViewModel()) {
     var menuOpen by rememberSaveable { mutableStateOf(false) }
     var confirm by rememberSaveable { mutableStateOf(false) }
     IconButton(onClick = { menuOpen = true }) {
         Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more))
     }
     DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.help)) },
+            onClick = {
+                menuOpen = false
+                onHelp()
+            },
+        )
         DropdownMenuItem(
             text = { Text(stringResource(R.string.scoreboard_finish)) },
             onClick = {
@@ -69,13 +74,13 @@ fun EndGameMenu(roundInProgress: Boolean, onFinished: () -> Unit, viewModel: End
         )
     }
     if (confirm) {
-        val message = stringResource(R.string.scoreboard_finish_message)
         AlertDialog(
             onDismissRequest = { confirm = false },
             title = { Text(stringResource(R.string.scoreboard_finish_title)) },
             text = {
                 Text(
-                    if (roundInProgress) message + " " + stringResource(R.string.finish_round_not_counted) else message,
+                    stringResource(R.string.scoreboard_finish_message) + " " +
+                        stringResource(R.string.finish_round_not_counted),
                 )
             },
             confirmButton = {

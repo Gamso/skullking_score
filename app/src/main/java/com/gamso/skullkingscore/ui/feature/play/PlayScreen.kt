@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -59,9 +58,9 @@ import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.BidsReminder
 import com.gamso.skullkingscore.ui.components.ConfirmWarningsDialog
 import com.gamso.skullkingscore.ui.components.DealerLine
-import com.gamso.skullkingscore.ui.components.EndGameMenu
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.LiveEventsPanel
+import com.gamso.skullkingscore.ui.components.RoundMenu
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
 import com.gamso.skullkingscore.ui.components.TrickDialog
@@ -212,8 +211,8 @@ fun PlayScreen(
             IconButton(onClick = onScoreboard) {
                 Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
             }
-            IconButton(onClick = onHelp) { Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.help)) }
-            EndGameMenu(roundInProgress = true, onFinished = onGameFinished)
+            // The help is rarely opened during a round: it sits in the menu, the top bar keeps the entry actions.
+            RoundMenu(onHelp = onHelp, onFinished = onGameFinished)
         },
         bottomBar = {
             val details = current?.round?.details
