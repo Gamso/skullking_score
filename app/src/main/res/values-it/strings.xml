@@ -96,6 +96,7 @@
 
     <string name="bids_validate">Conferma le previsioni</string>
     <string name="bids_total">Totale delle previsioni: %1$d (carte distribuite: %2$d)</string>
+    <string name="bids_cards">Carte distribuite</string>
 
     <string name="play_bids_reminder">Previsioni</string>
     <string name="play_bid_chip">Previsione %1$d</string>

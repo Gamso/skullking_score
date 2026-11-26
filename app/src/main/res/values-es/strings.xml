@@ -96,6 +96,7 @@
 
     <string name="bids_validate">Confirmar los envites</string>
     <string name="bids_total">Total de envites: %1$d (cartas repartidas: %2$d)</string>
+    <string name="bids_cards">Cartas repartidas</string>
 
     <string name="play_bids_reminder">Envites</string>
     <string name="play_bid_chip">Envite %1$d</string>

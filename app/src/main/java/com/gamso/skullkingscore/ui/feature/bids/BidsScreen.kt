@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.gamso.skullkingscore.R
+import com.gamso.skullkingscore.core.DeckRules
 import com.gamso.skullkingscore.core.ScoringMode
 import com.gamso.skullkingscore.domain.model.Player
 import com.gamso.skullkingscore.domain.model.RoundPhase
@@ -56,6 +57,7 @@ import com.gamso.skullkingscore.ui.components.SkullScaffold
 import com.gamso.skullkingscore.ui.components.UndoController
 import com.gamso.skullkingscore.ui.components.UndoNotices
 import com.gamso.skullkingscore.ui.components.UndoRedoActions
+import com.gamso.skullkingscore.ui.components.WarningCard
 import com.gamso.skullkingscore.ui.navigation.Routes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -70,6 +72,8 @@ data class BidsUiState(val scored: ScoredGame, val round: ScoredRound) {
     val players: List<Player> get() = scored.game.players
     val cards: Int get() = round.round.cardsDealt
     val totalBid: Int get() = round.details.entries.sumOf { it.effectiveBid }
+    val needed: Int get() = cards * players.size
+    val deckSize: Int get() = DeckRules.deckSize(scored.game.expansionCards)
 }
 
 @HiltViewModel
@@ -129,6 +133,11 @@ class BidsViewModel @Inject constructor(
                 UndoAction(UndoKind.CANNONBALL, nameOf(playerId), { apply(before) }, { apply(enabled) }),
             )
         }
+    }
+
+    /** Changes the number of cards of the round: the bids above it are brought back to it. */
+    fun stepCards(step: Int) {
+        viewModelScope.launch { edit.stepCardsDealt(gameId, roundId, step) }
     }
 
     fun setDealer(player: Player) {
@@ -193,6 +202,27 @@ fun BidsScreen(
         ) {
             item {
                 DealerLine(current.scored.game, current.round.round.number, onChoose = viewModel::setDealer)
+            }
+            // The number of cards can still be fixed here, when it was wrong when the round was started.
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        stringResource(R.string.bids_cards),
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    DeltaStepper(
+                        value = current.cards,
+                        onStep = viewModel::stepCards,
+                        range = 1..DeckRules.MAX_CARDS_PER_ROUND,
+                    )
+                }
+                if (current.needed > current.deckSize) {
+                    WarningCard(stringResource(R.string.warn_cards_exceed_deck, current.needed, current.deckSize))
+                }
             }
             // All the players in one card, one thin line each: the whole table fits on the screen.
             item {
