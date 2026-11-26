@@ -109,6 +109,7 @@
     <string name="trick_dialog_edit">Correggi la presa %1$d</string>
     <string name="trick_who_won">Chi ha vinto la presa?</string>
     <string name="trick_destroyed">Presa distrutta (Kraken, o Balena bianca / Razza maculata senza carte numerate)</string>
+    <string name="trick_loot_winner_warning">%1$s ha giocato un Bottino e vince la presa. Succede solo se il Bottino apre la presa e seguono solo Fughe, senza alleanza. Controlla l’inserimento.</string>
     <string name="trick_destroyed_short">distrutta</string>
     <string name="trick_captured">Carte vinte</string>
     <string name="trick_rascal_wager">Puntata di Rascal</string>

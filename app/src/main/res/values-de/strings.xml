@@ -109,6 +109,7 @@
     <string name="trick_dialog_edit">Stich %1$d korrigieren</string>
     <string name="trick_who_won">Wer hat den Stich gewonnen?</string>
     <string name="trick_destroyed">Zerstörter Stich (Kraken, oder Weißer Wal / Gefleckter Rochen ohne Zahlenkarte)</string>
+    <string name="trick_loot_winner_warning">%1$s hat eine Beute gespielt und gewinnt den Stich. Das passiert nur, wenn die Beute den Stich eröffnet und nur Fluchtkarten folgen, ohne Bündnis. Prüfe die Eingabe.</string>
     <string name="trick_destroyed_short">zerstört</string>
     <string name="trick_captured">Gewonnene Karten</string>
     <string name="trick_rascal_wager">Rascals Einsatz</string>

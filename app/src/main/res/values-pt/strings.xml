@@ -109,6 +109,7 @@
     <string name="trick_dialog_edit">Corrigir a vaza %1$d</string>
     <string name="trick_who_won">Quem ganhou a vaza?</string>
     <string name="trick_destroyed">Vaza destruída (Kraken, ou Baleia Branca / Raia-pintada sem carta numerada)</string>
+    <string name="trick_loot_winner_warning">%1$s jogou um Saque e ganha a vaza. Isso só acontece quando o Saque abre a vaza e só fugas vêm depois, sem aliança. Confira a entrada.</string>
     <string name="trick_destroyed_short">destruída</string>
     <string name="trick_captured">Cartas ganhas</string>
     <string name="trick_rascal_wager">Aposta do Rascal</string>
