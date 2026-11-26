@@ -98,8 +98,6 @@
     <string name="bids_total">Total annoncé : %1$d (cartes distribuées : %2$d)</string>
 
     <string name="play_bids_reminder">Annonces</string>
-    <string name="play_ranking">Classement</string>
-    <string name="play_ranking_leader">Avant cette manche : %1$s mène avec %2$s</string>
     <string name="play_bid_chip">Annonce %1$d</string>
     <string name="play_live_events">Événements en direct</string>
     <!-- Live tricks -->

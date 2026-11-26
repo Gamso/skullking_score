@@ -61,7 +61,6 @@ import com.gamso.skullkingscore.ui.components.ConfirmWarningsDialog
 import com.gamso.skullkingscore.ui.components.DealerLine
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.LiveEventsPanel
-import com.gamso.skullkingscore.ui.components.RankingReminder
 import com.gamso.skullkingscore.ui.components.SectionTitle
 import com.gamso.skullkingscore.ui.components.SkullScaffold
 import com.gamso.skullkingscore.ui.components.TrickDialog
@@ -261,7 +260,6 @@ fun PlayScreen(
                 recordedEvents = trickEventLines(details, number, game.players.associate { it.id to it.name }),
                 roundState = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        RankingReminder(current.scored.ranking)
                         BidsReminder(game.players, details)
                         RoundProgress(current, viewModel, onEditTrick = { editing = it }, inDialog = true)
                     }
@@ -276,6 +274,7 @@ fun PlayScreen(
                     null
                 },
                 onDismiss = { editing = null },
+                onScoreboard = onScoreboard,
             )
         }
     }
@@ -305,7 +304,6 @@ private fun PlayContent(
     val wide = rememberWidthClass() != WidthClass.COMPACT
     val reminder: @Composable ColumnScope.() -> Unit = {
         DealerLine(game, details.round.number, onChoose = viewModel::setDealer)
-        RankingReminder(state.scored.ranking)
         BidsReminder(game.players, details)
     }
     val tricksAndEvents: @Composable ColumnScope.() -> Unit = {
