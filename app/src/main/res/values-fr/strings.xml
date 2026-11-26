@@ -111,6 +111,7 @@
     <string name="trick_dialog_edit">Corriger le pli %1$d</string>
     <string name="trick_who_won">Qui a gagné le pli ?</string>
     <string name="trick_destroyed">Pli détruit (Kraken, ou Baleine / Raie sans carte numérotée)</string>
+    <string name="trick_loot_winner_warning">%1$s a joué un Butin et gagne le pli. Cela n’arrive que si le Butin ouvre le pli et que seules des fuites suivent, sans alliance. Vérifiez la saisie.</string>
     <string name="trick_destroyed_short">détruit</string>
     <string name="trick_captured">Cartes gagnées</string>
     <string name="trick_rascal_wager">Pari de Rascal</string>

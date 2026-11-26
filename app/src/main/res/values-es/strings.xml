@@ -111,6 +111,7 @@
     <string name="trick_dialog_edit">Corregir la baza %1$d</string>
     <string name="trick_who_won">¿Quién ganó la baza?</string>
     <string name="trick_destroyed">Baza destruida (Kraken, o Ballena Blanca / Raya moteada sin carta numerada)</string>
+    <string name="trick_loot_winner_warning">%1$s jugó un Botín y gana la baza. Solo ocurre si el Botín abre la baza y solo siguen huidas, sin alianza. Revisa la entrada.</string>
     <string name="trick_destroyed_short">destruida</string>
     <string name="trick_captured">Cartas ganadas</string>
     <string name="trick_rascal_wager">Apuesta de Rascal</string>

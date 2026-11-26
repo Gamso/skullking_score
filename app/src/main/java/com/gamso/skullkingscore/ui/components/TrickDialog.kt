@@ -67,6 +67,13 @@ data class TrickEvents(
     val chests: List<Pair<Long, Set<SeaMonster>>> = emptyList(),
 )
 
+/**
+ * True when the winner of the trick also played a Loot in it. It only happens when the trick starts with that Loot
+ * and only escapes follow, and then no alliance is formed: it is most often a typing mistake.
+ */
+internal fun lootWinsTrick(winnerId: Long?, lootPlayerIds: Collection<Long>): Boolean =
+    winnerId != null && winnerId in lootPlayerIds
+
 internal sealed interface TrickEventDialog {
     data object Winner : TrickEventDialog
     data object LootWho : TrickEventDialog
@@ -142,6 +149,9 @@ fun TrickDialog(
     // One card per player in a trick: whoever played a Loot or a Locker plays nothing else, and the Locker never wins.
     val busy = eventPlayerIds + events.lootPlayerIds + events.chests.map { it.first }
     val chestPlayers = chestPlayerIds + events.chests.map { it.first }
+    // Players who played a Loot in this trick, already recorded or being entered.
+    val lootPlayers = (eventPlayerIds - chestPlayerIds) + events.lootPlayerIds
+    val lootWinner = players.firstOrNull { it.id == choice && lootWinsTrick(choice, lootPlayers) }
 
     val confirm = {
         onConfirm(
@@ -279,6 +289,9 @@ fun TrickDialog(
                             events = events.copy(chests = events.chests.filterIndexed { i, _ -> i != index })
                         }
                     }
+
+                    // Possible (a Loot led and only escapes followed), but most often a typing mistake.
+                    lootWinner?.let { WarningCard(stringResource(R.string.trick_loot_winner_warning, it.name)) }
 
                     SubTitle(R.string.trick_won_with)
                     FlowRow(horizontalArrangement = CHIP_SPACING, verticalArrangement = CHIP_SPACING) {
