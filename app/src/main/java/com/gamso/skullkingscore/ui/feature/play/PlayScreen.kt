@@ -276,6 +276,7 @@ fun PlayScreen(
                     null
                 },
                 onDismiss = { editing = null },
+                onScoreboard = onScoreboard,
             )
         }
     }
