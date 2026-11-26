@@ -98,6 +98,8 @@
     <string name="bids_total">Summe der Ansagen: %1$d (ausgeteilte Karten: %2$d)</string>
 
     <string name="play_bids_reminder">Ansagen</string>
+    <string name="play_ranking">Rangliste</string>
+    <string name="play_ranking_leader">Vor dieser Runde: %1$s führt mit %2$s</string>
     <string name="play_bid_chip">Ansage %1$d</string>
     <string name="play_live_events">Live-Ereignisse</string>
     <!-- Live tricks -->

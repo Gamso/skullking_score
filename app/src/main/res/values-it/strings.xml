@@ -98,6 +98,8 @@
     <string name="bids_total">Totale delle previsioni: %1$d (carte distribuite: %2$d)</string>
 
     <string name="play_bids_reminder">Previsioni</string>
+    <string name="play_ranking">Classifica</string>
+    <string name="play_ranking_leader">Prima di questo round: %1$s è in testa con %2$s</string>
     <string name="play_bid_chip">Previsione %1$d</string>
     <string name="play_live_events">Eventi in diretta</string>
     <!-- Live tricks -->
