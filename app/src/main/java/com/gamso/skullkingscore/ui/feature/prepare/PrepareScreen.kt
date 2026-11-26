@@ -37,7 +37,6 @@ import com.gamso.skullkingscore.domain.usecase.StartRoundUseCase
 import com.gamso.skullkingscore.domain.usecase.suggestedCards
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.DealerLine
-import com.gamso.skullkingscore.ui.components.EndGameMenu
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.SkullScaffold
 import com.gamso.skullkingscore.ui.components.Stepper
@@ -137,7 +136,6 @@ fun PrepareScreen(
     onBack: () -> Unit,
     onScoreboard: () -> Unit,
     onRoundStarted: (roundId: Long) -> Unit,
-    onGameFinished: () -> Unit,
     viewModel: PrepareViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -157,7 +155,6 @@ fun PrepareScreen(
             IconButton(onClick = onScoreboard) {
                 Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
             }
-            EndGameMenu(roundInProgress = false, onFinished = onGameFinished)
         },
         bottomBar = {
             ActionBar(

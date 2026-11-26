@@ -109,7 +109,6 @@ fun SkullKingNavHost() {
                 onBack = { navController.popBackStack(Routes.HOME, inclusive = false) },
                 onScoreboard = { navController.safeNavigate(Routes.scoreboard(gameId)) },
                 onRoundStarted = { roundId -> navController.replaceFlow(Routes.bids(gameId, roundId)) },
-                onGameFinished = { navController.replaceFlow(Routes.end(gameId)) },
             )
         }
         composable(Routes.BIDS, arguments = listOf(gameArg, roundArg)) { entry ->
