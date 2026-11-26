@@ -12,7 +12,9 @@ plugins {
 
 android {
     namespace = "com.gamso.skullkingscore"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) { minorApiLevel = 1 }
+    }
 
     defaultConfig {
         applicationId = "com.gamso.skullkingscore"
