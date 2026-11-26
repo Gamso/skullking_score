@@ -61,6 +61,7 @@ import androidx.lifecycle.viewModelScope
 import com.gamso.skullkingscore.R
 import com.gamso.skullkingscore.core.DeckRules
 import com.gamso.skullkingscore.data.backup.AutoBackupManager
+import com.gamso.skullkingscore.domain.model.Game
 import com.gamso.skullkingscore.domain.model.GameStatus
 import com.gamso.skullkingscore.domain.model.Player
 import com.gamso.skullkingscore.domain.model.ScoredGame
@@ -262,35 +263,60 @@ fun ScoreboardScreen(
         )
     }
 
-    if (changeMode && game != null && inProgress) {
-        ChangeModeDialog(current = game.mode, onDismiss = { changeMode = false })
-    }
-
-    if (editOrder && game != null && inProgress) {
-        PlayerOrderDialog(players = game.players, onDismiss = { editOrder = false })
+    if (game != null && inProgress) {
+        CorrectionDialogs(
+            game = game,
+            changeMode = changeMode,
+            editOrder = editOrder,
+            onDismissChangeMode = { changeMode = false },
+            onDismissEditOrder = { editOrder = false },
+        )
     }
 
     if (confirmFinish) {
-        AlertDialog(
-            onDismissRequest = { confirmFinish = false },
-            title = { Text(stringResource(R.string.scoreboard_finish_title)) },
-            text = { Text(stringResource(R.string.scoreboard_finish_message)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    confirmFinish = false
-                    viewModel.finish(onFinished)
-                }) { Text(stringResource(R.string.scoreboard_finish)) }
+        FinishDialog(
+            onConfirm = {
+                confirmFinish = false
+                viewModel.finish(onFinished)
             },
-            dismissButton = {
-                TextButton(onClick = { confirmFinish = false }) { Text(stringResource(R.string.cancel)) }
-            },
+            onDismiss = { confirmFinish = false },
         )
     }
 }
 
+/** The dialogs of the corrections of a game in progress. */
+@Composable
+private fun CorrectionDialogs(
+    game: Game,
+    changeMode: Boolean,
+    editOrder: Boolean,
+    onDismissChangeMode: () -> Unit,
+    onDismissEditOrder: () -> Unit,
+) {
+    if (changeMode) ChangeModeDialog(current = game.mode, onDismiss = onDismissChangeMode)
+    if (editOrder) PlayerOrderDialog(players = game.players, onDismiss = onDismissEditOrder)
+}
+
+@Composable
+private fun FinishDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.scoreboard_finish_title)) },
+        text = { Text(stringResource(R.string.scoreboard_finish_message)) },
+        confirmButton = { TextButton(onClick = onConfirm) { Text(stringResource(R.string.scoreboard_finish)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    )
+}
+
 /** The menu of a game in progress: corrections of the game, and its end. */
 @Composable
-private fun GameMenu(canReopen: Boolean, onReopen: () -> Unit, onChangeMode: () -> Unit, onEditOrder: () -> Unit, onFinish: () -> Unit) {
+private fun GameMenu(
+    canReopen: Boolean,
+    onReopen: () -> Unit,
+    onChangeMode: () -> Unit,
+    onEditOrder: () -> Unit,
+    onFinish: () -> Unit,
+) {
     var menuOpen by rememberSaveable { mutableStateOf(false) }
     IconButton(onClick = { menuOpen = true }) {
         Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more))
