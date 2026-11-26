@@ -50,6 +50,7 @@ import com.gamso.skullkingscore.domain.usecase.EditRoundUseCase
 import com.gamso.skullkingscore.ui.components.ActionBar
 import com.gamso.skullkingscore.ui.components.DealerLine
 import com.gamso.skullkingscore.ui.components.DeltaStepper
+import com.gamso.skullkingscore.ui.components.EndGameMenu
 import com.gamso.skullkingscore.ui.components.KeepScreenOn
 import com.gamso.skullkingscore.ui.components.PlayerAvatar
 import com.gamso.skullkingscore.ui.components.SkullScaffold
@@ -152,6 +153,7 @@ fun BidsScreen(
     onScoreboard: () -> Unit,
     onHelp: () -> Unit,
     onValidated: () -> Unit,
+    onGameFinished: () -> Unit,
     viewModel: BidsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -175,6 +177,7 @@ fun BidsScreen(
                 Icon(Icons.AutoMirrored.Filled.List, contentDescription = stringResource(R.string.scoreboard))
             }
             IconButton(onClick = onHelp) { Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.help)) }
+            EndGameMenu(roundInProgress = true, onFinished = onGameFinished)
         },
         bottomBar = {
             if (current != null) {
