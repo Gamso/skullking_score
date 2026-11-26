@@ -11,6 +11,7 @@ import com.gamso.skullkingscore.domain.model.TrickDraft
 import com.gamso.skullkingscore.domain.repository.EntryChange
 import com.gamso.skullkingscore.domain.repository.GameRepository
 import com.gamso.skullkingscore.domain.repository.ScoreUpdate
+import com.gamso.skullkingscore.domain.repository.setDealer
 import com.gamso.skullkingscore.domain.scoring.GameScoreCalculator
 import com.gamso.skullkingscore.domain.scoring.TrickAggregator
 import javax.inject.Inject
@@ -218,6 +219,29 @@ class EditRoundUseCase @Inject constructor(
         if (last.phase != RoundPhase.SCORED) return null
         setPhase(gameId, last.id, RoundPhase.PLAYING)
         return last.id
+    }
+}
+
+/** Changes the order of the players of a game in progress, when it was wrong at the start. */
+class ReorderPlayersUseCase @Inject constructor(private val games: GameRepository) {
+    /**
+     * Seats the players in the order of [playerIds]. The dealer of the round in progress (or of the next round)
+     * stays the same player, so the game goes on from where it is: the new order applies to the rotation that
+     * follows. Nothing changes if [playerIds] are not exactly the players of the game. One transaction.
+     */
+    suspend operator fun invoke(gameId: Long, playerIds: List<Long>) = games.inTransaction {
+        val details = games.getGame(gameId) ?: return@inTransaction
+        if (playerIds.size != details.game.players.size ||
+            playerIds.toSet() != details.game.players.map { it.id }.toSet()
+        ) {
+            return@inTransaction
+        }
+        val last = details.rounds.lastOrNull()?.round
+        val current = if (last != null && last.phase != RoundPhase.SCORED) last.number else details.rounds.size + 1
+        val dealer = details.game.dealerFor(current)
+        games.reorderPlayers(gameId, playerIds)
+        val reordered = games.getGame(gameId)?.game
+        if (dealer != null && reordered != null) games.setDealer(reordered, current, dealer)
     }
 }
 

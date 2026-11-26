@@ -200,6 +200,11 @@
     <string name="scoreboard_finish_message">The podium is shown and statistics are updated. Rounds can no longer be edited.</string>
     <string name="finish_round_not_counted">The round in progress is not counted.</string>
     <string name="scoreboard_reopen_last">Reopen the last round</string>
+    <string name="scoreboard_edit_order">Edit the player order</string>
+    <string name="order_title">Player order</string>
+    <string name="order_message">Order around the table. The dealer of the current round stays the same, the new order applies from there.</string>
+    <string name="order_up">Move %1$s up</string>
+    <string name="order_down">Move %1$s down</string>
     <string name="scoreboard_see_podium">See the podium</string>
     <string name="detail_title">%1$s · round %2$d</string>
     <string name="detail_bid_tricks">Bid %1$d (final %2$d) · tricks %3$d</string>

@@ -200,6 +200,11 @@
     <string name="scoreboard_finish_message">Se muestra el podio y se actualizan las estadísticas. Ya no se podrán editar las rondas.</string>
     <string name="finish_round_not_counted">La ronda en curso no se cuenta.</string>
     <string name="scoreboard_reopen_last">Reabrir la última ronda</string>
+    <string name="scoreboard_edit_order">Editar el orden de los jugadores</string>
+    <string name="order_title">Orden de los jugadores</string>
+    <string name="order_message">Orden alrededor de la mesa. Quien reparte en la ronda actual sigue siendo el mismo, el nuevo orden se aplica a partir de él.</string>
+    <string name="order_up">Subir a %1$s</string>
+    <string name="order_down">Bajar a %1$s</string>
     <string name="scoreboard_see_podium">Ver el podio</string>
     <string name="detail_title">%1$s · ronda %2$d</string>
     <string name="detail_bid_tricks">Envite %1$d (final %2$d) · bazas %3$d</string>

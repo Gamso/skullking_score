@@ -87,6 +87,9 @@ interface GameRepository {
 
     suspend fun setFirstDealerSeat(gameId: Long, seat: Int)
 
+    /** Seats the players of the game in the order of [playerIds], which lists exactly the players of the game. */
+    suspend fun reorderPlayers(gameId: Long, playerIds: List<Long>)
+
     suspend fun finishGame(gameId: Long)
 
     suspend fun deleteGame(gameId: Long)
