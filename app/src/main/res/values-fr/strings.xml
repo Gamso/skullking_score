@@ -200,6 +200,11 @@
     <string name="scoreboard_finish_title">Terminer la partie ?</string>
     <string name="scoreboard_finish_message">Le podium s’affiche et les statistiques sont mises à jour. Les manches ne seront plus modifiables.</string>
     <string name="scoreboard_reopen_last">Rouvrir la dernière manche</string>
+    <string name="scoreboard_edit_order">Modifier l’ordre des joueurs</string>
+    <string name="order_title">Ordre des joueurs</string>
+    <string name="order_message">Ordre autour de la table. Le donneur de la manche en cours reste le même, le nouvel ordre s’applique à partir de lui.</string>
+    <string name="order_up">Monter %1$s</string>
+    <string name="order_down">Descendre %1$s</string>
     <string name="scoreboard_see_podium">Voir le podium</string>
     <string name="detail_title">%1$s · manche %2$d</string>
     <string name="detail_bid_tricks">Annonce %1$d (finale %2$d) · plis %3$d</string>

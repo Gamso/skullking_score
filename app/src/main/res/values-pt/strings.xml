@@ -200,6 +200,11 @@
     <string name="scoreboard_finish_title">Encerrar a partida?</string>
     <string name="scoreboard_finish_message">O pódio é exibido e as estatísticas são atualizadas. As rodadas não poderão mais ser editadas.</string>
     <string name="scoreboard_reopen_last">Reabrir a última rodada</string>
+    <string name="scoreboard_edit_order">Editar a ordem dos jogadores</string>
+    <string name="order_title">Ordem dos jogadores</string>
+    <string name="order_message">Ordem ao redor da mesa. Quem dá as cartas na rodada atual continua o mesmo, a nova ordem vale a partir dele.</string>
+    <string name="order_up">Subir %1$s</string>
+    <string name="order_down">Descer %1$s</string>
     <string name="scoreboard_see_podium">Ver o pódio</string>
     <string name="detail_title">%1$s · rodada %2$d</string>
     <string name="detail_bid_tricks">Lance %1$d (final %2$d) · vazas %3$d</string>

@@ -67,6 +67,9 @@ interface GameDao {
     @Insert
     suspend fun insertGamePlayers(items: List<GamePlayerEntity>)
 
+    @Query("UPDATE game_players SET seat = :seat WHERE gameId = :gameId AND playerId = :playerId")
+    suspend fun updateSeat(gameId: Long, playerId: Long, seat: Int)
+
     // --- Manches ---
 
     @Query("SELECT * FROM rounds ORDER BY gameId, number")

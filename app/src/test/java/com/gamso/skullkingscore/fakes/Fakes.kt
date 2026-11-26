@@ -294,6 +294,14 @@ class FakeGameRepository(players: List<Player> = emptyList()) : GameRepository {
         raw.copy(games = raw.games.map { if (it.id == gameId) it.copy(firstDealerSeat = seat) else it }) to Unit
     }
 
+    override suspend fun reorderPlayers(gameId: Long, playerIds: List<Long>) = write { raw ->
+        raw.copy(
+            gamePlayers = raw.gamePlayers.map { seat ->
+                if (seat.gameId == gameId) seat.copy(seat = playerIds.indexOf(seat.playerId)) else seat
+            },
+        ) to Unit
+    }
+
     override suspend fun finishGame(gameId: Long) = write { raw ->
         raw.copy(
             games = raw.games.map {
